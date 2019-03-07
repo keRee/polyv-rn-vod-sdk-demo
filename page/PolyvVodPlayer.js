@@ -11,6 +11,7 @@ class PolyvVodPlayerComponent extends Component {
     static propTypes = {
         vid: PropTypes.string,
         isAutoStart:PropTypes.bool,
+        onStart:PropTypes.func,
         ...View.propTypes // 包含默认的View的属性
     }
 

@@ -65,8 +65,11 @@ public class PolyvVodConfigRnModule extends ReactContextBaseJavaModule {
             initPolyvCilent(vodKey,decodeKey,decodeIv,viewerId);
 //            initScreencast();
 
+            Log.d(TAG, "init: token"+PolyvSDKClient.getInstance().getReadtoken()+"  sign :"+PolyvSDKClient.getInstance().isSign());
             WritableMap map = Arguments.createMap();
             map.putInt("code", PolyvRNVodCode.success);
+            map.putString("token",PolyvSDKClient.getInstance().getReadtoken());
+            map.putBoolean("isSign",PolyvSDKClient.getInstance().isSign());
             promise.resolve(map);
 
         }else{
