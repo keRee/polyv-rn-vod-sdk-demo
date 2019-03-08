@@ -19,7 +19,8 @@ export function setAxios() {
         console.log('请求body: ', config.data ? JSON.parse(config.data) : undefined);
         console.log('返回值: ', data);
         console.log('返回值: ', data.data);
-        if (data.code === 0) {
+        
+        if (data.code === 0 || data.data) {
             return Promise.resolve(data);
         }
         return Promise.reject(data);

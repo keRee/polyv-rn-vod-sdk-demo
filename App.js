@@ -9,20 +9,19 @@
 
 import React, { Component } from "react";
 import {
-  Text,
   View,
-  TextInput,
+
   Dimensions,
   StyleSheet,
-  ProgressBarAndroid
 } from "react-native";
 import PolyvVodConfigRnModule from "./page/PolyvVodConfigRnModule";
-import PolyvVodPlayer from "./page/PolyvVodPlayer";
-import OptionsView from "./view/PolyvPopuWindow";
+
+
+import PolyvVideoListView from "./view/PolyvVideoList";
 import { setAxios } from "./common/PolyvNet";
 import PolyvHttpManager from './common/PolyvHttpManager'
 
-const { width } = Dimensions.get("window");
+const { width,height } = Dimensions.get("window");
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -86,57 +85,32 @@ export default class App extends Component<Props> {
     PolyvHttpManager.getVideoList(1,20,(success,error) =>{
 
       if(success){
-        this.popUp.show()
+        this.refs.videoList.update(success.data)
       }
     })
   }
 
-  render() {
-    return (
-      <View>
-        <PolyvVodPlayer
-          ref="playerA"
-          style={styles.video}
-          vid={"e97dbe3e64cb3adef1a27a42fe49228e_e"}
-          isAutoStart={true}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={"请输入更新vid"}
-          onChangeText={text => {
-            this.setState({ vid: text });
-          }}
-        >
-          {this.state.inputVid}
-        </TextInput>
-        <View style={styles.horizon}>
-          <Text style={styles.text} onPress={this.updateVid.bind(this)}>
-            updateVid
-          </Text>
-          <Text style={styles.text} onPress={this.startOrPause.bind(this)}>
-            start or pause
-          </Text>
-          <Text
-            style={styles.text} onPress={this.showDownloadOptions.bind(this)}>
-            download
-          </Text>
-          {/* <ProgressBarAndroid /> */}
-        </View>
+  componentDidMount(){
+    setTimeout(() => {
+      this.showDownloadOptions()
+    }, 50);
+  }
 
-        <OptionsView ref={ref => (this.popUp = ref)} />
-        {/* <PolyvVodPlayer
-          ref='playerB'
-          style={styles.video}
-          vid={"e97dbe3e64c247499b55f213a4470052_e"}
-          isAutoStart={true}
-        /> */}
-      </View>
+  render() {
+    console.log('app render')
+    return (
+      <View style={styles.container}>
+      <PolyvVideoListView ref='videoList' style={styles.video} />
+    </View>
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    width:width,
+    height:height,
     backgroundColor: "#ffffff"
   },
   video: {

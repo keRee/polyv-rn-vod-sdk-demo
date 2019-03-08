@@ -1,54 +1,92 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
 
-import PolyvOnlineVideoList from '../view/PolyvVideoOnlineList'
-import {View} from 'react-native';
-import PolyvVodConfigRnModule from "./page/PolyvVodConfigRnModule";
-import { setAxios } from "./common/PolyvNet";
+import {
+  View,
+  Dimensions,
+  Text,
+  TextInput,
+  StyleSheet,
+  StackNavigator
+} from "react-native";
+import PolyvVodPlayer from "./page/PolyvVodPlayer";
+import PolyvPopuWindow from "./view/PolyvPopuWindow";
+import PolyvUserConfig from '../common/PolyvUserConfig'
 
 const { width, height } = Dimensions.get("window");
-export  class PolyvOnlineVideoList extends Component{
-    
-  componentWillMount() {
-    console.log("componentWillMount");
-    /**
-     * <Polyv Live init/>
-     */
-    console.log("Polyv vod init");
-    setAxios();
+type Props = {};
 
-    PolyvVodConfigRnModule.init(
-      this.state.vodKey,
-      this.state.decodeKey,
-      this.state.decodeIv,
-      this.state.viewerId,
-      this.state.nickName
-    ).then(ret => {
-      if (ret.code != 0) {
-        // 初始化失败
-        var str = "初始化失败  errCode=" + ret.code + "  errMsg=" + ret.message;
-        console.log(str);
-        alert(str);
-      } else {
-        // 初始化成功
-        console.log("初始化成功");
-      }
-    });
+export class PolyvOnlineVideoList extends Component<Props> {
+  static navigationOptions = {
+    title: "VideoPlayer"
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      // 初始化所需的数据
+      vodKey:PolyvUserConfig.User.vodKey,
+      decodeKey: PolyvUserConfig.User.decodeKey,
+      decodeIv: PolyvUserConfig.User.decodeIv,
+      viewerId: PolyvUserConfig.User.viewerId,
+      nickName: PolyvUserConfig.User.nickName,
+      vid: props.vid,
+
+      // 输入框默认vid
+      inputVid: "e97dbe3e649c56a1e58535bd8c5d3924_e",
+    };
   }
 
-    render(){
-        <View style={styles.container}>
-            <PolyvOnlineVideoList></PolyvOnlineVideoList>
+  render() {
+    return (
+      <View>
+        <PolyvVodPlayer
+          ref="playerA"
+          style={styles.video}
+          vid={this.state.vid}
+          isAutoStart={true}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder={"请输入更新vid"}
+          onChangeText={text => {
+            this.setState({ vid: text });
+          }}
+        >
+          {this.state.inputVid}
+        </TextInput>
+        <View style={styles.horizon}>
+          <Text style={styles.text} onPress={this.updateVid.bind(this)}>
+            updateVid
+          </Text>
+          <Text style={styles.text} onPress={this.startOrPause.bind(this)}>
+            start or pause
+          </Text>
+          <Text
+            style={styles.text}
+            onPress={this.showDownloadOptions.bind(this)}
+          >
+            download
+          </Text>
+          {/* <ProgressBarAndroid /> */}
         </View>
-    }
+
+        <PolyvPopuWindow ref={ref => (this.popUp = ref)} />
+        {/* <PolyvVodPlayer
+        ref='playerB'
+        style={styles.video}
+        vid={"e97dbe3e64c247499b55f213a4470052_e"}
+        isAutoStart={true}
+      /> */}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      width: width,
-      backgroundColor: "rgba(0, 0, 0, 0.6)",
-      position: "absolute",
-      top: 0,
-      zIndex: 9
-    },
-  
-  });
+  container: {
+    width: width,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    position: "absolute",
+    top: 0,
+    zIndex: 9
+  }
+});

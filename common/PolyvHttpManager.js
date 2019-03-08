@@ -22,13 +22,11 @@ const HttpManager ={
                 sign:sign
             }
         }).then(ret =>{
-            debugger
-            console.log(' request is '+ret)
-
+            console.log(' request is success '+ret)
             callback(ret)
         })
         .catch(error =>{
-            console.log(' request is '+error)
+            console.log(' request is error '+error)
         })
     }
 }

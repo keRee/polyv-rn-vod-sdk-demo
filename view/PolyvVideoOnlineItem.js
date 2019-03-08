@@ -8,15 +8,15 @@ import {
   Dimensions,
   FlatList,
   Text,
-  Image
+  Image,
+  StackNavigator,
 } from "react-native";
 import PropTypes from "prop-types";
 
 const { width, height } = Dimensions.get("window");
-let timeImg = require('./img/')
+let timeImg = require("./img/polyv_time.png");
 
 export class PolyvVideoOnlineItem extends Component {
-    
   static propTypes = {
     videoInfo: PropTypes.object, //item的数据
     ...View.propTypes // 包含默认的View的属性
@@ -28,71 +28,77 @@ export class PolyvVideoOnlineItem extends Component {
     };
   }
 
-  startPlay(){
-      var vid = this.state.data.vid
-      gotoPlayerView(vid);
+  startPlay() {
+    var vid = this.props.videoInfo.vid;
+    
+    gotoPlayerView(vid);
   }
   render() {
-    <View style={styles.container}>
-      <Image style={styles.img} source={{ uri: this.state.data.first_image }} />
-      <View>
-        <Text style={styles.title}>{this.state.data.title}</Text>
-        <View style={styles.bottomContainer}>
-          <View style={styles.bottomHorizonContianer}>
-            <Image style={styles.bottom_time_img} source={timeImg} />
-            <Text style={styles.bottom_time_txt}>
-              {this.state.data.duration}
-            </Text>
-          </View>
-          <View style={styles.bottomHorizonContianer} >
-          <Text style={styles.bottom_download_txt}>下载</Text>
-          <Text style={styles.bottom_play_txt}  onPress={()=>{
-              this.startPlay();
-          }}>播放</Text>
+    var videoInfo = this.props.videoInfo;
+    return (
+      <View style={styles.container}>
+        <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
+        <View>
+          <Text style={styles.title}>{videoInfo.title}</Text>
+          <View style={styles.bottomContainer}>
+            <View style={styles.bottomHorizonContianer}>
+              <Image style={styles.bottom_time_img} source={timeImg} />
+              <Text style={styles.bottom_time_txt}>{videoInfo.duration}</Text>
+            </View>
+            <View style={styles.bottomHorizonContianer}>
+              <Text style={styles.bottom_download_txt}>下载</Text>
+              <Text
+                style={styles.bottom_play_txt}
+                onPress={() => {
+                  this.startPlay();
+                }}
+              >
+                播放
+              </Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>;
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     width: width,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    position: "absolute",
-    top: 0,
-    zIndex: 9,
-    display: "flex",
-    flexDirection: "row"
+    margin:10,
+    display:'flex',
+    flexDirection:'row'
   },
   title: {
-    margin: 15,
+    marginBottom: 5,
+    marginLeft: 5,
     display: "flex",
     color: "red",
-    fontSize: 20,
+    fontSize: 15,
     justifyContent: "center",
     alignItems: "center"
   },
   bottomContainer: {
     position: "relative",
     bottom: 0,
-    margin: 15,
+    margin: 10,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: 'column'
   },
   bottomHorizonContianer: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "row",
   },
   bottom_time_img: {
     resizeMode: "cover",
-    with: 20,
-    height: 20
+    width: 10,
+    height: 10
   },
   bottom_time_txt: {
-    marginLeft: 15,
-    fontSize: "12",
+    lineHeight:10,
+    marginLeft: 5,
+    fontSize: 10,
     color: "green"
   },
   bottom_download_txt: {
@@ -101,11 +107,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 20,
-    height: 50,
+    fontSize: 12,
+    height: 20,
     backgroundColor: "#63B8FF",
-    margin: 12,
-    padding: 10
+    margin: 5,
   },
   bottom_play_txt: {
     textAlign: "center",
@@ -114,14 +119,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 12,
-    height: 30,
+    height: 20,
     backgroundColor: "#63B8FF",
-    margin: 10,
-    padding: 10
+    margin: 5,
   },
   img: {
     resizeMode: "cover",
-    with: 100,
+    width: 100,
     height: 70
   }
 });
