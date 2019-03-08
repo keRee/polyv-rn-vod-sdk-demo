@@ -43,6 +43,7 @@ export default class PolyvPopuWindow extends Component {
   }
 
   show(datas) {
+    
     this.setState(
       {
         show: true,
@@ -60,6 +61,11 @@ export default class PolyvPopuWindow extends Component {
   defaultHide() {
     this.props.hide();
     this.out();
+  }
+
+  chooseDefPlay(url){
+
+    console.log(`will to play ${url}`)
   }
 
   render() {
@@ -95,7 +101,11 @@ export default class PolyvPopuWindow extends Component {
             <FlatList
               style={styles.list}
               data={data}
-              renderItem={({item}) => <Text style={styles.title}>{item.content}</Text>}
+              renderItem={({item,position}) => <Text style={styles.title}
+              onPress={()=>{
+                this.chooseDefPlay(item)
+              }}
+              >{this.props.data[position]}</Text>}
             />
           </Animated.View>
         </View>
@@ -135,5 +145,5 @@ PolyvPopuWindow.defaultProps = {
   modalBoxBg: "#fff", // 背景色
   hide: function() {}, // 关闭时的回调函数
   transparentIsClick: true, // 透明区域是否可以点击
-  data: [{content:'test1'},{content:'test2'},{content:'test3'}]
+  data: [{content:'超清'},{content:'高清'},{content:'标清'}]
 };

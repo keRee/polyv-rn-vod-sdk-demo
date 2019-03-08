@@ -13,13 +13,14 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class PolyvRNVodApplication extends MultiDexApplication implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
-    private static final String TAG = "PolyvRNVodApplication";
+    private static final String TAG = "MainApplication";
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
@@ -30,7 +31,8 @@ public class PolyvRNVodApplication extends MultiDexApplication implements ReactA
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new PolyvRNVodPluginManager()
+                    new PolyvRNVodPluginManager(),
+                    new RNGestureHandlerPackage()
             );
         }
 

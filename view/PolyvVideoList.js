@@ -9,15 +9,24 @@ import {
   FlatList,
   Text
 } from "react-native";
+import PropTypes from 'prop-types';
+import OptionsView from "../view/PolyvPopuWindow";
+import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
+import PolyvHttpManager from '../common/PolyvHttpManager'
 
 const { width, height } = Dimensions.get("window");
-import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
+let navigation//导航栏引用
 
 export default class PolyvVideoList extends Component {
+  static propTypes = {
+    navigation:PropTypes.object
+}
+
+
   constructor(props) {
     super(props);
     this.state = {
-      datas: []
+      datas: [],
     };
   }
 
@@ -26,19 +35,34 @@ export default class PolyvVideoList extends Component {
     this.setState({ datas: datas });
   }
 
+
   renderItem({ item }) {
-    console.log('renderItem')
-    return <PolyvVideoOnlineItem style={styles.modalBox} videoInfo={item} />
+
+    return <PolyvVideoOnlineItem
+      downloadCallback={(video) =>{
+        this.showDownloadOptions(video)
+      }}
+      navigation={navigation}
+      style={styles.modalBox}
+      videoInfo={item} />
   }
 
+  
+  showDownloadOptions(video) {
+    console.log("showDownloadOptions");
+    this.popUp.show(video.hls);
+  }
+
+
   render() {
-    console.log('render')
+    navigation = this.props.navigation
     return (
       <View style={styles.container}>
-        <FlatList style={styles.list}
+        <FlatList style={styles.list} 
           data={this.state.datas}
           renderItem={this.renderItem}
         />
+        <OptionsView ref={ref => (this.popUp = ref)} />
       </View>
     );
   }

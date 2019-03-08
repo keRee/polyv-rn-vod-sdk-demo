@@ -1,17 +1,17 @@
-
+import React, { Component } from "react";
+import { createStackNavigator, createAppContainer } from "react-navigation";
+import PolyvOnlineVideoList from '../page/PolyvOnlineVideoList';
+import PolyvVodPlayerPage from '../page/PolyvVodPlayerPage';
 
 const AppNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
-    Details: DetailsScreen
+    OnlineList: PolyvOnlineVideoList,
+    VideoPlayer: PolyvVodPlayerPage 
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "OnlineList"
   }
 );
-const AppContainer = createAppContainer(AppNavigator);
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
-}
+const PolyvNavigation = createAppContainer(AppNavigator);
+
+module.exports = PolyvNavigation;

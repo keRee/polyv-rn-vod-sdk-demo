@@ -18,9 +18,8 @@ export function setAxios() {
         console.log('token: ', config.headers['x-auth-token']);
         console.log('请求body: ', config.data ? JSON.parse(config.data) : undefined);
         console.log('返回值: ', data);
-        console.log('返回值: ', data.data);
         
-        if (data.code === 0 || data.data) {
+        if (data.code === 200 || data.data ) {
             return Promise.resolve(data);
         }
         return Promise.reject(data);

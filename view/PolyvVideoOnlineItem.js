@@ -12,6 +12,8 @@ import {
   StackNavigator,
 } from "react-native";
 import PropTypes from "prop-types";
+import PolyvHttpManager from '../common/PolyvHttpManager'
+import PolyvVodConfig from '../page/PolyvVodConfigRnModule'
 
 const { width, height } = Dimensions.get("window");
 let timeImg = require("./img/polyv_time.png");
@@ -19,20 +21,33 @@ let timeImg = require("./img/polyv_time.png");
 export class PolyvVideoOnlineItem extends Component {
   static propTypes = {
     videoInfo: PropTypes.object, //item的数据
+    downloadCallback:PropTypes.func,
     ...View.propTypes // 包含默认的View的属性
   };
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.data
+      data: {}
     };
   }
 
   startPlay() {
     var vid = this.props.videoInfo.vid;
-    
-    gotoPlayerView(vid);
+    this.props.navigation.navigate('VideoPlayer',{vid:vid});
   }
+
+  startDownload() {
+    var vid = this.props.videoInfo.vid;
+    PolyvHttpManager.getVideoInfo(vid,(ret) => {
+      console.log('getVideoInfo')
+      PolyvVodConfig.parseEncryptData(vid,ret.object,
+        (ret) =>{//返回解析数据结果
+          this.setState({data:ret})
+          this.props.downloadCallback(this.state.data)
+        })
+    })
+  }
+
   render() {
     var videoInfo = this.props.videoInfo;
     return (
@@ -46,7 +61,11 @@ export class PolyvVideoOnlineItem extends Component {
               <Text style={styles.bottom_time_txt}>{videoInfo.duration}</Text>
             </View>
             <View style={styles.bottomHorizonContianer}>
-              <Text style={styles.bottom_download_txt}>下载</Text>
+              <Text style={styles.bottom_download_txt}
+              onPress={() => {
+                this.startDownload();
+              }}
+              >下载</Text>
               <Text
                 style={styles.bottom_play_txt}
                 onPress={() => {

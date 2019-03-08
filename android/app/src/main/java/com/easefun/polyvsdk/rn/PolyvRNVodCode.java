@@ -19,6 +19,7 @@ public class PolyvRNVodCode {
     public final static int noDecodeKey = -2;
     public final static int noDecodeIv = -3;
     public final static int noViewId = -4;
+    public final static int parseDataError = -5;
 
     public static String getDesc(int code) {
         switch (code) {
@@ -32,6 +33,8 @@ public class PolyvRNVodCode {
                 return "DecodeIv为空";
             case PolyvRNVodCode.noViewId:
                 return "ViewId为空";
+            case PolyvRNVodCode.parseDataError:
+                return "解析视频数据出错";
             default:
                 return "";
         }

@@ -21,6 +21,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.easefun.polyvsdk.rn.PolyvRNVodCode.parseDataError;
+
 /**
  * @author df
  * @create 2019/2/20
@@ -81,6 +83,21 @@ public class PolyvVodConfigRnModule extends ReactContextBaseJavaModule {
 
         }
 
+    }
+    @ReactMethod
+    public void parseEncryptData(String vid,String data, Promise promise){
+        String sourceData = PolyvSDKClient.getInstance().getDataToString(vid,data);
+        if(TextUtils.isEmpty(sourceData)){
+            WritableMap map = Arguments.createMap();
+            map.putString("data",sourceData);
+            promise.resolve(map);
+            return ;
+        }
+        String errorCode = ""+parseDataError;
+        String errorDesc = PolyvRNVodCode.getDesc(parseDataError);
+        Throwable throwable = new Throwable(errorDesc);
+        Log.e(TAG, "errorCode=" + errorCode + "  errorDesc=" + errorDesc);
+        promise.reject(errorCode, errorDesc, throwable);
     }
 
 

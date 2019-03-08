@@ -16,7 +16,7 @@ const PolyvVodConfigRnModule = {
    
     //初始化
     async init (vodKey, decodeKey, decodeIv, viewerId, nickName){
-        console.log("config_{vodKey}_{decodeKey}_{decodeIv}")
+        console.log(`config_${vodKey}_${decodeKey}_${decodeIv}`)
         try {
             NativeModules.PolyvVodConfigRnModule.init(vodKey, decodeKey, decodeIv, viewerId, nickName)
             .then(ret =>{
@@ -39,6 +39,23 @@ const PolyvVodConfigRnModule = {
 
     isSign(){
         return isSign
+    },
+
+    parseEncryptData(vid,data,callback){
+        try {
+            NativeModules.PolyvVodConfigRnModule.parseEncryptData(vid,data)
+            .then(ret =>{
+                console.log('result :token:'+ret.token+"  isSign:"+ret.isSign)
+                var source = ret.data
+                callback(source)
+            })
+            console.log('parseEncryptData end')
+            return { "code":0 }
+        } catch (e) {
+            var code = e.code;
+            var message = e.message;
+            return { code, message }
+        }
     }
 } 
 

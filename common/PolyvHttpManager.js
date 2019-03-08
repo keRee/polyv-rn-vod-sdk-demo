@@ -28,6 +28,16 @@ const HttpManager ={
         .catch(error =>{
             console.log(' request is error '+error)
         })
+    },
+
+    getVideoInfo(vid,callback){
+        Axios.get(`https://player.polyv.net/videojson/${vid}.json`)
+        .then(ret =>{
+            console.log(' getVideoInfo is success '+ret)
+            callback(ret)
+        }).catch(error =>{
+            console.log(' getVideoInfo is error '+error)
+        })
     }
 }
 module.exports= HttpManager
