@@ -119,12 +119,12 @@ public class PolyvOnlineListViewAdapter extends AbsRecyclerViewAdapter {
         }
     }
 
-    private static class MyDownloadListener implements IPolyvDownloaderProgressListener {
+    public static class MyDownloadListener implements IPolyvDownloaderProgressListener {
         private long total;
         private WeakReference<Context> contextWeakReference;
         private PolyvDownloadInfo downloadInfo;
 
-        MyDownloadListener(Context context, PolyvDownloadInfo downloadInfo) {
+        public MyDownloadListener(Context context, PolyvDownloadInfo downloadInfo) {
             this.contextWeakReference = new WeakReference<>(context);
             this.downloadInfo = downloadInfo;
         }

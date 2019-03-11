@@ -9,6 +9,7 @@ import {
   FlatList,
   Text
 } from "react-native";
+import PolyvVideoDownload from '../page/PolyvVodDownloadModule'
 /**
  * 弹出层
  */
@@ -21,8 +22,10 @@ export default class PolyvPopuWindow extends Component {
     this.state = {
       offset: new Animated.Value(0),
       show: false,
+      videoJson:{},
       datas:[],
-      vid:''
+      vid:'',
+      title:''
     };
   }
 
@@ -44,12 +47,15 @@ export default class PolyvPopuWindow extends Component {
     setTimeout(() => this.setState({ show: false }), 300);
   }
 
-  show(datas) {
+  show(videoJson,videoInfo) {
     
     this.setState(
       {
         show: true,
-        datas:datas.hls,
+        videoJson:videoJson,
+        datas:videoJson.hls,
+        vid:videoInfo.vid,
+        title:videoInfo.title
       },
       this.in()
     );
@@ -65,15 +71,19 @@ export default class PolyvPopuWindow extends Component {
     this.out();
   }
 
-  chooseDefPlay(url){
-    console.log(`will to play ${url}`)
-    PolyvVideoDownload.start()
+  chooseDefPlay(index){
+    console.log(`will to play ${index}`)
+    var videoString = JSON.stringify(this.videoJson)
+    PolyvVideoDownload.startDownload(this.state.vid,index,this.state.title,videoString,()=>{
+
+    })
   }
 
   renderItemData({item,index}){
-    return  <Text style={styles.title}
-              onPress={()=>{
-                this.chooseDefPlay(item)
+    var that = this
+    return  <Text style={styles.content}
+              onPress={function(){
+                that.chooseDefPlay(index)
               }}>{defs[index].content}</Text>
   }
   render() {
@@ -110,7 +120,7 @@ export default class PolyvPopuWindow extends Component {
             <FlatList
               style={styles.list}
               data={this.state.datas}
-              renderItem={this.renderItemData}
+              renderItem={this.renderItemData.bind(this)}
              
             />
           </Animated.View>
@@ -135,6 +145,14 @@ const styles = StyleSheet.create({
     display:'flex',
     color: "red",
     fontSize: 20,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  content: {
+    margin:15,
+    textAlign: 'center',
+    display:'flex',
+    fontSize: 15,
     justifyContent: "center",
     alignItems: "center"
   },

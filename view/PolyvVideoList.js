@@ -43,7 +43,7 @@ export default class PolyvVideoList extends Component {
     return <PolyvVideoOnlineItem
       downloadCallback={(video) =>{
         console.log('receive callback')
-        that.showDownloadOptions(video)
+        that.showDownloadOptions(video,item)
       }}
       navigation={navigation}
       style={styles.modalBox}
@@ -51,11 +51,10 @@ export default class PolyvVideoList extends Component {
   }
 
   
-  showDownloadOptions(video) {
+  showDownloadOptions(video,item) {
     console.log("showDownloadOptions");
-    debugger
     var videoObject = JSON.parse(video)
-    this.popUp.show(videoObject);
+    this.popUp.show(videoObject,item);
   }
 
 

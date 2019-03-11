@@ -8,15 +8,17 @@ const PolyvVideoDownload = {
 /**
  * 
  * @param {string} vid 视频vid 
- * @param {string} url 下载连接 
- * @param {fun} callback 下载回掉
+ * @param {string} pos 码率索引
+ * @param {string} title 下载标题
+ * @param {string} videoJson videojson串
+ * @param {fun} callback 下载回掉 success fail
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
-  async startDownload(vid,url,callback) {
+  async startDownload(vid,pos,title,videoJson,callback) {
 
     var result ;
     try {
-        await videoDownload.startDownload(url,callback)
+        await videoDownload.startDownload(vid,pos,title,callback)
         result = 0
     } catch (error) {
         result = error.code
