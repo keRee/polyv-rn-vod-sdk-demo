@@ -15,7 +15,7 @@ import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
 import PolyvHttpManager from '../common/PolyvHttpManager'
 
 const { width, height } = Dimensions.get("window");
-let navigation//导航栏引用
+let navigation,that//导航栏引用
 
 export default class PolyvVideoList extends Component {
   static propTypes = {
@@ -28,6 +28,7 @@ export default class PolyvVideoList extends Component {
     this.state = {
       datas: [],
     };
+    that = this
   }
 
   update(datas) {
@@ -38,9 +39,11 @@ export default class PolyvVideoList extends Component {
 
   renderItem({ item }) {
 
+    
     return <PolyvVideoOnlineItem
       downloadCallback={(video) =>{
-        this.showDownloadOptions(video)
+        console.log('receive callback')
+        that.showDownloadOptions(video)
       }}
       navigation={navigation}
       style={styles.modalBox}
@@ -50,7 +53,9 @@ export default class PolyvVideoList extends Component {
   
   showDownloadOptions(video) {
     console.log("showDownloadOptions");
-    this.popUp.show(video.hls);
+    debugger
+    var videoObject = JSON.parse(video)
+    this.popUp.show(videoObject);
   }
 
 

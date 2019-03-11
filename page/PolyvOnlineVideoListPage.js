@@ -7,8 +7,9 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
-import PolyvVodConfigRnModule from "../page/PolyvVodConfigRnModule";
+import PolyvVodConfigRnModule from "./PolyvVodConfigRnModule";
 import PolyvHttpManager from '../common/PolyvHttpManager'
+
 import PolyvVideoListView from "../view/PolyvVideoList";
 import { setAxios } from "../common/PolyvNet";
 

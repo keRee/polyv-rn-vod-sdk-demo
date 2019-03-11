@@ -12,7 +12,7 @@ const PolyvVideoDownload = {
  * @param {fun} callback 下载回掉
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
-  startDownload(vid,url,callback) {
+  async startDownload(vid,url,callback) {
 
     var result ;
     try {

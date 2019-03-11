@@ -87,7 +87,7 @@ public class PolyvVodConfigRnModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void parseEncryptData(String vid,String data, Promise promise){
         String sourceData = PolyvSDKClient.getInstance().getDataToString(vid,data);
-        if(TextUtils.isEmpty(sourceData)){
+        if(!TextUtils.isEmpty(sourceData)){
             WritableMap map = Arguments.createMap();
             map.putString("data",sourceData);
             promise.resolve(map);

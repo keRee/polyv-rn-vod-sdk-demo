@@ -9,18 +9,20 @@ import {
   FlatList,
   Text
 } from "react-native";
-
 /**
  * 弹出层
  */
 const { width, height } = Dimensions.get("window");
+const defs = [{content:'超清'},{content:'高清'},{content:'标清'}]
 
 export default class PolyvPopuWindow extends Component {
   constructor(props) {
     super(props);
     this.state = {
       offset: new Animated.Value(0),
-      show: false
+      show: false,
+      datas:[],
+      vid:''
     };
   }
 
@@ -47,7 +49,7 @@ export default class PolyvPopuWindow extends Component {
     this.setState(
       {
         show: true,
-        data:datas
+        datas:datas.hls,
       },
       this.in()
     );
@@ -64,15 +66,22 @@ export default class PolyvPopuWindow extends Component {
   }
 
   chooseDefPlay(url){
-
     console.log(`will to play ${url}`)
+    PolyvVideoDownload.start()
   }
 
+  renderItemData({item,index}){
+    return  <Text style={styles.title}
+              onPress={()=>{
+                this.chooseDefPlay(item)
+              }}>{defs[index].content}</Text>
+  }
   render() {
-    let { transparentIsClick, modalBoxBg, modalBoxHeight ,data} = this.props;
+    let { transparentIsClick, modalBoxBg, modalBoxHeight } = this.props;
     if (this.state.show) {
       return (
-        <View style={[styles.container, { height: height }]}>
+        <View 
+        style={[styles.container, { height: height }]}>
           <TouchableOpacity
             style={{ height: height - modalBoxHeight }}
             onPress={transparentIsClick && this.defaultHide.bind(this)}
@@ -100,12 +109,9 @@ export default class PolyvPopuWindow extends Component {
             <Text style={styles.title}>请选择分辨率</Text>
             <FlatList
               style={styles.list}
-              data={data}
-              renderItem={({item,position}) => <Text style={styles.title}
-              onPress={()=>{
-                this.chooseDefPlay(item)
-              }}
-              >{this.props.data[position]}</Text>}
+              data={this.state.datas}
+              renderItem={this.renderItemData}
+             
             />
           </Animated.View>
         </View>
@@ -138,12 +144,12 @@ const styles = StyleSheet.create({
   },
   list:{
   }
-});
+})
 
 PolyvPopuWindow.defaultProps = {
   modalBoxHeight: 300, // 盒子高度
   modalBoxBg: "#fff", // 背景色
   hide: function() {}, // 关闭时的回调函数
   transparentIsClick: true, // 透明区域是否可以点击
-  data: [{content:'超清'},{content:'高清'},{content:'标清'}]
-};
+  
+}
