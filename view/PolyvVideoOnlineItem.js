@@ -12,7 +12,7 @@ import {
   StackNavigator,
 } from "react-native";
 import PropTypes from "prop-types";
-import PolyvHttpManager from '../common/PolyvHttpManager'
+import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
 import PolyvVodConfig from '../page/PolyvVodConfigRnModule'
 
 const { width, height } = Dimensions.get("window");

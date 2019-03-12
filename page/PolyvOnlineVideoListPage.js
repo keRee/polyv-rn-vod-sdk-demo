@@ -4,23 +4,37 @@ import {
   View,
   Dimensions,
   Text,
+  Button,
   TextInput,
   StyleSheet,
 } from "react-native";
 import PolyvVodConfigRnModule from "./PolyvVodConfigRnModule";
-import PolyvHttpManager from '../common/PolyvHttpManager'
+import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
 
 import PolyvVideoListView from "../view/PolyvVideoList";
-import { setAxios } from "../common/PolyvNet";
+import { setAxios } from "../polyvcommon/PolyvNet";
 
 
 const { width, height } = Dimensions.get("window");
 type Props = {};
 
-export default class PolyvOnlineVideoList extends Component<Props> {
-
-  static navigationOptions = {
-    tabBarLabel: '在线列表',
+export default class PolyvOnlineVideoList extends Component {
+  static navigationOptions = (
+    { navigation }) => {
+      return {
+        headerTitle: '在线视频',
+      headerRight: (
+        <Button
+        onPress={() =>  {
+          console.log('nav btn is ')
+          navigation.navigate('downloadList')
+        }}
+          title="下载列表>"
+          color="red"
+        />
+      ),
+    }
+   
   };
   constructor(props) {
     super(props);
@@ -106,7 +120,7 @@ export default class PolyvOnlineVideoList extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     width:width,
-    height:height,
+    height:height+50,
     backgroundColor: "gray"
   },
   video: {

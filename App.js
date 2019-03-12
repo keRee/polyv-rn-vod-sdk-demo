@@ -8,15 +8,12 @@
  */
 
 import React, {Component} from 'react';
-import PolyvNavigation from './common/PolyvNavigation'
+import PolyvNavigation from './polyvcommon/PolyvNavigation'
 
 
 
 type Props = {};
 export default class App extends Component<Props> {
-  static navigationOptions = {
-    tabBarLabel: '在线列表',
-  };
   render() {
     return (
       // <View style={styles.container}>
@@ -24,7 +21,7 @@ export default class App extends Component<Props> {
       //   <Text style={styles.instructions}>To get started, edit App.js</Text>
       //   <Text style={styles.instructions}>{instructions}</Text>
       // </View>
-      <PolyvNavigation></PolyvNavigation>
+      <PolyvNavigation ></PolyvNavigation>
     );
   }
 }

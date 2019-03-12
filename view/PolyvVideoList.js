@@ -12,7 +12,6 @@ import {
 import PropTypes from 'prop-types';
 import OptionsView from "../view/PolyvPopuWindow";
 import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
-import PolyvHttpManager from '../common/PolyvHttpManager'
 
 const { width, height } = Dimensions.get("window");
 let navigation,that//导航栏引用
@@ -38,7 +37,6 @@ export default class PolyvVideoList extends Component {
 
 
   renderItem({ item }) {
-
     
     return <PolyvVideoOnlineItem
       downloadCallback={(video) =>{

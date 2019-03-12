@@ -48,7 +48,6 @@ export default class PolyvPopuWindow extends Component {
   }
 
   show(videoJson,videoInfo) {
-    
     this.setState(
       {
         show: true,
@@ -73,17 +72,17 @@ export default class PolyvPopuWindow extends Component {
 
   chooseDefPlay(index){
     console.log(`will to play ${index}`)
-    var videoString = JSON.stringify(this.videoJson)
+    this.defaultHide()
+    var videoString = JSON.stringify(this.state.videoJson)
     PolyvVideoDownload.startDownload(this.state.vid,index,this.state.title,videoString,()=>{
 
     })
   }
 
   renderItemData({item,index}){
-    var that = this
     return  <Text style={styles.content}
-              onPress={function(){
-                that.chooseDefPlay(index)
+              onPress={()=>{
+                this.chooseDefPlay(index)
               }}>{defs[index].content}</Text>
   }
   render() {
@@ -91,7 +90,7 @@ export default class PolyvPopuWindow extends Component {
     if (this.state.show) {
       return (
         <View 
-        style={[styles.container, { height: height }]}>
+        style={[styles.container, { height }]}>
           <TouchableOpacity
             style={{ height: height - modalBoxHeight }}
             onPress={transparentIsClick && this.defaultHide.bind(this)}

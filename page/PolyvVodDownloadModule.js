@@ -8,7 +8,7 @@ const PolyvVideoDownload = {
 /**
  * 
  * @param {string} vid 视频vid 
- * @param {string} pos 码率索引
+ * @param {int} pos 码率索引
  * @param {string} title 下载标题
  * @param {string} videoJson videojson串
  * @param {fun} callback 下载回掉 success fail
@@ -18,12 +18,12 @@ const PolyvVideoDownload = {
 
     var result ;
     try {
-        await videoDownload.startDownload(vid,pos,title,callback)
+        await videoDownload.startDownload(vid,pos,title,videoJson,callback)
         result = 0
     } catch (error) {
         result = error.code
     }
-    return result
+    return {code:result}
 
   },
 
@@ -73,7 +73,26 @@ const PolyvVideoDownload = {
 
     clearDownloadVideo(){
 
+    },
+
+    /**
+     * 
+     * @param {bool} hasDownloaded 是否已经下载完成
+     */
+    async getDownloadVideoList(hasDownloaded){
+
+        try {
+            var {downloadList} = await videoDownload.getDownloadVideoList(hasDownloaded)
+            debugger
+        } catch (error) {
+            console.error(e);
+        }
+
+        
+        return {downloadList}
     }
+
+    
 
 };
 module.exports = PolyvVideoDownload;
