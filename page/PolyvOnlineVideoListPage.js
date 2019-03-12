@@ -90,7 +90,7 @@ export default class PolyvOnlineVideoList extends Component {
     this.refs["playerA"].startOrPause();
   }
 
-  showDownloadOptions() {
+  getOnlineList() {
     console.log("showDownloadOptions");
     
     PolyvHttpManager.getVideoList(1,20,(success,error) =>{
@@ -102,7 +102,7 @@ export default class PolyvOnlineVideoList extends Component {
 
   componentDidMount(){
     setTimeout(() => {
-      this.showDownloadOptions()
+      this.getOnlineList()
     }, 50);
   }
 

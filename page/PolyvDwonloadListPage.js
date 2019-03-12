@@ -1,17 +1,93 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Image,TouchableOpacity } from "react-native";
 import PolyvdownloadModule from "../page/PolyvVodDownloadModule";
-import TabNavigator from "react-native-tab-navigator";
+import {
+  createMaterialTopTabNavigator,
+  createAppContainer
+} from "react-navigation";
+import { PolyvVideoDownloadList } from "../view/PolyvVideoDownloadList";
+
 const { width, height } = Dimensions.get("window");
+let img = require("../view/img/polyv_btn_back.png");
 const dataSource = [
-  { tabName: "已下载", tabPage: "hasDownloaded" ,selectedIcon:require('../view/img/polyv_time.png'),icon:require('../view/img/polyv_time.png')},
-  { tabName: "下载中", tabPage: "downloading" ,selectedIcon:require('../view/img/polyv_time.png'),icon:require('../view/img/polyv_time.png')}
+  {
+    tabName: "已下载",
+    tabPage: "hasDownloaded"
+    // selectedIcon: require("../view/img/polyv_time.png"),
+    // icon: require("../view/img/polyv_time.png")
+  },
+  {
+    tabName: "下载中",
+    tabPage: "downloading"
+    // selectedIcon: require("../view/img/polyv_time.png"),
+    // icon: require("../view/img/polyv_time.png")
+  }
 ];
+
+//已下载列表
+class PolyvDownloadedListPage extends Component {
+  static navigationOptions = {
+    tabBarLabel: "已下载"
+  };
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  componentDidMount() {
+    PolyvdownloadModule.getDownloadVideoList(false)
+      .then(ret => {
+        console.log("downloaded :" + ret.downloadList);
+        var datas = JSON.parse(ret.downloadList);
+        this.refs.downloadedList.update(datas);
+      })
+      .catch(e => {
+        console.log("download error:" + e);
+      });
+  }
+  render() {
+    return (
+      <PolyvVideoDownloadList style={styles.container}  ref={"downloadedList"} isDownloadedPage={true} />
+    );
+  }
+}
+
+//下载中列表
+class PolyvDownloadingListPage extends Component {
+  static navigationOptions = {
+    tabBarLabel: "下载中"
+  };
+  getOnlineList() {
+    PolyvdownloadModule.getDownloadVideoList(false)
+      .then(ret => {
+        console.log("downloading :" + ret.downloadList);
+        var datas = JSON.parse(ret.downloadList);
+        this.refs.downloadingList.update(datas);
+      })
+      .catch(e => {
+        console.log("download error:" + e);
+      });
+  }
+
+  componentDidMount(){
+    setTimeout(() => {
+      this.getOnlineList()
+    }, 50);
+  }
+  render() {
+    return (
+      <PolyvVideoDownloadList
+        style={styles.container}
+        ref={"downloadingList"}
+        isDownloadedPage={false}
+      />
+    );
+  }
+}
+
 export default class PolyvDwonloadListPage extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: "下载视频"
-    };
+  static navigationOptions = {
+    tabBarVisible: false, // 隐藏底部导航栏
+    header: null //隐藏顶部导航栏
   };
   constructor(props) {
     super(props);
@@ -19,55 +95,69 @@ export default class PolyvDwonloadListPage extends Component {
       datas: []
     };
   }
-  componentWillMount() {
-    PolyvdownloadModule.getDownloadVideoList(false)
-      .then(ret => {
-        console.log("download :" + ret.downloadList);
-        this.setState({ datas: ret.downloadList });
-      })
-      .catch(e => {
-        console.log("download error:" + e);
-      });
-  }
+
   render() {
-    let tabViews = dataSource.map((item, i) => {
-      return (
-        <TabNavigator.Item
-        tabBarPosition={'top'}
-          title={item.tabName}
-          selected={this.state.selectedTab === item.tabPage}
-          titleStyle={{ color: "black" }}
-          selectedTitleStyle={{ color: "#7A16BD" }}
-          renderSelectedIcon={() => (
-            <Image style={styles.tabIcon} source={item.selectedIcon} />
-          )}
-          tabStyle={{ alignSelf: "center" }}
-          onPress={() => {
-            this.setState({ selectedTab: item.tabPage });
-          }}
-          key={i}
-        >
-          {/* <item.component  navigation={this.props.navigation}/> */}
-        </TabNavigator.Item>
-      );
-    });
     return (
       <View style={styles.container}>
-        <TabNavigator  hidesTabTouch={true} style={styles.container}>{tabViews}</TabNavigator>
+        <AppContainer />
+
+        <TouchableOpacity style={styles.tabBackContainer}
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}
+        >
+          <Image style={styles.tabBack} source={img} />
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
+const AppContainer = createAppContainer(
+  createMaterialTopTabNavigator(
+    {
+      downloaded: { screen: PolyvDownloadedListPage },
+      downloading: { screen: PolyvDownloadingListPage }
+    },
+    {
+      initialRouteName: "downloaded",
+      tabBarOptions: {
+        activeTintColor: "tomato",
+        inactiveTintColor: "gray",
+        indicatorStyle: {
+          width: 50,
+          borderRadius: 5,
+          marginLeft: width / (2 * 2) - 25,
+          position: "absolute",
+          backgroundColor: "blue"
+        },
+        labelStyle: {},
+        tabStyle: {},
+        style: {
+          backgroundColor: "white"
+        }
+      }
+    }
+  )
+);
+
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
     width: width,
     flex: 1,
-    height: height + 50,
     backgroundColor: "gray"
   },
-  tabIcon:{
-    width:23,
-    height:23,
+  tabBackContainer: {
+    position: "absolute",
+    margin: 10,
+    width: 30,
+    height: 30
+  },
+  tabBack: {
+    width: 30,
+    height: 30
   }
 });

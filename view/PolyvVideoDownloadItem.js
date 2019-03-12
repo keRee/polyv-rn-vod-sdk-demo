@@ -7,12 +7,16 @@ import {
   Easing,
   Dimensions,
   FlatList,
-  Text
+  Text,
+  Image,
+  ProgressBarAndroid
 } from "react-native";
 import PropTypes from "prop-types";
+
+
 const { width, height } = Dimensions.get("window");
 //播放器下载的四种状态:下载(0)，暂停(1),播放(2)，
-const videoPlaySrc=['./img/polyv_time.png','./img/polyv_time.png']
+const videoPlaySrc=['../view/img/polyv_time.png','../view/img/polyv_time.png']
 
 export class PolyvVideoDownloadItem extends Component{
     static propTypes={
@@ -29,12 +33,13 @@ export class PolyvVideoDownloadItem extends Component{
     }
 
     render(){
-        var videoInfo = this.props.data;
-        let progressLayout = this.props.isDownloadedPage ? <View style={styles.bottomHorizonContianer}>
+        var videoInfo = this.props.downloadInfo;
+        let progressLayout = !this.props.isDownloadedPage?
+        <View style={styles.bottomHorizonContianer}>
             <ProgressBarAndroid styleAttr="Horizontal" color="#2196F3" />
             <Text style={styles.bottom_download_txt}>{this.state.speed}KB</Text>
-      </View>:null,
-
+        </View>
+      :null
         return (
           <View style={styles.container}>
                 <View style={styles.imgContainer}>
@@ -49,17 +54,16 @@ export class PolyvVideoDownloadItem extends Component{
                     }}
                     ></Image>
                 </View>
-            
             <View>
               <Text style={styles.title}>{videoInfo.title}</Text>
               <View style={styles.bottomContainer}>
                 <View style={styles.bottomHorizonContianer}>
                 
                   <Text style={styles.bottom_download_status_txt}>{videoInfo.duration}</Text>
-                  <Text style={styles.bottom_download_status_txt}>{videoInfo.duration}</Text>
+                  <Text style={styles.bottom_download_status_txt}>{videoInfo.fileSize}</Text>
                 </View>
-                {progressLayout}
               </View>
+              {progressLayout}
             </View>
           </View>
         );
@@ -95,6 +99,7 @@ export class PolyvVideoDownloadItem extends Component{
         flexDirection: 'column'
       },
       bottomHorizonContianer: {
+        marginLeft: 5,
         display: "flex",
         flexDirection: "row",
       },
@@ -132,6 +137,7 @@ export class PolyvVideoDownloadItem extends Component{
         margin: 5,
       },
       img: {
+          backgroundColor:'gray',
         resizeMode: "cover",
         width: 100,
         height: 70

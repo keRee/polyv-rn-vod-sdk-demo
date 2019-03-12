@@ -83,7 +83,6 @@ const PolyvVideoDownload = {
 
         try {
             var {downloadList} = await videoDownload.getDownloadVideoList(hasDownloaded)
-            debugger
         } catch (error) {
             console.error(e);
         }
