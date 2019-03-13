@@ -34,11 +34,15 @@ class PolyvDownloadedListPage extends Component {
     this.state = {};
   }
   componentDidMount() {
-    PolyvdownloadModule.getDownloadVideoList(false)
+    PolyvdownloadModule.getDownloadVideoList(true)
       .then(ret => {
-        console.log("downloaded :" + ret.downloadList);
-        var datas = JSON.parse(ret.downloadList);
-        this.refs.downloadedList.update(datas);
+        if(ret.code == 0){
+            console.log("downloading :" + ret.data);
+            var datas = JSON.parse(ret.data);
+            this.refs.downloadedList.update(datas);
+        }else{
+          console.log("download error:" + ret.message);
+        }
       })
       .catch(e => {
         console.log("download error:" + e);
@@ -59,9 +63,13 @@ class PolyvDownloadingListPage extends Component {
   getOnlineList() {
     PolyvdownloadModule.getDownloadVideoList(false)
       .then(ret => {
-        console.log("downloading :" + ret.downloadList);
-        var datas = JSON.parse(ret.downloadList);
-        this.refs.downloadingList.update(datas);
+          if(ret.code == 0){
+              console.log("downloading :" + ret.data);
+              var datas = JSON.parse(ret.data);
+              this.refs.downloadingList.update(datas);
+          }else{
+            console.log("download error:" + ret.message);
+          }
       })
       .catch(e => {
         console.log("download error:" + e);
@@ -129,7 +137,7 @@ const AppContainer = createAppContainer(
           borderRadius: 5,
           marginLeft: width / (2 * 2) - 25,
           position: "absolute",
-          backgroundColor: "blue"
+          backgroundColor: "#2196F3"
         },
         labelStyle: {},
         tabStyle: {},

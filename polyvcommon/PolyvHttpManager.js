@@ -8,8 +8,8 @@ const HttpManager ={
         var token = PolyvVodConfigRnModule.getToken
         var isSign = PolyvVodConfigRnModule.isSign
 
-        console.log('sign :'+sign+' token :'+token())
         var sign=''
+        console.log('sign :'+sign+' token :'+token())
         if(isSign){
             //如果需要  计算sha值
         }

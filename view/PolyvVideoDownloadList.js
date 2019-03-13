@@ -39,6 +39,7 @@ export class PolyvVideoDownloadList extends Component{
         downloadInfo={item}></PolyvVideoDownloadItem>
     }
     render(){
+        console.log(' list status '+this.props.isDownloadedPage)
         return <View style={styles.container}>
             <FlatList
             style={styles.list} 

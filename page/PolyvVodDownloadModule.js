@@ -83,12 +83,15 @@ const PolyvVideoDownload = {
 
         try {
             var {downloadList} = await videoDownload.getDownloadVideoList(hasDownloaded)
-        } catch (error) {
-            console.error(e);
+            return {code:0,data:downloadList}
+        } catch (e) {
+            var code = e.code;
+            var message = e.message;
+            return { code, message }
         }
 
         
-        return {downloadList}
+        
     }
 
     

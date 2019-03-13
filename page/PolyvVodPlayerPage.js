@@ -22,10 +22,13 @@ const { width,height } = Dimensions.get("window");
 
 type Props = {};
 export default class PolyvVodPlayerPage extends Component<Props> {
+  static navigationOptions = {
+    tabBarLabel: "播放页"
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-        
         vid:'',
       // 输入框默认vid
       inputVid: "e97dbe3e649c56a1e58535bd8c5d3924_e",
