@@ -10,7 +10,7 @@ const PolyvVideoDownload = {
  * @param {string} vid 视频vid 
  * @param {int} pos 码率索引
  * @param {string} title 下载标题
- * @param {string} videoJson videojson串
+ * @param {string} videoJson videojson串 rn已经下载好了
  * @param {fun} callback 下载回掉 success fail
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
@@ -80,10 +80,16 @@ const PolyvVideoDownload = {
      * @param {bool} hasDownloaded 是否已经下载完成
      */
     async getDownloadVideoList(hasDownloaded){
-
         try {
             var {downloadList} = await videoDownload.getDownloadVideoList(hasDownloaded)
-            return {code:0,data:downloadList}
+            var dataMaps = new Map()
+            var dataJs = JSON.parse(downloadList)
+            dataJs.forEach(element => {
+                console.log(`vid:${element.vid }  bitrate:${element.bitrate }`)
+                var key = element.vid+element.bitrate;
+                dataMaps.set(key,element)
+            });
+            return {code:0,data:downloadList,dataJs}
         } catch (e) {
             var code = e.code;
             var message = e.message;

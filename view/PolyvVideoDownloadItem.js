@@ -31,20 +31,25 @@ export class PolyvVideoDownloadItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {},
+      data: this.props.downloadInfo,
       videoStatus: 0, //视频的状态：下载中，暂停，下载完成
       speed: 0 //下载速度
     };
   }
+  startPlay() {
+    var vid = this.props.downloadInfo.vid;
+    this.props.nav.navigate('VideoPlayer',{vid:vid});
+  }
 
   render() {
-    var videoInfo = this.props.downloadInfo;
+    // this.setState({data:this.props.downloadInfo})
+    var videoInfo = this.state.data;
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>
-        <ProgressBarAndroid styleAttr='Horizontal' progress={0.2}
+        <ProgressBarAndroid styleAttr='Horizontal' progress={0.2}//videoInfo.percent*100/videoInfo.total
             indeterminate={false} style={{flex:3,width:'100%'}} color="#2196F3" />
-        <Text style={styles.bottom_download_txt}>{this.state.speed}KB</Text>
+        <Text style={styles.bottom_download_txt}>{ PolyvUtils.change(videoInfo.percent)}</Text>
       </View>
     ) : null;
     var fileSize = PolyvUtils.change(videoInfo.filesize)
@@ -57,7 +62,7 @@ export class PolyvVideoDownloadItem extends Component {
             onPress={() => {
               if (this.props.isDownloadedPage) {
                 //已经下载
-
+                this.startPlay()
               } else {
                 this.setState({ videoStatus: 1 ^ this.state.videoStatus });
               }

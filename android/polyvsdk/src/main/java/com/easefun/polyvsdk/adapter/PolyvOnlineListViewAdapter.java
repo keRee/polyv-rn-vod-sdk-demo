@@ -28,6 +28,7 @@ import com.easefun.polyvsdk.activity.PolyvPlayerActivity;
 import com.easefun.polyvsdk.bean.PolyvDownloadInfo;
 import com.easefun.polyvsdk.database.PolyvDownloadSQLiteHelper;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderProgressListener;
+import com.easefun.polyvsdk.log.PolyvCommonLog;
 import com.easefun.polyvsdk.player.PolyvAnimateFirstDisplayListener;
 import com.easefun.polyvsdk.util.PolyvErrorMessageUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -120,6 +121,7 @@ public class PolyvOnlineListViewAdapter extends AbsRecyclerViewAdapter {
     }
 
     public static class MyDownloadListener implements IPolyvDownloaderProgressListener {
+        private static final String TAG = "MyDownloadListener";
         private long total;
         private WeakReference<Context> contextWeakReference;
         private PolyvDownloadInfo downloadInfo;
@@ -133,6 +135,7 @@ public class PolyvOnlineListViewAdapter extends AbsRecyclerViewAdapter {
         public void onDownloadSuccess() {
             if (total == 0)
                 total = 1;
+            Log.d(TAG, "onDownloadSuccess: current:"+total+" total:"+total);
             downloadSQLiteHelper.update(downloadInfo, total, total);
         }
 
@@ -146,6 +149,7 @@ public class PolyvOnlineListViewAdapter extends AbsRecyclerViewAdapter {
         @Override
         public void onDownload(long current, long total) {
             this.total = total;
+            Log.d(TAG, "onDownloadSuccess: current:"+current+" total:"+total);
         }
     }
 

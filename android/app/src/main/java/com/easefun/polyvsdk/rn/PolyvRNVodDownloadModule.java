@@ -1,21 +1,17 @@
 package com.easefun.polyvsdk.rn;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.easefun.polyvsdk.PolyvBitRate;
 import com.easefun.polyvsdk.PolyvDownloader;
+import com.easefun.polyvsdk.PolyvDownloaderErrorReason;
 import com.easefun.polyvsdk.PolyvDownloaderManager;
-import com.easefun.polyvsdk.PolyvSDKClient;
-import com.easefun.polyvsdk.Video;
-import com.easefun.polyvsdk.adapter.PolyvOnlineListViewAdapter;
 import com.easefun.polyvsdk.bean.PolyvDownloadInfo;
 import com.easefun.polyvsdk.database.PolyvDownloadSQLiteHelper;
+import com.easefun.polyvsdk.download.listener.IPolyvDownloaderProgressListener;
 import com.easefun.polyvsdk.log.PolyvCommonLog;
-import com.easefun.polyvsdk.vo.PolyvVideoJSONVO;
+import com.easefun.polyvsdk.util.PolyvErrorMessageUtils;
 import com.easefun.polyvsdk.vo.PolyvVideoVO;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -23,9 +19,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
 import com.hpplay.common.utils.GsonUtil;
 
 import org.json.JSONException;
@@ -74,9 +68,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         Log.i("videoAdapter", downloadInfo.toString());
         if (downloadSQLiteHelper != null && !downloadSQLiteHelper.isAdd(downloadInfo)) {
             downloadSQLiteHelper.insert(downloadInfo);
-            PolyvDownloader polyvDownloader = PolyvDownloaderManager.getPolyvDownloader(vid, bitrate);
-            polyvDownloader.setPolyvDownloadProressListener(new PolyvOnlineListViewAdapter.MyDownloadListener(getCurrentActivity(), downloadInfo));
-            polyvDownloader.start(getCurrentActivity());
+            start(vid, bitrate, downloadInfo);
         } else {
             (getCurrentActivity()).runOnUiThread(new Runnable() {
 
@@ -88,11 +80,46 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private void start(String vid, int bitrate, final PolyvDownloadInfo downloadInfo) {
+        PolyvDownloader polyvDownloader = addDownloadListener(vid, bitrate, downloadInfo, null);
+        polyvDownloader.start(getCurrentActivity());
+    }
+
+    private PolyvDownloader addDownloadListener(String vid, int bitrate, final PolyvDownloadInfo downloadInfo, final Callback callback) {
+        PolyvDownloader polyvDownloader = PolyvDownloaderManager.getPolyvDownloader(vid, bitrate);
+        polyvDownloader.setPolyvDownloadProressListener(new IPolyvDownloaderProgressListener(){
+
+            private long total;
+
+            @Override
+            public void onDownload(long current, long total) {
+                this.total = total;
+                if(callback != null){
+                    String data = GsonUtil.toJson(downloadInfo);
+                    callback.invoke(data,current,total);
+                }
+                downloadSQLiteHelper.update(downloadInfo, current, total);
+            }
+
+            @Override
+            public void onDownloadSuccess() {
+                downloadSQLiteHelper.update(downloadInfo, total, total);
+            }
+
+            @Override
+            public void onDownloadFail(@NonNull PolyvDownloaderErrorReason errorReason) {
+                String errorMsg = PolyvErrorMessageUtils.getDownloaderErrorMessage(errorReason.getType());
+                Toast.makeText(getCurrentActivity(), errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
+        return polyvDownloader;
+    }
+
     //获取下载列表
     @ReactMethod
-    public void getDownloadVideoList(boolean hasDownloaded, Promise promise) {
+    public void getDownloadVideoList(boolean hasDownloaded,Promise promise) {
         List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
-        downloadInfos.addAll(getTask(downloadSQLiteHelper.getAll(), hasDownloaded));
+        downloadInfos.addAll(getTask(downloadSQLiteHelper.getAll(), hasDownloaded,null));
         if(downloadInfos.isEmpty()){
             String errorCode = "" + PolyvRNVodCode.noDownloadedVideo;
             String errorDesc = PolyvRNVodCode.getDesc(PolyvRNVodCode.noDownloadedVideo);
@@ -107,7 +134,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         promise.resolve(map);
     }
 
-    private List<PolyvDownloadInfo> getTask(List<PolyvDownloadInfo> downloadInfos, boolean isFinished) {
+    private List<PolyvDownloadInfo> getTask(List<PolyvDownloadInfo> downloadInfos, boolean isFinished, Callback callback) {
         if (downloadInfos == null) {
             return null;
         }
@@ -127,6 +154,8 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
             } else if (!isFinished) {
                 infos.add(downloadInfo);
             }
+            addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo,callback);
+
         }
         return infos;
     }

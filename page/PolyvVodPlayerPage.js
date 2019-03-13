@@ -50,7 +50,6 @@ export default class PolyvVodPlayerPage extends Component<Props> {
 
   showDownloadOptions() {
     console.log("showDownloadOptions");
-    
     this.popUp.show()
   }
 

@@ -8,13 +8,13 @@ package com.easefun.polyvsdk.rn;
 public class PolyvRNVodCode {
     /**
      * code，返回码定义：
-     *      0  成功
-     *      -1 vodKey为空
-     *      -2 decodeKey为空
-     *      -3 decodeIv为空
-     *      -4 ViewId为空
-     *      -5 解析数据错误
-     *      -6 没有正在下载的视频
+     * 0  成功
+     * -1 vodKey为空
+     * -2 decodeKey为空
+     * -3 decodeIv为空
+     * -4 ViewId为空
+     * -5 解析数据错误
+     * -6 没有正在下载的视频
      */
     public final static int success = 0;
     public final static int noVodKey = -1;
@@ -38,7 +38,7 @@ public class PolyvRNVodCode {
                 return "ViewId为空";
             case PolyvRNVodCode.parseDataError:
                 return "解析视频数据出错";
-                case PolyvRNVodCode.noDownloadedVideo:
+            case PolyvRNVodCode.noDownloadedVideo:
                 return "获取下载视频为空";
             default:
                 return "";

@@ -6,8 +6,10 @@ import {
   createAppContainer
 } from "react-navigation";
 import { PolyvVideoDownloadList } from "../view/PolyvVideoDownloadList";
+import PolyvVodPlayerPage from '../page/PolyvVodPlayerPage'
 
 const { width, height } = Dimensions.get("window");
+let nav ={}
 let img = require("../view/img/polyv_btn_back.png");
 const dataSource = [
   {
@@ -33,13 +35,15 @@ class PolyvDownloadedListPage extends Component {
     super(props);
     this.state = {};
   }
+
   componentDidMount() {
     PolyvdownloadModule.getDownloadVideoList(true)
       .then(ret => {
         if(ret.code == 0){
-            console.log("downloading :" + ret.data);
+            console.log("downloed :" + ret.data);
             var datas = JSON.parse(ret.data);
             this.refs.downloadedList.update(datas);
+           
         }else{
           console.log("download error:" + ret.message);
         }
@@ -48,18 +52,33 @@ class PolyvDownloadedListPage extends Component {
         console.log("download error:" + e);
       });
   }
+
   render() {
+    console.log('render downloaed ')
     return (
-      <PolyvVideoDownloadList style={styles.container}  ref={"downloadedList"} isDownloadedPage={true} />
+      <PolyvVideoDownloadList  
+      nav={nav}//传递首页的导航栏实例
+      {...this.props} 
+      style={styles.container}  
+      ref={"downloadedList"} 
+      isDownloadedPage={true} />
     );
   }
 }
 
 //下载中列表
 class PolyvDownloadingListPage extends Component {
+
   static navigationOptions = {
     tabBarLabel: "下载中"
   };
+
+  progressCallback(data,current,total){
+    var key = data.vid+data.bitrate
+    console.log('callback :'+this.props.dataMaps[key]+`P:${current}  t:${total}`)
+
+  }
+
   getOnlineList() {
     PolyvdownloadModule.getDownloadVideoList(false)
       .then(ret => {
@@ -67,6 +86,8 @@ class PolyvDownloadingListPage extends Component {
               console.log("downloading :" + ret.data);
               var datas = JSON.parse(ret.data);
               this.refs.downloadingList.update(datas);
+
+              this.props.dataJs = ret.dataJs
           }else{
             console.log("download error:" + ret.message);
           }
@@ -84,6 +105,7 @@ class PolyvDownloadingListPage extends Component {
   render() {
     return (
       <PolyvVideoDownloadList
+        {...this.props}
         style={styles.container}
         ref={"downloadingList"}
         isDownloadedPage={false}
@@ -105,6 +127,7 @@ export default class PolyvDwonloadListPage extends Component {
   }
 
   render() {
+    nav = this.props.navigation
     return (
       <View style={styles.container}>
         <AppContainer />
@@ -125,7 +148,7 @@ const AppContainer = createAppContainer(
   createMaterialTopTabNavigator(
     {
       downloaded: { screen: PolyvDownloadedListPage },
-      downloading: { screen: PolyvDownloadingListPage }
+      downloading: { screen: PolyvDownloadingListPage },
     },
     {
       initialRouteName: "downloaded",
