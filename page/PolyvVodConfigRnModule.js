@@ -45,7 +45,6 @@ const PolyvVodConfigRnModule = {
         try {
             NativeModules.PolyvVodConfigRnModule.parseEncryptData(vid,data)
             .then(ret =>{
-                console.log('result :token:'+ret.token+"  isSign:"+ret.isSign)
                 var source = ret.data
                 callback(source)
             })

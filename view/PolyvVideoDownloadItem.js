@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvUtils from '../polyvcommon/PolyvUtils'
+import PolyvVideoDownload from '../page/PolyvVodDownloadModule'
 
 const { width, height } = Dimensions.get("window");
 //播放器下载的四种状态:下载(0)，暂停(1),播放(2)，
@@ -32,7 +33,7 @@ export class PolyvVideoDownloadItem extends Component {
     super(props);
     this.state = {
       data: this.props.downloadInfo,
-      videoStatus: 0, //视频的状态：下载中，暂停，下载完成
+      videoStatus: 1, //视频的状态：下载，暂停，下载完成
       speed: 0 //下载速度
     };
   }
@@ -41,15 +42,36 @@ export class PolyvVideoDownloadItem extends Component {
     this.props.nav.navigate('VideoPlayer',{vid:vid});
   }
 
+  pauseOrStartDownload(){
+    var vid = this.props.downloadInfo.vid;
+    var bitrate = this.props.downloadInfo.bitrate
+    if(this.state.videoStatus){//暂停
+      PolyvVideoDownload.resumeDownload(vid,bitrate)
+    }else{
+      PolyvVideoDownload.pauseDownload(vid,bitrate)
+    }
+  }
+
+  stopDownload(){
+    var vid = this.props.downloadInfo.vid;
+    var bitrate = this.props.downloadInfo.bitrate
+    this.setState({videoStatus:1})
+    PolyvVideoDownload.pauseDownload(vid,bitrate)
+  }
+
   render() {
     // this.setState({data:this.props.downloadInfo})
     var videoInfo = this.state.data;
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>
-        <ProgressBarAndroid styleAttr='Horizontal' progress={0.2}//videoInfo.percent*100/videoInfo.total
-            indeterminate={false} style={{flex:3,width:'100%'}} color="#2196F3" />
-        <Text style={styles.bottom_download_txt}>{ PolyvUtils.change(videoInfo.percent)}</Text>
+        <ProgressBarAndroid 
+        styleAttr='Horizontal' 
+        progress={videoInfo.total==0?1:videoInfo.percent/videoInfo.total}//videoInfo.percent/videoInfo.total
+        indeterminate={false} style={{flex:2.5,width:'90%'}} 
+        color="#2196F3" />
+        <Text style={styles.bottom_download_txt}>
+        { videoInfo.total==0?'0KB':PolyvUtils.change(videoInfo.percent/videoInfo.total *videoInfo.filesize)}</Text>
       </View>
     ) : null;
     var fileSize = PolyvUtils.change(videoInfo.filesize)
@@ -64,6 +86,7 @@ export class PolyvVideoDownloadItem extends Component {
                 //已经下载
                 this.startPlay()
               } else {
+                this.pauseOrStartDownload()
                 this.setState({ videoStatus: 1 ^ this.state.videoStatus });
               }
             }}>
@@ -150,7 +173,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 1,
     textAlign: "center",
-    width: 60,
+    width: 90,
     
     fontSize: 12,
     height: 20,

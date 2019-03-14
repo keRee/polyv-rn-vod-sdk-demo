@@ -30,28 +30,30 @@ const PolyvVideoDownload = {
   /**
    * 暂停下载
    * @param {string} vid 视频vid
+   * @param {string} bitrate 码率
    */
-    pauseDownload(vid){
-
+    pauseDownload(vid,bitrate){
+        videoDownload.pauseDownload(vid,bitrate)
     },
 
     pauseAllDownloadTask(){
-
+        videoDownload.pauseAllDownloadTask()
     },
 
     /**
      * 恢复下载
      * @param {string} vid 视频vid 
+     * * @param {string} bitrate 码率
      */
-    resumeDownload(vid){
-
+    resumeDownload(vid,bitrate){
+        videoDownload.resumeDownload(vid,bitrate)
     },
 
     /**
      * 下载所有队列里的视频
      */
     downloadAllTask(){
-
+        videoDownload.downloadAllTask()
     },
 
     /**
@@ -60,7 +62,7 @@ const PolyvVideoDownload = {
      * @param {string} pos 列表中item位置 
      */
     delVideo(pos){
-
+        videoDownload.delVideo(pos)
     },
      /**
      * 删除视频
@@ -68,11 +70,11 @@ const PolyvVideoDownload = {
      * @param {string} vid 视频vid状态
      */
     delVideo(vid){
-
+        videoDownload.delVideo(vid)
     },
 
     clearDownloadVideo(){
-
+        videoDownload.clearDownloadVideo()
     },
 
     /**
@@ -84,12 +86,13 @@ const PolyvVideoDownload = {
             var {downloadList} = await videoDownload.getDownloadVideoList(hasDownloaded)
             var dataMaps = new Map()
             var dataJs = JSON.parse(downloadList)
-            dataJs.forEach(element => {
-                console.log(`vid:${element.vid }  bitrate:${element.bitrate }`)
-                var key = element.vid+element.bitrate;
-                dataMaps.set(key,element)
-            });
-            return {code:0,data:downloadList,dataJs}
+            if(!hasDownloaded){//正在下载中的创建map映射
+                dataJs.forEach(element => {
+                    var key = element.vid+element.bitrate;
+                    dataMaps.set(key,element)
+                });
+            }
+            return {code:0,data:dataJs,dataMaps}
         } catch (e) {
             var code = e.code;
             var message = e.message;

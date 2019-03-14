@@ -40,9 +40,8 @@ class PolyvDownloadedListPage extends Component {
     PolyvdownloadModule.getDownloadVideoList(true)
       .then(ret => {
         if(ret.code == 0){
-            console.log("downloed :" + ret.data);
-            var datas = JSON.parse(ret.data);
-            this.refs.downloadedList.update(datas);
+            console.log("downloed :" + ret.dataMaps);
+            this.refs.downloadedList.update(ret);
            
         }else{
           console.log("download error:" + ret.message);
@@ -83,11 +82,7 @@ class PolyvDownloadingListPage extends Component {
     PolyvdownloadModule.getDownloadVideoList(false)
       .then(ret => {
           if(ret.code == 0){
-              console.log("downloading :" + ret.data);
-              var datas = JSON.parse(ret.data);
-              this.refs.downloadingList.update(datas);
-
-              this.props.dataJs = ret.dataJs
+              this.refs.downloadingList.update(ret);
           }else{
             console.log("download error:" + ret.message);
           }
