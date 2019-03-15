@@ -145,6 +145,6 @@ const styles = StyleSheet.create({
   img: {
     resizeMode: "cover",
     width: 100,
-    height: 70
+    height: 'auto'
   }
 });

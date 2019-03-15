@@ -8,14 +8,14 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bower": "^1.8.8",
-    "jest-haste-map": "^24.3.1",
+    "expo": "32.0.6",
+    "loadash": "^1.0.0",
     "react": "16.6.3",
     "react-art": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-native": "^0.58.6",
     "react-native-gesture-handler": "^1.1.0",
-    "react-native-tab-navigator": "^0.3.4",
+    "react-native-vector-icons": "^6.4.0",
     "react-native-web": "^0.10.1",
     "react-navigation": "^3.3.2"
   },

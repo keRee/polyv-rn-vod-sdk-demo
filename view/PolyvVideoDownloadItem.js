@@ -67,7 +67,7 @@ export class PolyvVideoDownloadItem extends Component {
       <View style={styles.bottomHorizonContianer}>
         <ProgressBarAndroid 
         styleAttr='Horizontal' 
-        progress={videoInfo.total==0?1:videoInfo.percent/videoInfo.total}//videoInfo.percent/videoInfo.total
+        progress={videoInfo.total==0?0:videoInfo.percent/videoInfo.total}//videoInfo.percent/videoInfo.total
         indeterminate={false} style={{flex:2.5,width:'90%'}} 
         color="#2196F3" />
         <Text style={styles.bottom_download_txt}>

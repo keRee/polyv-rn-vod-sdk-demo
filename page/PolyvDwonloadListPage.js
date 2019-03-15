@@ -26,6 +26,10 @@ const dataSource = [
   }
 ];
 
+const PolyvViewManager={
+  refCollection:{}
+}
+
 //已下载列表
 class PolyvDownloadedListPage extends Component {
   static navigationOptions = {
@@ -41,7 +45,7 @@ class PolyvDownloadedListPage extends Component {
       .then(ret => {
         if(ret.code == 0){
             console.log("downloed :" + ret.dataMaps);
-            this.refs.downloadedList.update(ret);
+            PolyvViewManager.refCollection['downloadedList'].update(ret);
            
         }else{
           console.log("download error:" + ret.message);
@@ -59,7 +63,9 @@ class PolyvDownloadedListPage extends Component {
       nav={nav}//传递首页的导航栏实例
       {...this.props} 
       style={styles.container}  
-      ref={"downloadedList"} 
+      ref={(instance) =>{
+        PolyvViewManager.refCollection['downloadedList'] = instance
+      }} 
       isDownloadedPage={true} />
     );
   }
@@ -71,12 +77,6 @@ class PolyvDownloadingListPage extends Component {
   static navigationOptions = {
     tabBarLabel: "下载中"
   };
-
-  progressCallback(data,current,total){
-    var key = data.vid+data.bitrate
-    console.log('callback :'+this.props.dataMaps[key]+`P:${current}  t:${total}`)
-
-  }
 
   getOnlineList() {
     PolyvdownloadModule.getDownloadVideoList(false)
@@ -97,9 +97,16 @@ class PolyvDownloadingListPage extends Component {
       this.getOnlineList()
     }, 50);
   }
+
+  updateDownload(successDwonloadInfo){
+    console.log('download success callback')
+    PolyvViewManager.refCollection['downloadedList'].state.datas.splice(0,0,successDwonloadInfo)
+  }
+  
   render() {
     return (
       <PolyvVideoDownloadList
+        downloadCallback = {this.updateDownload}
         {...this.props}
         style={styles.container}
         ref={"downloadingList"}
