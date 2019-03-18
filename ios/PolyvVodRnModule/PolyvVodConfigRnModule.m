@@ -9,22 +9,33 @@
 #import "PolyvVodConfigRnModule.h"
 #import <PLVVodSDK/PLVVodSDK.h>
 
-NSString * NSStringFromPolyvVodConfigRnError(PolyvVodConfigRnErrorCode code) {
+NSString * NSStringFromPolyvVodRnError(PolyvVodConfigRnErrorCode code) {
   switch (code) {
-    case PolyvVodConfigRnError_Success:
+    case PolyvVodRnError_Success:
       return @"成功";
-    case PolyvVodConfigRnError_NoVodKey:
+    case PolyvVodRnError_NoVodKey:
       return @"vodKey为空";
-    case PolyvVodConfigRnError_NoDecodeKey:
+    case PolyvVodRnError_NoDecodeKey:
       return @"decodeKey为空";
-    case PolyvVodConfigRnError_NoDecodeIv:
+    case PolyvVodRnError_NoDecodeIv:
       return @"decodeIv为空";
-    case PolyvVodConfigRnError_NoViewerId:
+    case PolyvVodRnError_NoViewerId:
       return @"viewerId为空";
+    case PolyvVodRnError_ParseDataError:
+      return @"解析视频数据出错";
+    case PolyvVodRnError_NoDownloadVideo:
+      return @"获取下载视频为空";
     default:
       return @"";
   }
 }
+
+@interface PolyvVodConfigRnModule ()
+
+@property (nonatomic, strong) NSString *decodeKey;
+@property (nonatomic, strong) NSString *decodeIv;
+
+@end
 
 @implementation PolyvVodConfigRnModule
 
@@ -48,36 +59,66 @@ RCT_EXPORT_METHOD(init:(NSString *)vodKey
 {
     NSLog(@"config() - %@ 、 %@ 、 %@", vodKey, decodeKey, decodeIv);
   
-    PolyvVodConfigRnErrorCode errorCode = PolyvVodConfigRnError_Success;
+    PolyvVodConfigRnErrorCode errorCode = PolyvVodRnError_Success;
     if (!vodKey.length) {
-        errorCode = PolyvVodConfigRnError_NoVodKey;
+        errorCode = PolyvVodRnError_NoVodKey;
     } else if (!decodeKey.length) {
-        errorCode = PolyvVodConfigRnError_NoDecodeKey;
+        errorCode = PolyvVodRnError_NoDecodeKey;
     } else if (!decodeIv.length) {
-        errorCode = PolyvVodConfigRnError_NoDecodeIv;
+        errorCode = PolyvVodRnError_NoDecodeIv;
     } else if (!viewerId.length) {
-      errorCode = PolyvVodConfigRnError_NoViewerId;
+      errorCode = PolyvVodRnError_NoViewerId;
     }
     
-    if (errorCode == PolyvVodConfigRnError_Success) {
+    if (errorCode == PolyvVodRnError_Success) {
+        self.decodeKey = decodeKey;
+        self.decodeIv = decodeIv;
+      
         NSError *error = nil;
         PLVVodSettings *settings = [PLVVodSettings settingsWithConfigString:vodKey key:decodeKey iv:decodeIv error:&error];
+        NSString *readToken = settings.readtoken;
       
         settings.logLevel = PLVVodLogLevelAll;
       
         settings.viewerId = viewerId;
         settings.viewerName = nickName ? nickName : @"游客";
-        
-        resolve(@[@(PolyvVodConfigRnError_Success)]);
+      
+        NSDictionary *dic = @{ @"code": @(PolyvVodRnError_Success), @"token":readToken, @"isSign":@(NO) };
+      
+        resolve(dic);
     } else {
-        NSString *errorDesc = NSStringFromPolyvVodConfigRnError(errorCode);
+        NSString *errorDesc = NSStringFromPolyvVodRnError(errorCode);
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:errorDesc}];
         NSLog(@"%@", errorDesc);
         reject([@(errorCode) stringValue], errorDesc, error);
     }
-  
-    
-  
 }
+
+// vid 视频vid
+// encryptData 视频videoJson数据的加密data
+RCT_EXPORT_METHOD(parseEncryptData:(NSString *)vid
+                  data:(NSString *)encryptData
+                  findEventsWithResolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject
+                  )
+{
+    NSLog(@"parseEncryptData() - %@ 、 %@", vid, encryptData);
+    PolyvVodConfigRnErrorCode errorCode = PolyvVodRnError_Success;
+    if (!vid.length) {
+        errorCode = PolyvVodRnError_ParseDataError;
+    } else if (!encryptData.length) {
+        errorCode = PolyvVodRnError_ParseDataError;
+    }
+  
+    if (errorCode == PolyvVodRnError_Success) {
+        NSData *videoJsonData = [encryptData dataUsingEncoding:NSUTF8StringEncoding];
+    } else {
+        NSString *errorDesc = NSStringFromPolyvVodRnError(errorCode);
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:errorDesc}];
+        NSLog(@"%@", errorDesc);
+        reject([@(errorCode) stringValue], errorDesc, error);
+    }
+}
+                  
 
 @end

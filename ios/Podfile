@@ -20,6 +20,6 @@ target 'PolyvVodRnDemo' do
 	pod 'PLVVodDanmu', '~> 0.0.1'
 	pod 'PLVSubtitle', '~> 0.1.0'
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+  # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
 end

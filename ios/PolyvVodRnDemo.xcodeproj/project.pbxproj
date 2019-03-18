@@ -74,6 +74,21 @@
 		DA27472E221A486D009BD3BA /* PLVVodExplanationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27470D221A486D009BD3BA /* PLVVodExplanationView.m */; };
 		DA274731221A6829009BD3BA /* PolyvVodPlayerWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */; };
 		DA274735221A891B009BD3BA /* PolyvVodConfigRnModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274734221A891B009BD3BA /* PolyvVodConfigRnModule.m */; };
+		DAE1803F223A672F0050F8A6 /* RNGestureHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */; };
+		DAE18040223A672F0050F8A6 /* RNGestureHandlerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFC223A672F0050F8A6 /* RNGestureHandlerManager.m */; };
+		DAE18041223A672F0050F8A6 /* RNGestureHandlerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFF223A672F0050F8A6 /* RNGestureHandlerRegistry.m */; };
+		DAE18042223A672F0050F8A6 /* RNGestureHandlerEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18000223A672F0050F8A6 /* RNGestureHandlerEvents.m */; };
+		DAE18043223A672F0050F8A6 /* RNGestureHandlerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18002223A672F0050F8A6 /* RNGestureHandlerButton.m */; };
+		DAE18044223A672F0050F8A6 /* RNRootViewGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18005223A672F0050F8A6 /* RNRootViewGestureRecognizer.m */; };
+		DAE18045223A672F0050F8A6 /* RNForceTouchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18008223A672F0050F8A6 /* RNForceTouchHandler.m */; };
+		DAE18046223A672F0050F8A6 /* RNRotationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE1800D223A672F0050F8A6 /* RNRotationHandler.m */; };
+		DAE18047223A672F0050F8A6 /* RNPanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE1800F223A672F0050F8A6 /* RNPanHandler.m */; };
+		DAE18048223A672F0050F8A6 /* RNLongPressHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18011223A672F0050F8A6 /* RNLongPressHandler.m */; };
+		DAE18049223A672F0050F8A6 /* RNFlingHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18012223A672F0050F8A6 /* RNFlingHandler.m */; };
+		DAE1804A223A672F0050F8A6 /* RNTapHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18013223A672F0050F8A6 /* RNTapHandler.m */; };
+		DAE1804B223A672F0050F8A6 /* RNNativeViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18014223A672F0050F8A6 /* RNNativeViewHandler.m */; };
+		DAE1804C223A672F0050F8A6 /* RNPinchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18016223A672F0050F8A6 /* RNPinchHandler.m */; };
+		DAE1804D223A672F0050F8A6 /* RNGestureHandlerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE18019223A672F0050F8A6 /* RNGestureHandlerModule.m */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
@@ -449,6 +464,38 @@
 		DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyvVodPlayerWrapperView.m; sourceTree = "<group>"; };
 		DA274733221A891B009BD3BA /* PolyvVodConfigRnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolyvVodConfigRnModule.h; sourceTree = "<group>"; };
 		DA274734221A891B009BD3BA /* PolyvVodConfigRnModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyvVodConfigRnModule.m; sourceTree = "<group>"; };
+		DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandler.m; sourceTree = "<group>"; };
+		DAE17FFA223A672F0050F8A6 /* RNGestureHandlerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerButton.h; sourceTree = "<group>"; };
+		DAE17FFB223A672F0050F8A6 /* RNGestureHandlerDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerDirection.h; sourceTree = "<group>"; };
+		DAE17FFC223A672F0050F8A6 /* RNGestureHandlerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandlerManager.m; sourceTree = "<group>"; };
+		DAE17FFD223A672F0050F8A6 /* RNRootViewGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRootViewGestureRecognizer.h; sourceTree = "<group>"; };
+		DAE17FFE223A672F0050F8A6 /* RNGestureHandlerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerModule.h; sourceTree = "<group>"; };
+		DAE17FFF223A672F0050F8A6 /* RNGestureHandlerRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandlerRegistry.m; sourceTree = "<group>"; };
+		DAE18000223A672F0050F8A6 /* RNGestureHandlerEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandlerEvents.m; sourceTree = "<group>"; };
+		DAE18001223A672F0050F8A6 /* RNGestureHandlerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerState.h; sourceTree = "<group>"; };
+		DAE18002223A672F0050F8A6 /* RNGestureHandlerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandlerButton.m; sourceTree = "<group>"; };
+		DAE18003223A672F0050F8A6 /* RNGestureHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandler.h; sourceTree = "<group>"; };
+		DAE18004223A672F0050F8A6 /* RNGestureHandlerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerManager.h; sourceTree = "<group>"; };
+		DAE18005223A672F0050F8A6 /* RNRootViewGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRootViewGestureRecognizer.m; sourceTree = "<group>"; };
+		DAE18006223A672F0050F8A6 /* RNGestureHandlerEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerEvents.h; sourceTree = "<group>"; };
+		DAE18008223A672F0050F8A6 /* RNForceTouchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNForceTouchHandler.m; sourceTree = "<group>"; };
+		DAE18009223A672F0050F8A6 /* RNNativeViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNNativeViewHandler.h; sourceTree = "<group>"; };
+		DAE1800A223A672F0050F8A6 /* RNTapHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNTapHandler.h; sourceTree = "<group>"; };
+		DAE1800B223A672F0050F8A6 /* RNFlingHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFlingHandler.h; sourceTree = "<group>"; };
+		DAE1800C223A672F0050F8A6 /* RNLongPressHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLongPressHandler.h; sourceTree = "<group>"; };
+		DAE1800D223A672F0050F8A6 /* RNRotationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRotationHandler.m; sourceTree = "<group>"; };
+		DAE1800E223A672F0050F8A6 /* RNPinchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPinchHandler.h; sourceTree = "<group>"; };
+		DAE1800F223A672F0050F8A6 /* RNPanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPanHandler.m; sourceTree = "<group>"; };
+		DAE18010223A672F0050F8A6 /* RNForceTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNForceTouchHandler.h; sourceTree = "<group>"; };
+		DAE18011223A672F0050F8A6 /* RNLongPressHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLongPressHandler.m; sourceTree = "<group>"; };
+		DAE18012223A672F0050F8A6 /* RNFlingHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFlingHandler.m; sourceTree = "<group>"; };
+		DAE18013223A672F0050F8A6 /* RNTapHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNTapHandler.m; sourceTree = "<group>"; };
+		DAE18014223A672F0050F8A6 /* RNNativeViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNNativeViewHandler.m; sourceTree = "<group>"; };
+		DAE18015223A672F0050F8A6 /* RNPanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPanHandler.h; sourceTree = "<group>"; };
+		DAE18016223A672F0050F8A6 /* RNPinchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPinchHandler.m; sourceTree = "<group>"; };
+		DAE18017223A672F0050F8A6 /* RNRotationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRotationHandler.h; sourceTree = "<group>"; };
+		DAE18018223A672F0050F8A6 /* RNGestureHandlerRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerRegistry.h; sourceTree = "<group>"; };
+		DAE18019223A672F0050F8A6 /* RNGestureHandlerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandlerModule.m; sourceTree = "<group>"; };
 		DD39189003CE3E8DE3F1A59D /* Pods-PolyvVodRnDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PolyvVodRnDemo.release.xcconfig"; path = "Target Support Files/Pods-PolyvVodRnDemo/Pods-PolyvVodRnDemo.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -593,6 +640,7 @@
 		13B07FAE1A68108700A75B9A /* PolyvVodRnDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DAE17FF7223A672F0050F8A6 /* react-native-gesture-handler */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -864,6 +912,62 @@
 				DA27470E221A486D009BD3BA /* PLVVodExplanationView.h */,
 			);
 			path = ExplanationView;
+			sourceTree = "<group>";
+		};
+		DAE17FF7223A672F0050F8A6 /* react-native-gesture-handler */ = {
+			isa = PBXGroup;
+			children = (
+				DAE17FF8223A672F0050F8A6 /* ios */,
+			);
+			name = "react-native-gesture-handler";
+			path = "PolyvVodRnDemo/react-native-gesture-handler";
+			sourceTree = "<group>";
+		};
+		DAE17FF8223A672F0050F8A6 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */,
+				DAE17FFA223A672F0050F8A6 /* RNGestureHandlerButton.h */,
+				DAE17FFB223A672F0050F8A6 /* RNGestureHandlerDirection.h */,
+				DAE17FFC223A672F0050F8A6 /* RNGestureHandlerManager.m */,
+				DAE17FFD223A672F0050F8A6 /* RNRootViewGestureRecognizer.h */,
+				DAE17FFE223A672F0050F8A6 /* RNGestureHandlerModule.h */,
+				DAE17FFF223A672F0050F8A6 /* RNGestureHandlerRegistry.m */,
+				DAE18000223A672F0050F8A6 /* RNGestureHandlerEvents.m */,
+				DAE18001223A672F0050F8A6 /* RNGestureHandlerState.h */,
+				DAE18002223A672F0050F8A6 /* RNGestureHandlerButton.m */,
+				DAE18003223A672F0050F8A6 /* RNGestureHandler.h */,
+				DAE18004223A672F0050F8A6 /* RNGestureHandlerManager.h */,
+				DAE18005223A672F0050F8A6 /* RNRootViewGestureRecognizer.m */,
+				DAE18006223A672F0050F8A6 /* RNGestureHandlerEvents.h */,
+				DAE18007223A672F0050F8A6 /* Handlers */,
+				DAE18018223A672F0050F8A6 /* RNGestureHandlerRegistry.h */,
+				DAE18019223A672F0050F8A6 /* RNGestureHandlerModule.m */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		DAE18007223A672F0050F8A6 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				DAE18008223A672F0050F8A6 /* RNForceTouchHandler.m */,
+				DAE18009223A672F0050F8A6 /* RNNativeViewHandler.h */,
+				DAE1800A223A672F0050F8A6 /* RNTapHandler.h */,
+				DAE1800B223A672F0050F8A6 /* RNFlingHandler.h */,
+				DAE1800C223A672F0050F8A6 /* RNLongPressHandler.h */,
+				DAE1800D223A672F0050F8A6 /* RNRotationHandler.m */,
+				DAE1800E223A672F0050F8A6 /* RNPinchHandler.h */,
+				DAE1800F223A672F0050F8A6 /* RNPanHandler.m */,
+				DAE18010223A672F0050F8A6 /* RNForceTouchHandler.h */,
+				DAE18011223A672F0050F8A6 /* RNLongPressHandler.m */,
+				DAE18012223A672F0050F8A6 /* RNFlingHandler.m */,
+				DAE18013223A672F0050F8A6 /* RNTapHandler.m */,
+				DAE18014223A672F0050F8A6 /* RNNativeViewHandler.m */,
+				DAE18015223A672F0050F8A6 /* RNPanHandler.h */,
+				DAE18016223A672F0050F8A6 /* RNPinchHandler.m */,
+				DAE18017223A672F0050F8A6 /* RNRotationHandler.h */,
+			);
+			path = Handlers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1429,21 +1533,28 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				DA274712221A486D009BD3BA /* PLVCastBusinessManager.m in Sources */,
 				DA274731221A6829009BD3BA /* PolyvVodPlayerWrapperView.m in Sources */,
+				DAE18041223A672F0050F8A6 /* RNGestureHandlerRegistry.m in Sources */,
 				DA274719221A486D009BD3BA /* PLVVodPlaybackRatePanelView.m in Sources */,
 				DA274717221A486D009BD3BA /* PLVVodFullscreenView.m in Sources */,
+				DAE1804D223A672F0050F8A6 /* RNGestureHandlerModule.m in Sources */,
 				DA274723221A486D009BD3BA /* UIControl+PLVVod.m in Sources */,
 				DA274724221A486D009BD3BA /* UIButton+EnlargeTouchArea.m in Sources */,
+				DAE18043223A672F0050F8A6 /* RNGestureHandlerButton.m in Sources */,
 				DA274715221A486D009BD3BA /* PLVVodDanmuSendView.m in Sources */,
 				DA274710221A486D009BD3BA /* PLVCastManager.m in Sources */,
 				DA274728221A486D009BD3BA /* PLVVodExamViewController.m in Sources */,
 				DA274735221A891B009BD3BA /* PolyvVodConfigRnModule.m in Sources */,
 				DA27471F221A486D009BD3BA /* PLVVodSkinPlayerController.m in Sources */,
+				DAE1804B223A672F0050F8A6 /* RNNativeViewHandler.m in Sources */,
 				DA27472A221A486D009BD3BA /* PLVVodQuestion.m in Sources */,
 				DA274711221A486D009BD3BA /* PLVCastServiceListView.m in Sources */,
+				DAE18045223A672F0050F8A6 /* RNForceTouchHandler.m in Sources */,
 				DA27472E221A486D009BD3BA /* PLVVodExplanationView.m in Sources */,
+				DAE1804A223A672F0050F8A6 /* RNTapHandler.m in Sources */,
 				DA27470F221A486D009BD3BA /* PLVCastControllView.m in Sources */,
 				DA27472B221A486D009BD3BA /* PLVVodQuestionView.m in Sources */,
 				DA27471D221A486D009BD3BA /* PLVVodLockScreenView.m in Sources */,
+				DAE18046223A672F0050F8A6 /* RNRotationHandler.m in Sources */,
 				DA274720221A486D009BD3BA /* NSString+PLVVod.m in Sources */,
 				DA27471C221A486D009BD3BA /* PLVVodShrinkscreenView.m in Sources */,
 				DA274722221A486D009BD3BA /* UINavigationController+PLVVod.m in Sources */,
@@ -1454,11 +1565,19 @@
 				DA274718221A486D009BD3BA /* PLVVodGestureIndicatorView.m in Sources */,
 				DA27471B221A486D009BD3BA /* PLVVodSettingPanelView.m in Sources */,
 				DA27471A221A486D009BD3BA /* PLVVodAudioCoverPanelView.m in Sources */,
+				DAE18040223A672F0050F8A6 /* RNGestureHandlerManager.m in Sources */,
+				DAE1803F223A672F0050F8A6 /* RNGestureHandler.m in Sources */,
+				DAE18047223A672F0050F8A6 /* RNPanHandler.m in Sources */,
 				DA27472C221A486D009BD3BA /* PLVVodOptionCell.m in Sources */,
 				DA2746432216B95D009BD3BA /* PolyvVodPlayerManager.m in Sources */,
 				DA274726221A486D009BD3BA /* UIView+PLVVod.m in Sources */,
 				DA27471E221A486D009BD3BA /* PLVVodPlayerSkin.m in Sources */,
+				DAE18042223A672F0050F8A6 /* RNGestureHandlerEvents.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				DAE18049223A672F0050F8A6 /* RNFlingHandler.m in Sources */,
+				DAE1804C223A672F0050F8A6 /* RNPinchHandler.m in Sources */,
+				DAE18048223A672F0050F8A6 /* RNLongPressHandler.m in Sources */,
+				DAE18044223A672F0050F8A6 /* RNRootViewGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,6 +1672,29 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/FDStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVMarquee\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVNetworkDiagnosisTool\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVSubtitle\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVTimer\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVVodDanmu\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"/**",
+					"\"$(SRCROOT)/../node_modules/react-native/React\"/**",
+					"\"${PODS_ROOT}/Headers/Public/React\"/**",
+					"\"${PODS_ROOT}/Headers/Public/SQLiteRepairKit\"",
+					"\"${PODS_ROOT}/Headers/Public/SSZipArchive\"",
+					"\"${PODS_ROOT}/Headers/Public/WCDB\"",
+					"\"${PODS_ROOT}/Headers/Public/WCDBOptimizedSQLCipher\"",
+					"\"${PODS_ROOT}/Headers/Public/XRCarouselView\"",
+					"\"${PODS_ROOT}/Headers/Public/YYCache\"",
+					"\"${PODS_ROOT}/Headers/Public/YYImage\"",
+					"\"${PODS_ROOT}/Headers/Public/YYWebImage\"",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = PolyvVodRnDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1572,6 +1714,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/FDStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVMarquee\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVNetworkDiagnosisTool\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVSubtitle\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVTimer\"",
+					"\"${PODS_ROOT}/Headers/Public/PLVVodDanmu\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"/**",
+					"\"$(SRCROOT)/../node_modules/react-native/React\"/**",
+					"\"${PODS_ROOT}/Headers/Public/React\"/**",
+					"\"${PODS_ROOT}/Headers/Public/SQLiteRepairKit\"",
+					"\"${PODS_ROOT}/Headers/Public/SSZipArchive\"",
+					"\"${PODS_ROOT}/Headers/Public/WCDB\"",
+					"\"${PODS_ROOT}/Headers/Public/WCDBOptimizedSQLCipher\"",
+					"\"${PODS_ROOT}/Headers/Public/XRCarouselView\"",
+					"\"${PODS_ROOT}/Headers/Public/YYCache\"",
+					"\"${PODS_ROOT}/Headers/Public/YYImage\"",
+					"\"${PODS_ROOT}/Headers/Public/YYWebImage\"",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = PolyvVodRnDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
