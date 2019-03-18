@@ -9,11 +9,11 @@ import {
   FlatList,
   Text,
   Image,
-  ProgressBarAndroid,
+  ProgressBarAndroid
 } from "react-native";
 import PropTypes from "prop-types";
-import PolyvUtils from '../polyvcommon/PolyvUtils'
-import PolyvVideoDownload from '../page/PolyvVodDownloadModule'
+import PolyvUtils from "../polyvcommon/PolyvUtils";
+import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
 
 const { width, height } = Dimensions.get("window");
 //播放器下载的四种状态:下载(0)，暂停(1),播放(2)，
@@ -37,26 +37,32 @@ export class PolyvVideoDownloadItem extends Component {
       speed: 0 //下载速度
     };
   }
+
+  _onPress = () => {
+    this.props.onPressItem(this.props.downloadInfo);
+  };
+
   startPlay() {
     var vid = this.props.downloadInfo.vid;
-    this.props.nav.navigate('VideoPlayer',{vid:vid});
+    this.props.nav.navigate("VideoPlayer", { vid: vid });
   }
 
-  pauseOrStartDownload(){
+  pauseOrStartDownload() {
     var vid = this.props.downloadInfo.vid;
-    var bitrate = this.props.downloadInfo.bitrate
-    if(this.state.videoStatus){//暂停
-      PolyvVideoDownload.resumeDownload(vid,bitrate)
-    }else{
-      PolyvVideoDownload.pauseDownload(vid,bitrate)
+    var bitrate = this.props.downloadInfo.bitrate;
+    if (this.state.videoStatus) {
+      //暂停
+      PolyvVideoDownload.resumeDownload(vid, bitrate);
+    } else {
+      PolyvVideoDownload.pauseDownload(vid, bitrate);
     }
   }
 
-  stopDownload(){
+  stopDownload() {
     var vid = this.props.downloadInfo.vid;
-    var bitrate = this.props.downloadInfo.bitrate
-    this.setState({videoStatus:1})
-    PolyvVideoDownload.pauseDownload(vid,bitrate)
+    var bitrate = this.props.downloadInfo.bitrate;
+    this.setState({ videoStatus: 1 });
+    PolyvVideoDownload.pauseDownload(vid, bitrate);
   }
 
   render() {
@@ -65,58 +71,70 @@ export class PolyvVideoDownloadItem extends Component {
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>
-        <ProgressBarAndroid 
-        styleAttr='Horizontal' 
-        progress={videoInfo.total==0?1:videoInfo.percent/videoInfo.total}//videoInfo.percent/videoInfo.total
-        indeterminate={false} style={{flex:2.5,width:'90%'}} 
-        color="#2196F3" />
+        <ProgressBarAndroid
+          styleAttr="Horizontal"
+          progress={
+            videoInfo.total == 0 ? 0 : videoInfo.percent / videoInfo.total
+          } //videoInfo.percent/videoInfo.total
+          indeterminate={false}
+          style={{ flex: 2.5, width: "90%" }}
+          color="#2196F3"
+        />
         <Text style={styles.bottom_download_txt}>
-        { videoInfo.total==0?'0KB':PolyvUtils.change(videoInfo.percent/videoInfo.total *videoInfo.filesize)}</Text>
+          {videoInfo.total == 0
+            ? "0KB"
+            : PolyvUtils.change(
+                (videoInfo.percent / videoInfo.total) * videoInfo.filesize
+              )}
+        </Text>
       </View>
     ) : null;
-    var fileSize = PolyvUtils.change(videoInfo.filesize)
+    var fileSize = PolyvUtils.change(videoInfo.filesize);
     return (
-      <View style={styles.container}>
-        <View style={styles.imgContainer}>
-          <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
-          <TouchableOpacity
-          style={styles.videoPlayImg}
-            onPress={() => {
-              if (this.props.isDownloadedPage) {
-                //已经下载
-                this.startPlay()
-              } else {
-                this.pauseOrStartDownload()
-                this.setState({ videoStatus: 1 ^ this.state.videoStatus });
-              }
-            }}>
-            <Image
+      <TouchableOpacity style={styles.container} onLongPress={this._onPress}>
+        <View style={styles.container}>
+          <View style={styles.imgContainer}>
+            <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
+            <TouchableOpacity
               style={styles.videoPlayImg}
-              source={
-                this.props.isDownloadedPage
-                  ? videoPlaySrc[2].src
-                  : videoPlaySrc[this.state.videoStatus].src
-              }
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{width:'100%',flex:1}}>
-          <Text style={styles.title}>{videoInfo.title}</Text>
-          <View style={styles.bottomContainer}>
-            <View style={styles.bottomHorizonContianer}>
-              <Text style={styles.bottom_download_status_txt}>
-                {fileSize}
-              </Text>
-              <Text style={styles.bottom_download_status_txt}>
-                {this.props.isDownloadedPage
-                  ? videoPlaySrc[2].status
-                  : videoPlaySrc[this.state.videoStatus].status}
-              </Text>
+              onPress={() => {
+                if (this.props.isDownloadedPage) {
+                  //已经下载
+                  this.startPlay();
+                } else {
+                  this.pauseOrStartDownload();
+                  this.setState({ videoStatus: 1 ^ this.state.videoStatus });
+                }
+              }}
+            >
+              <Image
+                style={styles.videoPlayImg}
+                source={
+                  this.props.isDownloadedPage
+                    ? videoPlaySrc[2].src
+                    : videoPlaySrc[this.state.videoStatus].src
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: "100%", flex: 1, backgroundColor: "white" }}>
+            <Text style={styles.title}>{videoInfo.title}</Text>
+            <View style={styles.bottomContainer}>
+              <View style={styles.bottomHorizonContianer}>
+                <Text style={styles.bottom_download_status_txt}>
+                  {fileSize}
+                </Text>
+                <Text style={styles.bottom_download_status_txt}>
+                  {this.props.isDownloadedPage
+                    ? videoPlaySrc[2].status
+                    : videoPlaySrc[this.state.videoStatus].status}
+                </Text>
+              </View>
+              {progressLayout}
             </View>
-            {progressLayout}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -154,7 +172,7 @@ const styles = StyleSheet.create({
     position: "relative",
     marginLeft: 10,
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   bottom_download_status_txt: {
     textAlign: "center",
@@ -174,7 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
     width: 90,
-    
+
     fontSize: 12,
     height: 20,
     color: "#63B8FF",

@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easefun.polyvsdk.PolyvBitRate;
 import com.easefun.polyvsdk.PolyvDownloader;
 import com.easefun.polyvsdk.PolyvDownloaderErrorReason;
 import com.easefun.polyvsdk.PolyvDownloaderManager;
+import com.easefun.polyvsdk.PolyvSDKUtil;
+import com.easefun.polyvsdk.Video;
 import com.easefun.polyvsdk.bean.PolyvDownloadInfo;
 import com.easefun.polyvsdk.database.PolyvDownloadSQLiteHelper;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderProgressListener;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderStartListener;
 import com.easefun.polyvsdk.log.PolyvCommonLog;
 import com.easefun.polyvsdk.util.PolyvErrorMessageUtils;
+import com.easefun.polyvsdk.vo.PolyvVideoJSONVO;
 import com.easefun.polyvsdk.vo.PolyvVideoVO;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -32,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -45,6 +50,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     private static final String TAG = "PolyvRNVodDownloadModule";
     private PolyvDownloadSQLiteHelper downloadSQLiteHelper;
     private LinkedList<PolyvDownloadInfo> lists;
+    private PolyvVideoVO video;
 
     public PolyvRNVodDownloadModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -58,14 +64,31 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startDownload(final String vid, final int pos, final String title, String videoJson, Callback callback) {
-        PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :" + videoJson);
-        PolyvVideoVO videoJSONVO = null;
-        try {
-            videoJSONVO = PolyvVideoVO.fromJSONObject(vid, new JSONObject(videoJson));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void getBitrateNumbers(String vid, final Promise promise){
+        Video.loadVideo(vid, new Video.OnVideoLoaded() {
+            public void onloaded(final Video v) {
+                if (v == null) {
+                    Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                video = v;
+                // 码率数
+                String[] items = PolyvBitRate.getBitRateNameArray(v.getDfNum());
+                String bitrates = GsonUtil.toJson(Arrays.asList(items));
+
+                WritableMap map = Arguments.createMap();
+                map.putString("bitrates",bitrates );
+
+                promise.resolve(map);
+            }
+        });
+    }
+    @ReactMethod
+    public void startDownload(final String vid, final int pos, final String title, Callback callback) {
+        PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :" );
+        PolyvVideoVO videoJSONVO = video;
+
         if (videoJSONVO == null) {
             Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
             return;
@@ -209,8 +232,8 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void delVideo(int pos){
-       deleteTask(pos);
+    public void delVideo(String vid,int bitrate){
+       deleteTask(vid,bitrate);
     }
 
     @ReactMethod
@@ -263,15 +286,14 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     /**
      * 删除任务
      */
-    public void deleteTask(int position) {
-
-        PolyvDownloadInfo downloadInfo = lists.remove(position);
+    public void deleteTask(String vid,int bitrate ) {
         //移除任务
-        PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(downloadInfo.getVid(), downloadInfo.getBitrate());
+        PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(vid,bitrate);
         //删除文件
         downloader.deleteVideo();
         //移除数据库的下载信息
-        downloadSQLiteHelper.delete(downloadInfo);
+        PolyvDownloadInfo polyvDownloadInfo = new PolyvDownloadInfo(vid,"",0,bitrate,"");
+        downloadSQLiteHelper.delete(polyvDownloadInfo);
     }
     public static void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);

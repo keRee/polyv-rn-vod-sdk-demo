@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
-import PolyvVodConfig from '../page/PolyvVodConfigRnModule'
+import PolyvVodDownloadModule from '../page/PolyvVodDownloadModule'
 
 const { width, height } = Dimensions.get("window");
 let timeImg = require("./img/polyv_time.png");
@@ -38,13 +38,16 @@ export class PolyvVideoOnlineItem extends Component {
 
   startDownload() {
     var vid = this.props.videoInfo.vid;
-    PolyvHttpManager.getVideoInfo(vid,(ret) => {
-      console.log('getVideoInfo')
-      PolyvVodConfig.parseEncryptData(vid,ret.body,
-        (ret) =>{//返回解析数据结果
-          this.setState({data:ret})
-          this.props.downloadCallback(this.state.data)
-        })
+    // PolyvHttpManager.getVideoInfo(vid,(ret) => {
+    //   console.log('getVideoInfo')
+    //   PolyvVodConfig.parseEncryptData(vid,ret.body,
+    //     (ret) =>{//返回解析数据结果
+    //       this.setState({data:ret})
+    //       this.props.downloadCallback(this.state.data)
+    //     })
+    // })
+    PolyvVodDownloadModule.getBitrateNumbers(vid).then(ret=>{
+      this.props.downloadCallback(ret.bitrates)
     })
   }
 
@@ -145,6 +148,6 @@ const styles = StyleSheet.create({
   img: {
     resizeMode: "cover",
     width: 100,
-    height: 70
+    height: 'auto'
   }
 });
