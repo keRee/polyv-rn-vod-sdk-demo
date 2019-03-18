@@ -100,7 +100,9 @@ class PolyvDownloadingListPage extends Component {
 
   updateDownload(successDwonloadInfo){
     console.log('download success callback')
-    PolyvViewManager.refCollection['downloadedList'].state.datas.splice(0,0,successDwonloadInfo)
+    var datas = PolyvViewManager.refCollection['downloadedList'].state.datas;
+    datas.splice(0,0,successDwonloadInfo)
+    PolyvViewManager.refCollection['downloadedList'].setState({datas:datas})
   }
   
   render() {
@@ -119,7 +121,7 @@ class PolyvDownloadingListPage extends Component {
 export default class PolyvDwonloadListPage extends Component {
   static navigationOptions = {
     tabBarVisible: false, // 隐藏底部导航栏
-    header: null //隐藏顶部导航栏
+    header: null ,//隐藏顶部导航栏
   };
   constructor(props) {
     super(props);

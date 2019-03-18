@@ -5,6 +5,20 @@ const videoDownload = NativeModules.PolyvRNVodDownloadModule
 
 const PolyvVideoDownload = {
 
+    /**
+     * 
+     * @param {string} vid 视频id 
+     */
+    async getBitrateNumbers(vid){
+        var result ;
+        try {
+            var {bitrates} = await videoDownload.getBitrateNumbers(vid)
+            return {code:0,bitrates}
+        } catch (error) {
+            result = error.code
+        }
+        return {code:result}
+    },
 /**
  * 
  * @param {string} vid 视频vid 
@@ -14,11 +28,11 @@ const PolyvVideoDownload = {
  * @param {fun} callback 下载回掉 success fail
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
-  async startDownload(vid,pos,title,videoJson,callback) {
+  async startDownload(vid,pos,title,callback) {
 
     var result ;
     try {
-        await videoDownload.startDownload(vid,pos,title,videoJson,callback)
+        await videoDownload.startDownload(vid,pos,title,callback)
         result = 0
     } catch (error) {
         result = error.code
@@ -59,18 +73,11 @@ const PolyvVideoDownload = {
     /**
      * 删除视频
      * Android 是根据位置删除  ios 是根据vid 删除
-     * @param {string} pos 列表中item位置 
+     * @param {string} vid 视频id 
+     * @param {number} bitrate 视频码率 
      */
-    delVideo(pos){
-        videoDownload.delVideo(pos)
-    },
-     /**
-     * 删除视频
-     * Android 是根据位置删除  ios 是根据vid 删除
-     * @param {string} vid 视频vid状态
-     */
-    delVideo(vid){
-        videoDownload.delVideo(vid)
+    delVideo(vid,bitrate){
+        videoDownload.delVideo(vid,bitrate)
     },
 
     clearDownloadVideo(){

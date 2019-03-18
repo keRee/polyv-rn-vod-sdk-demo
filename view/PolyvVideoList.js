@@ -8,126 +8,142 @@ import {
   Dimensions,
   FlatList,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+
 } from "react-native";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import OptionsView from "../view/PolyvPopuWindow";
 import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
 
+
 const { width, height } = Dimensions.get("window");
-let navigation,that//导航栏引用
-let pageNo = 1;//当前第几页
-let totalPage=5;//总的页数
+let navigation, that; //导航栏引用
+let pageNo = 1; //当前第几页
+let totalPage = 5; //总的页数
 
 export default class PolyvVideoList extends Component {
   static propTypes = {
-    navigation:PropTypes.object
-}
-
+    navigation: PropTypes.object
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       datas: [],
-      showFoot:0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
+      showFoot: 0 // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
     };
-    that = this
+    that = this;
   }
 
   update(datas) {
-    console.log(" update list view")
+    console.log(" update list view");
     this.setState({ datas: datas });
   }
 
-
   renderItem({ item }) {
-    
-    return <PolyvVideoOnlineItem
-      downloadCallback={(video) =>{
-        console.log('receive callback')
-        that.showDownloadOptions(video,item)
-      }}
-      navigation={navigation}
-      style={styles.modalBox}
-      videoInfo={item} />
+    return (
+      <PolyvVideoOnlineItem
+        downloadCallback={bitrates => {
+          console.log("receive callback");
+          that.showDownloadOptions(bitrates, item);
+        }}
+        navigation={navigation}
+        style={styles.modalBox}
+        videoInfo={item}
+      />
+    );
   }
 
-  
-  showDownloadOptions(video,item) {
+  showDownloadOptions(bitrates, item) {
     console.log("showDownloadOptions");
-    var videoObject = JSON.parse(video)
-    this.popUp.show(videoObject,item);
+    // var videoObject = JSON.parse(video);
+    this.popUp.show(bitrates, item);
   }
-  
-  _separator(){
-    return <View style={{height:15,backgroundColor:'#FFFAFA'}}/>;
-}
+
+  _separator() {
+    return <View style={{ height: 15, backgroundColor: "#FFFAFA" }} />;
+  }
+
 
   render() {
-    navigation = this.props.navigation
+    navigation = this.props.navigation;
     return (
       <View style={styles.container}>
-        <FlatList style={styles.list} 
+        <FlatList
+          style={styles.list}
           ItemSeparatorComponent={this._separator}
           data={this.state.datas}
           renderItem={this.renderItem}
           onEndReached={this._onEndReached.bind(this)}
           ListFooterComponent={this._renderFooter.bind(this)}
+    
         />
         <OptionsView ref={ref => (this.popUp = ref)} />
       </View>
     );
   }
 
-  _onEndReached(){
+  _onEndReached() {
     //如果是正在加载中或没有更多数据了，则返回
-    if(this.state.showFoot != 0 ){
-        return ;
+    if (this.state.showFoot != 0) {
+      return;
     }
     //如果当前页大于或等于总页数，那就是到最后一页了，返回
-    if((pageNo!=1) && (pageNo>=totalPage)){
-        return;
+    if (pageNo != 1 && pageNo >= totalPage) {
+      return;
     } else {
-        pageNo++;
+      pageNo++;
     }
     //底部显示正在加载更多数据
-    this.setState({showFoot:2});
+    this.setState({ showFoot: 2 });
     //获取数据
     // this.fetchData( pageNo );
-}
+  }
 
-  _renderFooter(){
-
-    console.log('_renderFooter:'+this.state.showFoot)
+  _renderFooter() {
+    console.log("_renderFooter:" + this.state.showFoot);
     if (this.state.showFoot === 1) {
-        return (
-            <View style={{height:80,alignItems:'center',justifyContent:'flex-start',}}>
-                <Text style={{color:'#999999',fontSize:14,marginTop:5,marginBottom:5,}}>
-                    没有更多数据了
-                </Text>
-            </View>
-        );
-    } else if(this.state.showFoot === 2) {
-        return (
-            <View style={styles.footer}>
-                <ActivityIndicator />
-                <Text>正在加载更多数据...</Text>
-            </View>
-        );
-    } else if(this.state.showFoot === 0){
-        return (
-            <View style={styles.footer}>
-                <Text></Text>
-            </View>
-        );
+      return (
+        <View
+          style={{
+            height: 80,
+            alignItems: "center",
+            justifyContent: "flex-start"
+          }}
+        >
+          <Text
+            style={{
+              color: "#999999",
+              fontSize: 14,
+              marginTop: 5,
+              marginBottom: 5
+            }}
+          >
+            没有更多数据了
+          </Text>
+        </View>
+      );
+    } else if (this.state.showFoot === 2) {
+      return (
+        <View style={styles.footer}>
+          <ActivityIndicator />
+          <Text>正在加载更多数据...</Text>
+        </View>
+      );
+    } else if (this.state.showFoot === 0) {
+      return (
+        <View style={styles.footer}>
+          <Text />
+        </View>
+      );
     }
-}
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     width: width,
-    height:height,
+    height: height,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -143,18 +159,19 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   modalBox: {
-    backgroundColor:'white',
+    backgroundColor: "white",
     width: width,
-    height:50
+    height: 50
   },
-  footer:{
-    flexDirection:'row',
-    height:100,
-    justifyContent:'center',
-    alignItems:'center',
-    marginBottom:10,
-},
+  footer: {
+    flexDirection: "row",
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10
+  },
   list: {
-    width: width,
-  }
+    width: width
+  },
+ 
 });
