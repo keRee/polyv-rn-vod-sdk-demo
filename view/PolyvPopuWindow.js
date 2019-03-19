@@ -90,7 +90,7 @@ export default class PolyvPopuWindow extends Component {
           this.chooseDefPlay(index);
         }}
       >
-        {defs[index].content}
+        {item}
       </Text>
     );
   }

@@ -28,10 +28,10 @@ import static com.easefun.polyvsdk.rn.PolyvRNVodCode.parseDataError;
  * @create 2019/2/20
  * @Describe
  */
-public class PolyvVodConfigRnModule extends ReactContextBaseJavaModule {
-    private static final String TAG = "PolyvVodConfigRnModule";
+public class PolyvRNVodConfigModule extends ReactContextBaseJavaModule {
+    private static final String TAG = "PolyvRNVodConfigModule";
 
-    public PolyvVodConfigRnModule(ReactApplicationContext reactContext) {
+    public PolyvRNVodConfigModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 

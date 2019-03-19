@@ -12,13 +12,15 @@ import { NativeModules } from 'react-native';
  */
 let token ,isSign
 
-const PolyvVodConfigRnModule = {
+const PolyvRNVodConfigNativeModule = NativeModules.PolyvRNVodConfigModule
+
+const PolyvRNVodConfigModule = {
    
     //初始化
     async init (vodKey, decodeKey, decodeIv, viewerId, nickName){
         console.log(`config_${vodKey}_${decodeKey}_${decodeIv}`)
         try {
-            NativeModules.PolyvVodConfigRnModule.init(vodKey, decodeKey, decodeIv, viewerId, nickName)
+            PolyvRNVodConfigNativeModule.init(vodKey, decodeKey, decodeIv, viewerId, nickName)
             .then(ret =>{
                 console.log('result :token:'+ret.token+"  isSign:"+ret.isSign)
                 token = ret.token
@@ -43,7 +45,7 @@ const PolyvVodConfigRnModule = {
 
     parseEncryptData(vid,data,callback){
         try {
-            NativeModules.PolyvVodConfigRnModule.parseEncryptData(vid,data)
+            PolyvRNVodConfigNativeModule.parseEncryptData(vid,data)
             .then(ret =>{
                 var source = ret.data
                 callback(source)
@@ -58,4 +60,4 @@ const PolyvVodConfigRnModule = {
     }
 } 
 
-module.exports = PolyvVodConfigRnModule;
+module.exports = PolyvRNVodConfigModule;
