@@ -21,10 +21,6 @@ NSString * NSStringFromPolyvVodRnError(PolyvVodConfigRnErrorCode code) {
       return @"decodeIv为空";
     case PolyvVodRnError_NoViewerId:
       return @"viewerId为空";
-    case PolyvVodRnError_ParseDataError:
-      return @"解析视频数据出错";
-    case PolyvVodRnError_NoDownloadVideo:
-      return @"获取下载视频为空";
     default:
       return @"";
   }
@@ -93,32 +89,5 @@ RCT_EXPORT_METHOD(init:(NSString *)vodKey
         reject([@(errorCode) stringValue], errorDesc, error);
     }
 }
-
-// vid 视频vid
-// encryptData 视频videoJson数据的加密data
-RCT_EXPORT_METHOD(parseEncryptData:(NSString *)vid
-                  data:(NSString *)encryptData
-                  findEventsWithResolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject
-                  )
-{
-    NSLog(@"parseEncryptData() - %@ 、 %@", vid, encryptData);
-    PolyvVodConfigRnErrorCode errorCode = PolyvVodRnError_Success;
-    if (!vid.length) {
-        errorCode = PolyvVodRnError_ParseDataError;
-    } else if (!encryptData.length) {
-        errorCode = PolyvVodRnError_ParseDataError;
-    }
-  
-    if (errorCode == PolyvVodRnError_Success) {
-        NSData *videoJsonData = [encryptData dataUsingEncoding:NSUTF8StringEncoding];
-    } else {
-        NSString *errorDesc = NSStringFromPolyvVodRnError(errorCode);
-        NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:errorDesc}];
-        NSLog(@"%@", errorDesc);
-        reject([@(errorCode) stringValue], errorDesc, error);
-    }
-}
-                  
 
 @end

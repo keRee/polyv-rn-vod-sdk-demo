@@ -19,15 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
  *      -3 decodeIv为空
  */
 typedef NS_ENUM(NSInteger, PolyvVodConfigRnErrorCode) {
-  // config
   PolyvVodRnError_Success = 0,
   PolyvVodRnError_NoVodKey = -1,
   PolyvVodRnError_NoDecodeKey = -2,
   PolyvVodRnError_NoDecodeIv = -3,
   PolyvVodRnError_NoViewerId = -4,
-  // decrypted
-  PolyvVodRnError_ParseDataError = -5,
-  PolyvVodRnError_NoDownloadVideo = 16,
 };
 
 @interface PolyvVodConfigRnModule : NSObject <RCTBridgeModule>

@@ -74,6 +74,7 @@
 		DA27472E221A486D009BD3BA /* PLVVodExplanationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27470D221A486D009BD3BA /* PLVVodExplanationView.m */; };
 		DA274731221A6829009BD3BA /* PolyvVodPlayerWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */; };
 		DA274735221A891B009BD3BA /* PolyvVodConfigRnModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274734221A891B009BD3BA /* PolyvVodConfigRnModule.m */; };
+		DAAC46E8224082A7007868BE /* PolyvRNVodDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC46E7224082A6007868BE /* PolyvRNVodDownloadModule.m */; };
 		DAE1803F223A672F0050F8A6 /* RNGestureHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */; };
 		DAE18040223A672F0050F8A6 /* RNGestureHandlerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFC223A672F0050F8A6 /* RNGestureHandlerManager.m */; };
 		DAE18041223A672F0050F8A6 /* RNGestureHandlerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFF223A672F0050F8A6 /* RNGestureHandlerRegistry.m */; };
@@ -464,6 +465,8 @@
 		DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyvVodPlayerWrapperView.m; sourceTree = "<group>"; };
 		DA274733221A891B009BD3BA /* PolyvVodConfigRnModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolyvVodConfigRnModule.h; sourceTree = "<group>"; };
 		DA274734221A891B009BD3BA /* PolyvVodConfigRnModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyvVodConfigRnModule.m; sourceTree = "<group>"; };
+		DAAC46E6224082A6007868BE /* PolyvRNVodDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvRNVodDownloadModule.h; sourceTree = "<group>"; };
+		DAAC46E7224082A6007868BE /* PolyvRNVodDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyvRNVodDownloadModule.m; sourceTree = "<group>"; };
 		DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandler.m; sourceTree = "<group>"; };
 		DAE17FFA223A672F0050F8A6 /* RNGestureHandlerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerButton.h; sourceTree = "<group>"; };
 		DAE17FFB223A672F0050F8A6 /* RNGestureHandlerDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerDirection.h; sourceTree = "<group>"; };
@@ -788,6 +791,8 @@
 				DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */,
 				DA274733221A891B009BD3BA /* PolyvVodConfigRnModule.h */,
 				DA274734221A891B009BD3BA /* PolyvVodConfigRnModule.m */,
+				DAAC46E6224082A6007868BE /* PolyvRNVodDownloadModule.h */,
+				DAAC46E7224082A6007868BE /* PolyvRNVodDownloadModule.m */,
 			);
 			path = PolyvVodRnModule;
 			sourceTree = "<group>";
@@ -1572,6 +1577,7 @@
 				DA2746432216B95D009BD3BA /* PolyvVodPlayerManager.m in Sources */,
 				DA274726221A486D009BD3BA /* UIView+PLVVod.m in Sources */,
 				DA27471E221A486D009BD3BA /* PLVVodPlayerSkin.m in Sources */,
+				DAAC46E8224082A7007868BE /* PolyvRNVodDownloadModule.m in Sources */,
 				DAE18042223A672F0050F8A6 /* RNGestureHandlerEvents.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				DAE18049223A672F0050F8A6 /* RNFlingHandler.m in Sources */,
