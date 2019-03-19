@@ -21,6 +21,7 @@ const { width, height } = Dimensions.get("window");
 const videoPlaySrc = [
   { src: require("../view/img/polyv_btn_download.png"), status: "正在下载" },
   { src: require("../view/img/polyv_btn_dlpause.png"), status: "下载暂停" },
+  { src: require("../view/img/polyv_btn_dlpause.png"), status: "下载等待" },
   { src: require("../view/img/polyv_btn_play.png"), status: "下载完成" }
 ];
 
@@ -34,7 +35,7 @@ export class PolyvVideoDownloadItem extends Component {
     super(props);
     this.state = {
       data: this.props.downloadInfo,
-      videoStatus: 1, //视频的状态：下载，暂停，下载完成
+      videoStatus: 1, //视频的状态：下载，暂停，下载等待，下载完成
       speed: 0 //下载速度
     };
   }
@@ -74,6 +75,12 @@ export class PolyvVideoDownloadItem extends Component {
   render() {
     // this.setState({data:this.props.downloadInfo})
     var videoInfo = this.state.data;
+    var showSpeed = this.state.videoStatus == 0
+    var progressContent = showSpeed?PolyvUtils.change(this.state.speed)+'/S':(videoInfo.total == 0
+      ? "0KB"
+      : PolyvUtils.change(
+          (videoInfo.percent / videoInfo.total) * videoInfo.filesize
+        ));
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>
@@ -87,11 +94,7 @@ export class PolyvVideoDownloadItem extends Component {
           color="#2196F3"
         />
         <Text style={styles.bottom_download_txt}>
-          {videoInfo.total == 0
-            ? "0KB"
-            : PolyvUtils.change(
-                (videoInfo.percent / videoInfo.total) * videoInfo.filesize
-              )}
+          {progressContent}
         </Text>
       </View>
     ) : null;
@@ -99,7 +102,6 @@ export class PolyvVideoDownloadItem extends Component {
 
     var timeoutId;
     return (
-
       //很诡异   onlongpress 在点击得时候就被触发了  最简单得demo 也是 最后采用这种方式实现长按
       <TouchableOpacity
         onPressIn={() => {
@@ -133,7 +135,7 @@ export class PolyvVideoDownloadItem extends Component {
                 style={styles.videoPlayImg}
                 source={
                   this.props.isDownloadedPage
-                    ? videoPlaySrc[2].src
+                    ? videoPlaySrc[3].src
                     : videoPlaySrc[this.state.videoStatus].src
                 }
               />
@@ -148,7 +150,7 @@ export class PolyvVideoDownloadItem extends Component {
                 </Text>
                 <Text style={styles.bottom_download_status_txt}>
                   {this.props.isDownloadedPage
-                    ? videoPlaySrc[2].status
+                    ? videoPlaySrc[3].status
                     : videoPlaySrc[this.state.videoStatus].status}
                 </Text>
               </View>

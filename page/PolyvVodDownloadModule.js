@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NativeModules } from 'react-native';
+import { NativeModules, Alert } from 'react-native';
 
 const videoDownload = NativeModules.PolyvRNVodDownloadModule
 
@@ -29,7 +29,14 @@ const PolyvVideoDownload = {
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
   async startDownload(vid,pos,title,callback) {
-
+    if(!vid){
+        Alert.alert('vid is empty')
+        return
+    }
+    if(pos <0){
+        Alert.alert('bitrate is error')
+        return
+    }
     var result ;
     try {
         await videoDownload.startDownload(vid,pos,title,callback)
@@ -80,6 +87,9 @@ const PolyvVideoDownload = {
         videoDownload.delVideo(vid,bitrate)
     },
 
+    /**
+     * 清楚所有下载得视频
+     */
     clearDownloadVideo(){
         videoDownload.clearDownloadVideo()
     },
@@ -108,9 +118,25 @@ const PolyvVideoDownload = {
 
         
         
-    }
+    },
 
-    
+    /**
+     * 
+     * @param {stirng} vid 视频id
+     * @param {string} bitrate 码率选项 
+     * return 返回下载状态 下载中 下载暂停 下载等待
+     * 
+     * -1：状态获取失败
+     */
+    async getDownloadStatus(vid,bitrate){
+        try {
+            var {downloadStatus} = await videoDownload.getDownloadStatus(vid,bitrate)
+            return {code:downloadStatus}
+        } catch (error) {
+            return {code:-1}
+        }
+        
+    }
 
 };
 module.exports = PolyvVideoDownload;

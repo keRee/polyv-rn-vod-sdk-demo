@@ -37,6 +37,7 @@ export class PolyvVideoOnlineItem extends Component {
   }
 
   startDownload() {
+    console.log('startDownload:'+this.props.videoInfo.vid)
     var vid = this.props.videoInfo.vid;
     // PolyvHttpManager.getVideoInfo(vid,(ret) => {
     //   console.log('getVideoInfo')
