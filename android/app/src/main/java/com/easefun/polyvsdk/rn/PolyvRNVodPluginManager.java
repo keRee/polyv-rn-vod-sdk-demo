@@ -6,7 +6,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
 public class PolyvRNVodPluginManager implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new PolyvVodConfigRnModule(reactContext), new PolyvRNVodDownloadModule(reactContext));
+        return Arrays.<NativeModule>asList(new PolyvRNVodConfigModule(reactContext), new PolyvRNVodDownloadModule(reactContext));
     }
 
     @Override

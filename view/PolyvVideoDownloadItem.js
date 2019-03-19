@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
+  TouchableWithoutFeedback,
   TouchableOpacity,
   Animated,
   Easing,
@@ -38,9 +39,14 @@ export class PolyvVideoDownloadItem extends Component {
     };
   }
 
-  _onPress = () => {
+  _onLongPress = () => {
+    console.log("_onLongPress");
     this.props.onPressItem(this.props.downloadInfo);
   };
+
+  _onPress() {
+    console.log("onpress");
+  }
 
   startPlay() {
     var vid = this.props.downloadInfo.vid;
@@ -90,8 +96,24 @@ export class PolyvVideoDownloadItem extends Component {
       </View>
     ) : null;
     var fileSize = PolyvUtils.change(videoInfo.filesize);
+
+    var timeoutId;
     return (
-      <TouchableOpacity style={styles.container} onLongPress={this._onPress}>
+
+      //很诡异   onlongpress 在点击得时候就被触发了  最简单得demo 也是 最后采用这种方式实现长按
+      <TouchableOpacity
+        onPressIn={() => {
+          console.log("onPressIn");
+          timeoutId = setTimeout(() => {
+            console.log("onlongpress");
+            this._onLongPress();
+          }, 3000);
+        }}
+        onPressOut={() => {
+          console.log("onPressOut");
+          clearTimeout(timeoutId);
+        }}
+      >
         <View style={styles.container}>
           <View style={styles.imgContainer}>
             <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
