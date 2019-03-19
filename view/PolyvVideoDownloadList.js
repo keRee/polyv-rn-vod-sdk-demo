@@ -6,10 +6,17 @@ import {
   FlatList,
   DeviceEventEmitter,
   Alert,
-  TouchableHighlight,
-  
+  TouchableHighlight
 } from "react-native";
-import {Container, Header, Content, Footer, FooterTab, Button, Text} from 'native-base'
+import {
+  Container,
+  Header,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Text
+} from "native-base";
 import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
 import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
 import PropTypes from "prop-types";
@@ -33,7 +40,7 @@ export class PolyvVideoDownloadList extends Component {
       // downloadingInfosString: [], //正在下载的视频信息串 用于对比 是否重复解析
       downloadingInfos: new Map(), //正在下载的视频,map结构，key为download字符串 value 为download对象
       videoMap: [],
-      allTaskDownloadPause:false,//下载列表中得  所有列表下载状态
+      allTaskDownloadPause: false //下载列表中得  所有列表下载状态
     };
   }
 
@@ -49,7 +56,7 @@ export class PolyvVideoDownloadList extends Component {
 
   update(datas) {
     console.log("update datas:" + datas.dataMaps.length);
-    this.setState({ videoMap: datas.dataMaps });
+    this.state.videoMap = datas.dataMaps
     this.setState({ datas: datas.data });
   }
 
@@ -65,23 +72,23 @@ export class PolyvVideoDownloadList extends Component {
       // this.setState({ downloadingInfo: msg.downloadInfo });
     });
 
-     //开始回掉
-     DeviceEventEmitter.addListener("downloadFailedEvent", msg => {
+    //开始回掉
+    DeviceEventEmitter.addListener("downloadFailedEvent", msg => {
       console.log("downloadFailedEvent" + JSON.stringify(msg));
     });
 
-     //开始回掉
-     DeviceEventEmitter.addListener("downloadSpeedEvent", msg => {
+    //开始回掉
+    DeviceEventEmitter.addListener("downloadSpeedEvent", msg => {
       console.log("downloadSpeedEvent" + msg);
-      var speed = msg.downloadSpeed
+      var speed = msg.downloadSpeed;
       var key = msg.vid + msg.bitrate;
-      var downloadView =  this.refsCollection[key]
-      if(!downloadView){
-        console.log('downloadView is null')
-        return 
+      var downloadView = this.refsCollection[key];
+      if (!downloadView) {
+        console.log("downloadView is null");
+        return;
       }
 
-      downloadView.setState({speed:speed})
+      downloadView.setState({ speed: speed });
     });
     //进度更新回掉
     DeviceEventEmitter.addListener("updateProgressEvent", msg => {
@@ -91,32 +98,21 @@ export class PolyvVideoDownloadList extends Component {
       }
 
       //这里保存下载对象，onstart 不保存 因为可能从中间进入列表 如果保存过  对比一次 是否需要再次更新
-      var downloadInfo = this.state.downloadingInfos.get(msg.downloadInfo)
-      
-      if(!downloadInfo){//如果沒经保存
+      var downloadInfo = this.state.downloadingInfos.get(msg.downloadInfo);
+
+      if (!downloadInfo) {
+        //如果沒经保存
         downloadingInfo = JSON.parse(msg.downloadInfo);
-        this.state.downloadingInfos.set(msg.downloadInfo,downloadingInfo)
-        console.log("updateProgress downloadInfo" + JSON.stringify(downloadInfo) );
-        //获取上一个下载视频得下载状态，如果是等待下载就暂停 
-        PolyvVideoDownload.getDownloadStatus(downloadingInfo.vid, downloadingInfo.bitrate)
-          .then(ret => {
-            var downloadStatus = ret.code
-            if(!lastDwonloadVideo){
-              return
-            }
-            if(lastDwonloadVideo.state.videoStatus == 3){//已经下载完成
-              downloadStatus = 3
-            }
-            //   //更新上一个下载视频的状态为暂停
-            if (lastDwonloadVideo instanceof Component) {
-              lastDwonloadVideo.setState({ videoStatus: downloadStatus })
-            }
-          })
+        this.state.downloadingInfos.set(msg.downloadInfo, downloadingInfo);
+        console.log(
+          "updateProgress downloadInfo" + JSON.stringify(downloadInfo)
+        );
+        
       }
 
-      if(!downloadInfo){
-        console.log('downloadInfo is null:')
-        return
+      if (!downloadInfo) {
+        console.log("downloadInfo is null");
+        return;
       }
       var key = downloadInfo.vid + downloadInfo.bitrate;
       var updateVideo = dataMaps.get(key);
@@ -128,7 +124,6 @@ export class PolyvVideoDownloadList extends Component {
           videoStatus: 0
         });
       }
-
 
       // if (msg.downloadInfo !== this.state.downloadingInfosString) {
       //   console.log("updateProgress  parase data");
@@ -159,12 +154,12 @@ export class PolyvVideoDownloadList extends Component {
 
     //下载完成回掉
     DeviceEventEmitter.addListener("downloadSuccessEvent", msg => {
-      console.log(`downloadSuccess:${ msg.vid}  bitrate ：${msg.bitrate}`);
+      console.log(`downloadSuccess:${msg.vid}  bitrate ：${msg.bitrate}`);
       var key = msg.vid + msg.bitrate;
-      var downloadView =  this.refsCollection[key]
-      if(!downloadView){
-        console.log('downloadView is null')
-        return 
+      var downloadView = this.refsCollection[key];
+      if (!downloadView) {
+        console.log("downloadView is null");
+        return;
       }
       var successDownload = downloadView.state.data;
       //将下载完成得数据回掉给父组件，更新到下载完成列表
@@ -188,7 +183,6 @@ export class PolyvVideoDownloadList extends Component {
 
   //侧滑菜单渲染
   getQuickActions = () => {
-    
     return (
       <View style={styles.quickAContent}>
         <TouchableHighlight onPress={() => alert("确认删除？")}>
@@ -235,6 +229,8 @@ export class PolyvVideoDownloadList extends Component {
   renderItemData({ item, index }) {
     //标记key 用于item 标记
     var id = item.vid + item.bitrate;
+
+    console.log('render view  :'+JSON.stringify(item))
     return (
       <PolyvVideoDownloadItem
         ref={instance => {
@@ -250,59 +246,103 @@ export class PolyvVideoDownloadList extends Component {
   }
 
   //暂停或开始下载全部
-  _startOrPauseDownloadAll(){
-    
-    if(allTaskDownloadPause){
-      PolyvVideoDownload.downloadAllTask()
-      this.state.downloadingInfos.forEach((value) =>{
-        var key = value.vid+value.bitrate
-        var downloadView = this.refsCollection[key]
-        if(downloadView){
-          downloadView.setState({videoStatus:1})
-        }else{
-          console.error('download view is undefine')
-        }
-      })
-    }else{
-      PolyvVideoDownload.pauseAllDownloadTask()
+  _startOrPauseDownloadAll() {
+    if (this.state.allTaskDownloadPause) {
+      PolyvVideoDownload.downloadAllTask();
+      this.updateAllDownloadStatus(0);
+    } else {
+      PolyvVideoDownload.pauseAllDownloadTask();
+      this.updateAllDownloadStatus(1);
     }
 
-    this.setState({allTaskDownloadPause:!this.state.allTaskDownloadPause})
+    this.setState({ allTaskDownloadPause: !this.state.allTaskDownloadPause });
+  }
+
+  updateAllDownloadStatus(status) {
+    this.state.downloadingInfos.forEach(value => {
+      var key = value.vid + value.bitrate;
+      var downloadView = this.refsCollection[key];
+      if (downloadView) {
+        console.log("updateAllDownloadStatus:" + status);
+        downloadView.setState({ videoStatus: status });
+      } else {
+        console.log("download view is undefine");
+      }
+    });
   }
 
   // 清除所有正在下载的视频
-  _clearAll(){
-    PolyvVideoDownload.clearDownloadVideo()
-    this.setState({
-      datas:{},
-      downloadingInfoString:'',
-      downloadingInfo:{},
-      videoMap:[],
+  _clearAll() {
+    Alert.alert('提示','是否要清空所有下载中的任务',[
+      {
+        text: "确定",
+        onPress: () => {
+          PolyvVideoDownload.delAllDownloadTask();
+          this.setState({
+            datas: [],
+            downloadingInfos: new Map(), 
+            videoMap: [],
+            allTaskDownloadPause: false 
+          });
+        }
+      },
+      { text: "取消" }
+    ],
+    {
+      cancelable: true,
+      onDismiss: () => {
+        ToastAndroid.show("点击了外面", ToastAndroid.SHORT);
+      }
     })
+    
   }
 
-  createFooterView(){
-    return this.props.isDownloadedPage?null:
-    <Footer>
-          <FooterTab>
-            <Button onPress={() =>{
-              this._startOrPauseDownloadAll()
-            }}>
-              <Text style={styles.footerTxt}>{this.state.allTaskDownloadPause?'下载全部':'暂停全部'}</Text>
-            </Button>
-            <Button onPress={() =>{
-              this._clearAll()
-            }}>
-              <Text style={styles.footerTxt}>全部清空</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+  createFooterView() {
+    return this.props.isDownloadedPage ? null : (
+      <Footer>
+        <FooterTab>
+          <Button onPress={this._startOrPauseDownloadAll.bind(this)}>
+            <Text style={styles.footerTxt}>
+              {this.state.allTaskDownloadPause ? "下载全部" : "暂停全部"}
+            </Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this._clearAll();
+            }}
+          >
+            <Text style={styles.footerTxt}>全部清空</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    );
   }
+
+  emptyView = () => {
+    var datas = this.state.datas;
+    if (datas.length == 0) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.empty}>暂无下载视频</Text>
+        </View>
+      );
+    }
+
+    return (
+      <FlatList
+        ref={"downloadHistoryList"}
+        style={styles.list}
+        data={this.state.datas}
+        renderItem={this.renderItemData.bind(this)}
+      />
+    );
+  };
 
   render() {
     console.log(" list status " + this.props.isDownloadedPage);
-    var bottomView = this.createFooterView()
-    this.refsCollection={}
+    var bottomView = this.createFooterView();
+    this.refsCollection = {};
+
     return (
       <View style={styles.container}>
         <FlatList
@@ -324,11 +364,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    position:'relative'
+    position: "relative"
   },
-  footerTxt:{
-
-    fontSize:15
+  empty: {
+    fontSize: 18,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  footerTxt: {
+    fontSize: 15
   },
   modalBox: {
     width: width,

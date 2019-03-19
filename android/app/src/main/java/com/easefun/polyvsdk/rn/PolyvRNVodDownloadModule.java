@@ -263,7 +263,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearDownloadVideo(){
+    public void delAllDownloadTask(){
         deleteAllTask();
     }
 

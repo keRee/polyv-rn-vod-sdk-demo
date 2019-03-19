@@ -90,8 +90,8 @@ const PolyvVideoDownload = {
     /**
      * 清楚所有下载得视频
      */
-    clearDownloadVideo(){
-        videoDownload.clearDownloadVideo()
+    delAllDownloadTask(){
+        videoDownload.delAllDownloadTask()
     },
 
     /**

@@ -41,13 +41,17 @@ class PolyvDownloadedListPage extends Component {
   }
 
   componentDidMount() {
+    this.getDownloadedVideos();
+  }
+
+  getDownloadedVideos() {
     PolyvdownloadModule.getDownloadVideoList(true)
       .then(ret => {
-        if(ret.code == 0){
-            console.log("downloed :" + ret.dataMaps);
-            PolyvViewManager.refCollection['downloadedList'].update(ret);
-           
-        }else{
+        if (ret.code == 0) {
+          console.log("downloed :" + ret.dataMaps);
+          PolyvViewManager.refCollection['downloadedList'].update(ret);
+        }
+        else {
           console.log("download error:" + ret.message);
         }
       })
@@ -99,9 +103,9 @@ class PolyvDownloadingListPage extends Component {
   }
 
   updateDownload(successDwonloadInfo){
-    console.log('download success callback')
     var datas = PolyvViewManager.refCollection['downloadedList'].state.datas;
     datas.splice(0,0,successDwonloadInfo)
+    console.log('download success callback:'+JSON.stringify(datas))
     PolyvViewManager.refCollection['downloadedList'].setState({datas:datas})
   }
   

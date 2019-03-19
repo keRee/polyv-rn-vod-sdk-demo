@@ -72,6 +72,28 @@ export class PolyvVideoDownloadItem extends Component {
     PolyvVideoDownload.pauseDownload(vid, bitrate);
   }
 
+  getDownloadStatus(downloadingInfo){
+    if (!downloadingInfo) {
+      console.log('downloadingInfo video is null')
+      return;
+    }
+    //获取上一个下载视频得下载状态，如果是等待下载就暂停
+    PolyvVideoDownload.getDownloadStatus(
+      downloadingInfo.vid,
+      downloadingInfo.bitrate
+    ).then(ret => {
+      var downloadStatus = ret.code;
+      console.log('getDownloadStatus:'+JSON.stringify(downloadingInfo))
+      this.setState({ videoStatus: downloadStatus });
+    });
+  }
+
+  componentDidMount(){
+    if(!this.props.isDownloadedPage){
+      this.getDownloadStatus(this.state.data)
+    }
+  }
+
   render() {
     // this.setState({data:this.props.downloadInfo})
     var videoInfo = this.state.data;
@@ -109,7 +131,7 @@ export class PolyvVideoDownloadItem extends Component {
           timeoutId = setTimeout(() => {
             console.log("onlongpress");
             this._onLongPress();
-          }, 3000);
+          }, 5000);
         }}
         onPressOut={() => {
           console.log("onPressOut");
