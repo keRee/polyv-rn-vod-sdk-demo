@@ -76,7 +76,7 @@ export default class PolyvVideoList extends Component {
           renderItem={this.renderItem}
           onEndReached={this._onEndReached.bind(this)}
           ListFooterComponent={this._renderFooter.bind(this)}
-    
+          keyExtractor={(item, index) => {return item.vid+item.bitrate}}
         />
         <OptionsView ref={ref => (this.popUp = ref)} />
       </View>

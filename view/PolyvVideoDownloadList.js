@@ -166,7 +166,7 @@ export class PolyvVideoDownloadList extends Component {
       this.props.downloadCallback(successDownload);
 
       //更新
-      this.refsCollection[key].setState({ videoStatus: 3 });
+      // this.refsCollection[key].setState({ videoStatus: 3 });
       //筛选掉下载完成得数据并更新当前下载列表
       const result = this.state.datas.filter(item => {
         return item.vid + item.bitrate !== key;
@@ -327,35 +327,18 @@ export class PolyvVideoDownloadList extends Component {
         </View>
       );
     }
-
-    return (
-      <FlatList
-        ref={"downloadHistoryList"}
-        style={styles.list}
-        data={this.state.datas}
-        renderItem={this.renderItemData.bind(this)}
-      />
-    );
   };
 
   render() {
     console.log(" list status " + this.props.isDownloadedPage);
-    var bottomView = this.createFooterView();
-    this.refsCollection = {};
-
     return (
       <View style={styles.container}>
         <FlatList
-          ref={"downloadHistoryList"}
           style={styles.list}
           data={this.state.datas}
           renderItem={this.renderItemData.bind(this)}
-          //2创建侧滑菜单
-          renderQuickActions={() => this.getQuickActions()} //创建侧滑菜单
-          maxSwipeDistance={80} //可展开（滑动）的距离
-          bounceFirstRowOnMount={false} //进去的时候不展示侧滑效果
+          keyExtractor={(item, index) => {return item.vid+item.bitrate}}
         />
-        {bottomView}
       </View>
     );
   }
