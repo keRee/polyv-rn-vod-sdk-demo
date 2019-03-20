@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, PolyvVodConfigRnErrorCode) {
   PolyvVodRnError_NoViewerId = -4,
 };
 
-@interface PolyvVodConfigRnModule : NSObject <RCTBridgeModule>
+@interface PolyvRNVodConfigModule : NSObject <RCTBridgeModule>
 
 @end
 

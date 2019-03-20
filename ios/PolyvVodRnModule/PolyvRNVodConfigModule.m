@@ -6,7 +6,7 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#import "PolyvVodConfigRnModule.h"
+#import "PolyvRNVodConfigModule.h"
 #import <PLVVodSDK/PLVVodSDK.h>
 
 NSString * NSStringFromPolyvVodRnError(PolyvVodConfigRnErrorCode code) {
@@ -26,14 +26,14 @@ NSString * NSStringFromPolyvVodRnError(PolyvVodConfigRnErrorCode code) {
   }
 }
 
-@interface PolyvVodConfigRnModule ()
+@interface PolyvRNVodConfigModule ()
 
 @property (nonatomic, strong) NSString *decodeKey;
 @property (nonatomic, strong) NSString *decodeIv;
 
 @end
 
-@implementation PolyvVodConfigRnModule
+@implementation PolyvRNVodConfigModule
 
 @synthesize bridge = _bridge;
 
