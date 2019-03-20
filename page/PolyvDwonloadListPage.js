@@ -104,8 +104,8 @@ class PolyvDownloadingListPage extends Component {
 
   updateDownload(successDwonloadInfo){
     var datas = PolyvViewManager.refCollection['downloadedList'].state.datas;
-    datas.splice(0,0,successDwonloadInfo)
-    console.log('download success callback:'+JSON.stringify(datas))
+    datas.splice(datas.length,0,successDwonloadInfo)
+    console.log('download success callback:'+JSON.stringify(successDwonloadInfo))
     PolyvViewManager.refCollection['downloadedList'].setState({datas:datas})
   }
   
