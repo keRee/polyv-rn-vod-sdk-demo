@@ -14,7 +14,6 @@ import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
  * 弹出层
  */
 const { width, height } = Dimensions.get("window");
-const defs = [{ content: "超清" }, { content: "高清" }, { content: "标清" }];
 
 export default class PolyvPopuWindow extends Component {
   constructor(props) {
@@ -128,6 +127,7 @@ export default class PolyvPopuWindow extends Component {
               style={styles.list}
               data={this.state.datas}
               renderItem={this.renderItemData.bind(this)}
+              keyExtractor={(item, index) => {return item}}
             />
           </Animated.View>
         </View>

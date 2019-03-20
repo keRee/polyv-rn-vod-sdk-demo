@@ -12,7 +12,7 @@ import {
 
 } from "react-native";
 import PropTypes from "prop-types";
-import OptionsView from "../view/PolyvPopuWindow";
+import OptionsView from "./PolyvPopuWindow";
 import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
 
 
@@ -21,7 +21,7 @@ let navigation, that; //导航栏引用
 let pageNo = 1; //当前第几页
 let totalPage = 5; //总的页数
 
-export default class PolyvVideoList extends Component {
+export default class PolyvVideoOnlineList extends Component {
   static propTypes = {
     navigation: PropTypes.object
   };
