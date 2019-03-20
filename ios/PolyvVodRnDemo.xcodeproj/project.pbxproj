@@ -75,6 +75,11 @@
 		DA274731221A6829009BD3BA /* PolyvVodPlayerWrapperView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274730221A6829009BD3BA /* PolyvVodPlayerWrapperView.m */; };
 		DA274735221A891B009BD3BA /* PolyvRNVodConfigModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DA274734221A891B009BD3BA /* PolyvRNVodConfigModule.m */; };
 		DAAC46E8224082A7007868BE /* PolyvRNVodDownloadModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC46E7224082A6007868BE /* PolyvRNVodDownloadModule.m */; };
+		DAE0A2E92241DDB2003AC27F /* PLVVodDBManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DAE0A2AD2241DDB2003AC27F /* PLVVodDBManager.mm */; };
+		DAE0A2EA2241DDB2003AC27F /* PLVVodExtendVideoInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = DAE0A2AE2241DDB2003AC27F /* PLVVodExtendVideoInfo.mm */; };
+		DAE0A2EB2241DDB2003AC27F /* PLVDownloadCompleteInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE0A2B72241DDB2003AC27F /* PLVDownloadCompleteInfoModel.m */; };
+		DAE0A2F02241DDB2003AC27F /* plv_bg_voice.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DAE0A2C02241DDB2003AC27F /* plv_bg_voice.mp3 */; };
+		DAE0A2F12241DDB2003AC27F /* PLVVodDownloadHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE0A2C22241DDB2003AC27F /* PLVVodDownloadHelper.m */; };
 		DAE1803F223A672F0050F8A6 /* RNGestureHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */; };
 		DAE18040223A672F0050F8A6 /* RNGestureHandlerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFC223A672F0050F8A6 /* RNGestureHandlerManager.m */; };
 		DAE18041223A672F0050F8A6 /* RNGestureHandlerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17FFF223A672F0050F8A6 /* RNGestureHandlerRegistry.m */; };
@@ -467,6 +472,16 @@
 		DA274734221A891B009BD3BA /* PolyvRNVodConfigModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PolyvRNVodConfigModule.m; sourceTree = "<group>"; };
 		DAAC46E6224082A6007868BE /* PolyvRNVodDownloadModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvRNVodDownloadModule.h; sourceTree = "<group>"; };
 		DAAC46E7224082A6007868BE /* PolyvRNVodDownloadModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyvRNVodDownloadModule.m; sourceTree = "<group>"; };
+		DAE0A2AD2241DDB2003AC27F /* PLVVodDBManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PLVVodDBManager.mm; sourceTree = "<group>"; };
+		DAE0A2AE2241DDB2003AC27F /* PLVVodExtendVideoInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PLVVodExtendVideoInfo.mm; sourceTree = "<group>"; };
+		DAE0A2AF2241DDB2003AC27F /* PLVVodExtendVideoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVVodExtendVideoInfo.h; sourceTree = "<group>"; };
+		DAE0A2B02241DDB2003AC27F /* PLVVodDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVVodDBManager.h; sourceTree = "<group>"; };
+		DAE0A2B12241DDB2003AC27F /* PLVVodExtendVideoInfo+WCTTableCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PLVVodExtendVideoInfo+WCTTableCoding.h"; sourceTree = "<group>"; };
+		DAE0A2B62241DDB2003AC27F /* PLVDownloadCompleteInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVDownloadCompleteInfoModel.h; sourceTree = "<group>"; };
+		DAE0A2B72241DDB2003AC27F /* PLVDownloadCompleteInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVDownloadCompleteInfoModel.m; sourceTree = "<group>"; };
+		DAE0A2C02241DDB2003AC27F /* plv_bg_voice.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = plv_bg_voice.mp3; sourceTree = "<group>"; };
+		DAE0A2C12241DDB2003AC27F /* PLVVodDownloadHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVVodDownloadHelper.h; sourceTree = "<group>"; };
+		DAE0A2C22241DDB2003AC27F /* PLVVodDownloadHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVVodDownloadHelper.m; sourceTree = "<group>"; };
 		DAE17FF9223A672F0050F8A6 /* RNGestureHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGestureHandler.m; sourceTree = "<group>"; };
 		DAE17FFA223A672F0050F8A6 /* RNGestureHandlerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerButton.h; sourceTree = "<group>"; };
 		DAE17FFB223A672F0050F8A6 /* RNGestureHandlerDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGestureHandlerDirection.h; sourceTree = "<group>"; };
@@ -783,6 +798,7 @@
 		DA2745BC2216B8F2009BD3BA /* PolyvVodRnModule */ = {
 			isa = PBXGroup;
 			children = (
+				DAE0A2AB2241DDB2003AC27F /* Download */,
 				DA2746A6221A486D009BD3BA /* Cast */,
 				DA2746D4221A486D009BD3BA /* PolyvOpenSourceModule */,
 				DA2746412216B95D009BD3BA /* PolyvVodPlayerManager.h */,
@@ -917,6 +933,47 @@
 				DA27470E221A486D009BD3BA /* PLVVodExplanationView.h */,
 			);
 			path = ExplanationView;
+			sourceTree = "<group>";
+		};
+		DAE0A2AB2241DDB2003AC27F /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				DAE0A2AC2241DDB2003AC27F /* PolyvOpenDatabase */,
+				DAE0A2B52241DDB2003AC27F /* Model */,
+				DAE0A2BF2241DDB2003AC27F /* Helper */,
+			);
+			path = Download;
+			sourceTree = "<group>";
+		};
+		DAE0A2AC2241DDB2003AC27F /* PolyvOpenDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				DAE0A2AD2241DDB2003AC27F /* PLVVodDBManager.mm */,
+				DAE0A2AE2241DDB2003AC27F /* PLVVodExtendVideoInfo.mm */,
+				DAE0A2AF2241DDB2003AC27F /* PLVVodExtendVideoInfo.h */,
+				DAE0A2B02241DDB2003AC27F /* PLVVodDBManager.h */,
+				DAE0A2B12241DDB2003AC27F /* PLVVodExtendVideoInfo+WCTTableCoding.h */,
+			);
+			path = PolyvOpenDatabase;
+			sourceTree = "<group>";
+		};
+		DAE0A2B52241DDB2003AC27F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAE0A2B62241DDB2003AC27F /* PLVDownloadCompleteInfoModel.h */,
+				DAE0A2B72241DDB2003AC27F /* PLVDownloadCompleteInfoModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DAE0A2BF2241DDB2003AC27F /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DAE0A2C02241DDB2003AC27F /* plv_bg_voice.mp3 */,
+				DAE0A2C12241DDB2003AC27F /* PLVVodDownloadHelper.h */,
+				DAE0A2C22241DDB2003AC27F /* PLVVodDownloadHelper.m */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DAE17FF7223A672F0050F8A6 /* react-native-gesture-handler */ = {
@@ -1422,6 +1479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA274729221A486D009BD3BA /* PLVVodExamViewController.xib in Resources */,
+				DAE0A2F02241DDB2003AC27F /* plv_bg_voice.mp3 in Resources */,
 				DA27472D221A486D009BD3BA /* PLVVodOptionCell.xib in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DA274713221A486D009BD3BA /* PLVVodPlayerSkin.xib in Resources */,
@@ -1539,6 +1597,7 @@
 				DA274712221A486D009BD3BA /* PLVCastBusinessManager.m in Sources */,
 				DA274731221A6829009BD3BA /* PolyvVodPlayerWrapperView.m in Sources */,
 				DAE18041223A672F0050F8A6 /* RNGestureHandlerRegistry.m in Sources */,
+				DAE0A2E92241DDB2003AC27F /* PLVVodDBManager.mm in Sources */,
 				DA274719221A486D009BD3BA /* PLVVodPlaybackRatePanelView.m in Sources */,
 				DA274717221A486D009BD3BA /* PLVVodFullscreenView.m in Sources */,
 				DAE1804D223A672F0050F8A6 /* RNGestureHandlerModule.m in Sources */,
@@ -1563,6 +1622,7 @@
 				DA274720221A486D009BD3BA /* NSString+PLVVod.m in Sources */,
 				DA27471C221A486D009BD3BA /* PLVVodShrinkscreenView.m in Sources */,
 				DA274722221A486D009BD3BA /* UINavigationController+PLVVod.m in Sources */,
+				DAE0A2EB2241DDB2003AC27F /* PLVDownloadCompleteInfoModel.m in Sources */,
 				DA274714221A486D009BD3BA /* PLVVodDefinitionPanelView.m in Sources */,
 				DA274725221A486D009BD3BA /* PLVVodDanmu+PLVVod.m in Sources */,
 				DA274716221A486D009BD3BA /* PLVVodCoverView.m in Sources */,
@@ -1571,6 +1631,8 @@
 				DA27471B221A486D009BD3BA /* PLVVodSettingPanelView.m in Sources */,
 				DA27471A221A486D009BD3BA /* PLVVodAudioCoverPanelView.m in Sources */,
 				DAE18040223A672F0050F8A6 /* RNGestureHandlerManager.m in Sources */,
+				DAE0A2F12241DDB2003AC27F /* PLVVodDownloadHelper.m in Sources */,
+				DAE0A2EA2241DDB2003AC27F /* PLVVodExtendVideoInfo.mm in Sources */,
 				DAE1803F223A672F0050F8A6 /* RNGestureHandler.m in Sources */,
 				DAE18047223A672F0050F8A6 /* RNPanHandler.m in Sources */,
 				DA27472C221A486D009BD3BA /* PLVVodOptionCell.m in Sources */,
