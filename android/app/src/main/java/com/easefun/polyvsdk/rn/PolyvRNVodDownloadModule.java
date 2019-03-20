@@ -1,5 +1,6 @@
 package com.easefun.polyvsdk.rn;
 
+import android.app.DownloadManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.easefun.polyvsdk.Video;
 import com.easefun.polyvsdk.bean.PolyvDownloadInfo;
 import com.easefun.polyvsdk.database.PolyvDownloadSQLiteHelper;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderProgressListener;
+import com.easefun.polyvsdk.download.listener.IPolyvDownloaderSpeedListener;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderStartListener;
 import com.easefun.polyvsdk.log.PolyvCommonLog;
 import com.easefun.polyvsdk.util.PolyvErrorMessageUtils;
@@ -131,22 +133,33 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
                 map.putDouble("current",current);
                 map.putDouble("total",total);
                 map.putString("downloadInfo",data);
-                sendEvent(getReactApplicationContext(),"updateProgress",map);
+                sendEvent(getReactApplicationContext(),"updateProgressEvent",map);
                 downloadSQLiteHelper.update(downloadInfo, current, total);
             }
 
             @Override
             public void onDownloadSuccess() {
+                String vid  = downloadInfo.getVid();
+                int bitrate = downloadInfo.getBitrate();
                 WritableMap map = Arguments.createMap();
                 map.putDouble("total",total);
+                map.putString("vid",vid);
+                map.putDouble("bitrate",bitrate);
                 downloadSQLiteHelper.update(downloadInfo, total, total);
-                sendEvent(getReactApplicationContext(),"downloadSuccess",map);
+                sendEvent(getReactApplicationContext(),"downloadSuccessEvent",map);
             }
 
             @Override
             public void onDownloadFail(@NonNull PolyvDownloaderErrorReason errorReason) {
                 String errorMsg = PolyvErrorMessageUtils.getDownloaderErrorMessage(errorReason.getType());
                 Toast.makeText(getCurrentActivity(), errorMsg, Toast.LENGTH_LONG).show();
+
+                String vid  = downloadInfo.getVid();
+                int bitrate = downloadInfo.getBitrate();
+                WritableMap map = Arguments.createMap();
+                map.putString("vid",vid);
+                map.putDouble("bitrate",bitrate);
+                sendEvent(getReactApplicationContext(),"downloadFailedEvent",map);
             }
 
 
@@ -157,7 +170,20 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
                 String data = GsonUtil.toJson(downloadInfo);
                 WritableMap map = Arguments.createMap();
                 map.putString("downloadInfo",data);
-                sendEvent(getReactApplicationContext(),"startDownload",map);
+                sendEvent(getReactApplicationContext(),"startDownloadEvent",map);
+            }
+        });
+
+        polyvDownloader.setPolyvDownloadSpeedListener(new IPolyvDownloaderSpeedListener() {
+            @Override
+            public void onSpeed(int speed) {
+                String vid  = downloadInfo.getVid();
+                int bitrate = downloadInfo.getBitrate();
+                WritableMap map = Arguments.createMap();
+                map.putString("vid",vid);
+                map.putDouble("bitrate",bitrate);
+                map.putInt("downloadSpeed",speed);
+                sendEvent(getReactApplicationContext(),"downloadSpeedEvent",map);
             }
         });
         return polyvDownloader;
@@ -237,10 +263,35 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearDownloadVideo(int pos){
+    public void delAllDownloadTask(){
         deleteAllTask();
     }
 
+    /**
+     *
+     * @param vid
+     * @param bitrate
+     * @param promise
+     * return 下载状态 0：下载中 1：暂停 2：等待下载 3：下载完成
+     * rn 保留了download info 的下载进度  是否完成  由js 判断
+     */
+    @ReactMethod
+    public void getDownloadStatus(String vid,int bitrate,Promise promise){
+        WritableMap map = Arguments.createMap();
+        int status = -1;
+
+        PolyvDownloader downloader = PolyvDownloaderManager.getPolyvDownloader(vid, bitrate);
+        if(downloader.isDownloading()){
+            status = 0;
+        }else if(PolyvDownloaderManager.isWaitingDownload(vid,bitrate)){
+            status = 2;
+        }else{
+            status = 1;
+        }
+
+        map.putInt("downloadStatus",status);
+        promise.resolve(map);
+    }
     /**
      * 下载全部任务
      */

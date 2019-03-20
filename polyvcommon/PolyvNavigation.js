@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import PolyvOnlineVideoList from '../page/PolyvOnlineVideoListPage';
+import PolyvOnlineVideoListPage from '../page/PolyvOnlineVideoListPage';
 import PolyvVodPlayerPage from '../page/PolyvVodPlayerPage';
 import PolyvDwonloadListPage from '../page/PolyvDwonloadListPage';
 
 const AppNavigator = createStackNavigator(
   {
-    OnlineList: PolyvOnlineVideoList,
+    OnlineList: PolyvOnlineVideoListPage,
     VideoPlayer: PolyvVodPlayerPage ,
     downloadList:PolyvDwonloadListPage
   },

@@ -16,7 +16,7 @@ import {
     StyleSheet,
 } from "react-native";
 
-import PolyvVodPlayer from '../page/PolyvVodPlayer'
+import PolyvVodPlayer from './PolyvVodPlayerModule'
 
 const { width,height } = Dimensions.get("window");
 

@@ -41,13 +41,17 @@ class PolyvDownloadedListPage extends Component {
   }
 
   componentDidMount() {
+    this.getDownloadedVideos();
+  }
+
+  getDownloadedVideos() {
     PolyvdownloadModule.getDownloadVideoList(true)
       .then(ret => {
-        if(ret.code == 0){
-            console.log("downloed :" + ret.dataMaps);
-            PolyvViewManager.refCollection['downloadedList'].update(ret);
-           
-        }else{
+        if (ret.code == 0) {
+          console.log("downloed :" + ret.dataMaps);
+          PolyvViewManager.refCollection['downloadedList'].update(ret);
+        }
+        else {
           console.log("download error:" + ret.message);
         }
       })
@@ -78,7 +82,7 @@ class PolyvDownloadingListPage extends Component {
     tabBarLabel: "下载中"
   };
 
-  getOnlineList() {
+  getDownloadingList() {
     PolyvdownloadModule.getDownloadVideoList(false)
       .then(ret => {
           if(ret.code == 0){
@@ -94,14 +98,14 @@ class PolyvDownloadingListPage extends Component {
 
   componentDidMount(){
     setTimeout(() => {
-      this.getOnlineList()
+      this.getDownloadingList()
     }, 50);
   }
 
   updateDownload(successDwonloadInfo){
-    console.log('download success callback')
     var datas = PolyvViewManager.refCollection['downloadedList'].state.datas;
     datas.splice(0,0,successDwonloadInfo)
+    console.log('download success callback:'+JSON.stringify(datas))
     PolyvViewManager.refCollection['downloadedList'].setState({datas:datas})
   }
   

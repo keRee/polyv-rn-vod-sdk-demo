@@ -11,14 +11,14 @@ import {
 import PolyvVodConfigRnModule from "./PolyvVodConfigRnModule";
 import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
 
-import PolyvVideoListView from "../view/PolyvVideoList";
+import PolyvVideoListView from "../view/PolyvVideoOnlineList";
 import { setAxios } from "../polyvcommon/PolyvNet";
 
 
 const { width, height } = Dimensions.get("window");
 type Props = {};
 
-export default class PolyvOnlineVideoList extends Component {
+export default class PolyvOnlineVideoListPage extends Component {
   static navigationOptions = (
     { navigation }) => {
       return {
