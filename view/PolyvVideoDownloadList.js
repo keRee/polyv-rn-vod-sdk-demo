@@ -337,7 +337,9 @@ export class PolyvVideoDownloadList extends Component {
           style={styles.list}
           data={this.state.datas}
           renderItem={this.renderItemData.bind(this)}
-          keyExtractor={(item, index) => {return item.vid+item.bitrate}}
+          keyExtractor={(item, index) => {
+            return item.vid+item.bitrate+index}
+          }
         />
       </View>
     );
