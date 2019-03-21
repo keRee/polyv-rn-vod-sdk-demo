@@ -195,14 +195,14 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
         lists = downloadSQLiteHelper.getAll();
         downloadInfos.addAll(getTask(lists, hasDownloaded,null));
-        if(downloadInfos.isEmpty()){
-            String errorCode = "" + PolyvRNVodCode.noDownloadedVideo;
-            String errorDesc = PolyvRNVodCode.getDesc(PolyvRNVodCode.noDownloadedVideo);
-            Throwable throwable = new Throwable(errorDesc);
-            Log.e(TAG, "errorCode=" + errorCode + "  errorDesc=" + errorDesc);
-            promise.reject(errorCode,errorDesc,throwable);
-            return;
-        }
+//        if(downloadInfos.isEmpty()){
+//            String errorCode = "" + PolyvRNVodCode.noDownloadedVideo;
+//            String errorDesc = PolyvRNVodCode.getDesc(PolyvRNVodCode.noDownloadedVideo);
+//            Throwable throwable = new Throwable(errorDesc);
+//            Log.e(TAG, "errorCode=" + errorCode + "  errorDesc=" + errorDesc);
+//            promise.reject(errorCode,errorDesc,throwable);
+//            return;
+//        }
         WritableMap map = Arguments.createMap();
         map.putString("downloadList",GsonUtil.toJson(downloadInfos));
 

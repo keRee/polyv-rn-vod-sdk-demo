@@ -10,7 +10,9 @@ import {
   FlatList,
   Text,
   Image,
-  ProgressBarAndroid
+  ProgressBarAndroid,
+  ProgressViewIOS,
+  Platform
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvUtils from "../polyvcommon/PolyvUtils";
@@ -24,6 +26,7 @@ const videoPlaySrc = [
   { src: require("../view/img/polyv_btn_dlpause.png"), status: "下载等待" },
   { src: require("../view/img/polyv_btn_play.png"), status: "下载完成" }
 ];
+let defaultImg = require("./img/polyv_pic_demo.png");
 
 export class PolyvVideoDownloadItem extends Component {
   static propTypes = {
@@ -83,7 +86,6 @@ export class PolyvVideoDownloadItem extends Component {
       downloadingInfo.bitrate
     ).then(ret => {
       var downloadStatus = ret.code;
-      console.log('getDownloadStatus:'+JSON.stringify(downloadingInfo))
       this.setState({ videoStatus: downloadStatus });
     });
   }
@@ -92,6 +94,15 @@ export class PolyvVideoDownloadItem extends Component {
     if(!this.props.isDownloadedPage){
       this.getDownloadStatus(this.state.data)
     }
+  }
+
+  
+  creatProgressView(videoInfo) {
+    return Platform.OS === "ios" ? null :
+      <ProgressBarAndroid styleAttr="Horizontal" 
+      progress={videoInfo.total == 0 ? 
+        0 : videoInfo.percent / videoInfo.total} //videoInfo.percent/videoInfo.total
+        indeterminate={false} style={{ flex: 2.5, width: "90%" }} color="#2196F3" />;
   }
 
   render() {
@@ -104,17 +115,10 @@ export class PolyvVideoDownloadItem extends Component {
           (videoInfo.percent / videoInfo.total) * videoInfo.filesize
         ));
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
+    var progressView = this.creatProgressView(videoInfo)
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>
-        <ProgressBarAndroid
-          styleAttr="Horizontal"
-          progress={
-            videoInfo.total == 0 ? 0 : videoInfo.percent / videoInfo.total
-          } //videoInfo.percent/videoInfo.total
-          indeterminate={false}
-          style={{ flex: 2.5, width: "90%" }}
-          color="#2196F3"
-        />
+        {progressView}
         <Text style={styles.bottom_download_txt}>
           {progressContent}
         </Text>
@@ -140,7 +144,7 @@ export class PolyvVideoDownloadItem extends Component {
       >
         <View style={styles.container}>
           <View style={styles.imgContainer}>
-            <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
+            <Image style={styles.img} source={{ uri: videoInfo.first_image }} defaultSource={defaultImg}/>
             <TouchableOpacity
               style={styles.videoPlayImg}
               onPress={() => {
@@ -183,6 +187,7 @@ export class PolyvVideoDownloadItem extends Component {
       </TouchableOpacity>
     );
   }
+
 }
 
 const styles = StyleSheet.create({

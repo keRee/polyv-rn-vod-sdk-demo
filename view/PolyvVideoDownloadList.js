@@ -15,7 +15,7 @@ import {
   Footer,
   FooterTab,
   Button,
-  Text
+  Text,
 } from "native-base";
 import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
 import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
@@ -125,29 +125,6 @@ export class PolyvVideoDownloadList extends Component {
         });
       }
 
-      // if (msg.downloadInfo !== this.state.downloadingInfosString) {
-      //   console.log("updateProgress  parase data");
-      //   this.setState({ downloadingInfoString: msg.downloadInfo });
-      //   var downloadingInfo = JSON.parse(msg.downloadInfo);
-      //   this.setState({ downloadingInfo: downloadingInfo });
-
-      //   //更新上一个下载视频的状态为暂停
-      //   if (lastDwonloadVideo instanceof Component) {
-      //     lastDwonloadVideo.stopDownload();
-      //   }
-      // }
-      // var key =
-      //   this.state.downloadingInfos.vid + this.state.downloadingInfos.bitrate;
-      // var updateVideo = dataMaps.get(key);
-
-      // if (updateVideo) {
-      //   updateVideo.percent = msg.current;
-      //   updateVideo.total = msg.total;
-      //   this.refsCollection[key].setState({
-      //     data: updateVideo,
-      //     videoStatus: 0
-      //   });
-      // }
 
       lastDwonloadVideo = this.refsCollection[key];
     });
@@ -220,7 +197,6 @@ export class PolyvVideoDownloadList extends Component {
       {
         cancelable: true,
         onDismiss: () => {
-          ToastAndroid.show("点击了外面", ToastAndroid.SHORT);
         }
       }
     );
@@ -229,8 +205,6 @@ export class PolyvVideoDownloadList extends Component {
   renderItemData({ item, index }) {
     //标记key 用于item 标记
     var id = item.vid + item.bitrate;
-
-    console.log('render view  :'+JSON.stringify(item))
     return (
       <PolyvVideoDownloadItem
         ref={instance => {
@@ -291,7 +265,6 @@ export class PolyvVideoDownloadList extends Component {
     {
       cancelable: true,
       onDismiss: () => {
-        ToastAndroid.show("点击了外面", ToastAndroid.SHORT);
       }
     })
     
@@ -319,18 +292,16 @@ export class PolyvVideoDownloadList extends Component {
   }
 
   emptyView = () => {
-    var datas = this.state.datas;
-    if (datas.length == 0) {
       return (
         <View style={styles.container}>
           <Text style={styles.empty}>暂无下载视频</Text>
-        </View>
+          </View> 
       );
-    }
   };
 
   render() {
     console.log(" list status " + this.props.isDownloadedPage);
+    var bottomView = this.createFooterView();
     return (
       <View style={styles.container}>
         <FlatList
@@ -340,7 +311,9 @@ export class PolyvVideoDownloadList extends Component {
           keyExtractor={(item, index) => {
             return item.vid+item.bitrate+index}
           }
+          ListEmptyComponent={this.emptyView}
         />
+        {bottomView}
       </View>
     );
   }
@@ -348,14 +321,12 @@ export class PolyvVideoDownloadList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    position: "relative"
-  },
-  empty: {
-    fontSize: 18,
-    display: "flex",
+    backgroundColor:'white',
     alignItems: "center",
     justifyContent: "center"
+  },
+  empty: {
+    display: "flex",
   },
   footerTxt: {
     fontSize: 15
