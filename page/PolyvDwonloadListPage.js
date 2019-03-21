@@ -61,7 +61,7 @@ class PolyvDownloadedListPage extends Component {
   }
 
   render() {
-    console.log('render downloaed ')
+    console.log('render downloaed')
     return (
       <PolyvVideoDownloadList  
       nav={nav}//传递首页的导航栏实例
@@ -103,10 +103,10 @@ class PolyvDownloadingListPage extends Component {
   }
 
   updateDownload(successDwonloadInfo){
-    var datas = PolyvViewManager.refCollection['downloadedList'].state.datas;
-    datas.splice(datas.length,0,successDwonloadInfo)
+    var newDatas = PolyvViewManager.refCollection['downloadedList'].state.datas;
+    // newDatas.splice(newDatas.length,0,successDwonloadInfo)
     console.log('download success callback:'+JSON.stringify(successDwonloadInfo))
-    PolyvViewManager.refCollection['downloadedList'].setState({datas:datas})
+    PolyvViewManager.refCollection['downloadedList'].setState({datas:newDatas.concat(successDwonloadInfo)})
   }
   
   render() {

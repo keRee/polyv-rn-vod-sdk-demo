@@ -17,6 +17,7 @@ import PolyvVodDownloadModule from '../page/PolyvVodDownloadModule'
 
 const { width, height } = Dimensions.get("window");
 let timeImg = require("./img/polyv_time.png");
+let defaultImg = require("./img/polyv_pic_demo.png");
 
 export class PolyvVideoOnlineItem extends Component {
   static propTypes = {
@@ -56,7 +57,7 @@ export class PolyvVideoOnlineItem extends Component {
     var videoInfo = this.props.videoInfo;
     return (
       <View style={styles.container}>
-        <Image style={styles.img} source={{ uri: videoInfo.first_image }} />
+        <Image style={styles.img} source={{ uri: videoInfo.first_image }} defaultSource={defaultImg}/>
         <View>
           <Text style={styles.title}>{videoInfo.title}</Text>
           <View style={styles.bottomContainer}>
@@ -131,7 +132,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 12,
-    height: 20,
     backgroundColor: "#63B8FF",
     margin: 5,
   },
