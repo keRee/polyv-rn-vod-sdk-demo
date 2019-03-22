@@ -100,8 +100,7 @@ export class PolyvVideoDownloadItem extends Component {
   creatProgressView(videoInfo) {
     return Platform.OS === "ios" ? null :
       <ProgressBarAndroid styleAttr="Horizontal" 
-      progress={videoInfo.total == 0 ? 
-        0 : videoInfo.percent / videoInfo.total} //videoInfo.percent/videoInfo.total
+      progress={videoInfo.progress} //videoInfo.percent/videoInfo.total
         indeterminate={false} style={{ flex: 2.5, width: "90%" }} color="#2196F3" />;
   }
 
@@ -128,19 +127,24 @@ export class PolyvVideoDownloadItem extends Component {
 
     var timeoutId;
     return (
-      //很诡异   onlongpress 在点击得时候就被触发了  最简单得demo 也是 最后采用这种方式实现长按
+      /**
+       * 很诡异   onlongpress 在点击得时候就被触发了  最简单得demo 也是 最后采用这种方式实现长按
+       * 测试发现 6.0机器  longpress触发有点奇怪 如果发现onlongpress 调用奇怪 采用注释代码实现
+       */
       <TouchableOpacity
-        onPressIn={() => {
-          console.log("onPressIn");
-          timeoutId = setTimeout(() => {
-            console.log("onlongpress");
-            this._onLongPress();
-          }, 5000);
-        }}
-        onPressOut={() => {
-          console.log("onPressOut");
-          clearTimeout(timeoutId);
-        }}
+        onLongPress={this._onLongPress}
+
+        // onPressIn={() => {
+        //   console.log("onPressIn");
+        //   timeoutId = setTimeout(() => {
+        //     console.log("onlongpress");
+        //     this._onLongPress();
+        //   }, 5000);
+        // }}
+        // onPressOut={() => {
+        //   console.log("onPressOut");
+        //   clearTimeout(timeoutId);
+        // }}
       >
         <View style={styles.container}>
           <View style={styles.imgContainer}>
@@ -267,8 +271,8 @@ const styles = StyleSheet.create({
     height: 70
   },
   videoPlayImg: {
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     resizeMode: "cover",
     position: "absolute"
   },

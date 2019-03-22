@@ -9,12 +9,12 @@ import {
   FlatList,
   Text,
   ActivityIndicator,
-
+  RefreshControl
 } from "react-native";
 import PropTypes from "prop-types";
 import OptionsView from "./PolyvPopuWindow";
 import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
-
+import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
 
 const { width, height } = Dimensions.get("window");
 let navigation, that; //导航栏引用
@@ -30,14 +30,33 @@ export default class PolyvVideoOnlineList extends Component {
     super(props);
     this.state = {
       datas: [],
-      showFoot: 0 // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
+      showFoot: 0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
+      refreshing:false
     };
     that = this;
+  }
+
+  componentDidMount(){
+    setTimeout(() => {
+      this.getOnlineList()
+    }, 50);
   }
 
   update(datas) {
     console.log(" update list view");
     this.setState({ datas: datas });
+  }
+
+  
+  getOnlineList() {
+    console.log("showDownloadOptions");
+    debugger
+    PolyvHttpManager.getVideoList(1,20,(success,error) =>{
+      if(success){
+        this.update(success.data)
+      }
+      this.setState({refreshing: false});
+    })
   }
 
   renderItem({ item }) {
@@ -64,6 +83,10 @@ export default class PolyvVideoOnlineList extends Component {
     return <View style={{ height: 15, backgroundColor: "#FFFAFA" }} />;
   }
 
+  _onRefresh= () =>{
+    this.setState({refreshing: true});
+    this.getOnlineList()
+  }
 
   render() {
     navigation = this.props.navigation;
@@ -76,7 +99,15 @@ export default class PolyvVideoOnlineList extends Component {
           renderItem={this.renderItem}
           onEndReached={this._onEndReached.bind(this)}
           ListFooterComponent={this._renderFooter.bind(this)}
-          keyExtractor={(item, index) => {return item.vid+item.bitrate}}
+          keyExtractor={(item, index) => {
+            return item.vid + item.bitrate;
+          }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
         />
         <OptionsView ref={ref => (this.popUp = ref)} />
       </View>
@@ -165,13 +196,12 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    height: 100,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10
   },
   list: {
     width: width
-  },
- 
+  }
 });

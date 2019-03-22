@@ -9,7 +9,6 @@ import {
   StyleSheet,
 } from "react-native";
 import PolyvVodConfigRnModule from "./PolyvVodConfigRnModule";
-import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
 
 import PolyvVideoListView from "../view/PolyvVideoOnlineList";
 import { setAxios } from "../polyvcommon/PolyvNet";
@@ -90,20 +89,11 @@ export default class PolyvOnlineVideoListPage extends Component {
     this.refs["playerA"].startOrPause();
   }
 
-  getOnlineList() {
-    console.log("showDownloadOptions");
-    
-    PolyvHttpManager.getVideoList(1,20,(success,error) =>{
-      if(success){
-        this.refs.videoList.update(success.data)
-      }
-    })
-  }
 
   componentDidMount(){
-    setTimeout(() => {
-      this.getOnlineList()
-    }, 50);
+    // setTimeout(() => {
+    //   this.getOnlineList()
+    // }, 50);
   }
 
   render() {
@@ -120,7 +110,7 @@ export default class PolyvOnlineVideoListPage extends Component {
 const styles = StyleSheet.create({
   container: {
     width:width,
-    height:height+50,
+    height:height,
     backgroundColor: "gray"
   },
   video: {

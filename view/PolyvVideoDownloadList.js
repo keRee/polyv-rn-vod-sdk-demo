@@ -119,6 +119,7 @@ export class PolyvVideoDownloadList extends Component {
       if (updateVideo) {
         updateVideo.percent = msg.current;
         updateVideo.total = msg.total;
+        updateVideo.progress = msg.progress;
         this.refsCollection[key].setState({
           data: updateVideo,
           videoStatus: 0
@@ -221,6 +222,9 @@ export class PolyvVideoDownloadList extends Component {
 
   //暂停或开始下载全部
   _startOrPauseDownloadAll() {
+    if(this.state.datas.length == 0){
+      return
+    }
     if (this.state.allTaskDownloadPause) {
       PolyvVideoDownload.downloadAllTask();
       this.updateAllDownloadStatus(0);
@@ -247,6 +251,9 @@ export class PolyvVideoDownloadList extends Component {
 
   // 清除所有正在下载的视频
   _clearAll() {
+    if(this.state.datas.length == 0){
+      return
+    }
     Alert.alert('提示','是否要清空所有下载中的任务',[
       {
         text: "确定",
@@ -293,7 +300,7 @@ export class PolyvVideoDownloadList extends Component {
 
   emptyView = () => {
       return (
-        <View style={styles.container}>
+        <View style={styles.empty_container}>
           <Text style={styles.empty}>暂无下载视频</Text>
           </View> 
       );
@@ -325,7 +332,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  empty_container: {
+    height:height,
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+  },
   empty: {
+    textAlign:'center',
+    alignItems: "center",
+    justifyContent: "center",
     display: "flex",
   },
   footerTxt: {

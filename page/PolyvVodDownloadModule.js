@@ -30,7 +30,7 @@ const PolyvVideoDownload = {
  */
   async startDownload(vid,pos,title,callback) {
     if(!vid){
-        Alert.alert('vid is empty')
+        Alert.alert('vid is invalid')
         return
     }
     if(pos <0){
@@ -95,7 +95,7 @@ const PolyvVideoDownload = {
     },
 
     /**
-     * 
+     * 获取下载列表
      * @param {bool} hasDownloaded 是否已经下载完成
      */
     async getDownloadVideoList(hasDownloaded){
@@ -120,6 +120,22 @@ const PolyvVideoDownload = {
         
     },
 
+     /**
+     * 获取所有下载数据  下载完成与下载中 等待 暂停
+     */
+    async getAllDownloadVideoList(){
+        try {
+            var {downloadList} = await videoDownload.getAllDownloadVideoList(hasDownloaded)
+            var dataJs = JSON.parse(downloadList)
+            return {code:0,data:dataJs}
+        } catch (e) {
+            var code = e.code;
+            var message = e.message;
+            return { code, message }
+        }
+        
+    },
+
     /**
      * 
      * @param {stirng} vid 视频id
@@ -136,6 +152,23 @@ const PolyvVideoDownload = {
             return {code:-1}
         }
         
+    },
+
+    /**
+     * 视频是否已经添加到下载队列里
+     * @param {string} vid 
+     */
+    async videoHasAdded(vid){
+        if(!vid){
+            Alert.alert('vid is invalid')
+            return
+        }
+        try {
+            var {videoHasAdded} = await videoDownload.hasAddDownload(vid)
+            return {hasAdded:videoHasAdded}
+        } catch (error) {
+            return {code:-1}
+        }
     }
 
 };
