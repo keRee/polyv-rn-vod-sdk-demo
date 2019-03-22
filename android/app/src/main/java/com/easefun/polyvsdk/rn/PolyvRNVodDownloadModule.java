@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.jar.Attributes;
 
 /**
@@ -87,6 +88,13 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         });
     }
     @ReactMethod
+    public void hasAddDownload(String vid,Promise promise){
+        WritableMap map = Arguments.createMap();
+        boolean isAdded = downloadSQLiteHelper.isAdd(vid);
+        map.putBoolean("videoHasAdded",isAdded);
+        promise.resolve(map);
+    }
+    @ReactMethod
     public void startDownload(final String vid, final int pos, final String title, Callback callback) {
         PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :" );
         PolyvVideoVO videoJSONVO = video;
@@ -101,7 +109,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         final PolyvDownloadInfo downloadInfo = new PolyvDownloadInfo(vid, videoJSONVO.getDuration(),
                 videoJSONVO.getFileSizeMatchVideoType(bitrate), bitrate, title);
         Log.i("videoAdapter", downloadInfo.toString());
-        if (downloadSQLiteHelper != null && !downloadSQLiteHelper.isAdd(downloadInfo)) {
+        if (downloadSQLiteHelper != null && !downloadSQLiteHelper.isAdd(downloadInfo.getVid())) {
             downloadSQLiteHelper.insert(downloadInfo);
             start(vid, bitrate, downloadInfo);
         } else {
@@ -195,14 +203,29 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
         lists = downloadSQLiteHelper.getAll();
         downloadInfos.addAll(getTask(lists, hasDownloaded,null));
-//        if(downloadInfos.isEmpty()){
-//            String errorCode = "" + PolyvRNVodCode.noDownloadedVideo;
-//            String errorDesc = PolyvRNVodCode.getDesc(PolyvRNVodCode.noDownloadedVideo);
-//            Throwable throwable = new Throwable(errorDesc);
-//            Log.e(TAG, "errorCode=" + errorCode + "  errorDesc=" + errorDesc);
-//            promise.reject(errorCode,errorDesc,throwable);
-//            return;
-//        }
+        WritableMap map = Arguments.createMap();
+        map.putString("downloadList",GsonUtil.toJson(downloadInfos));
+
+        promise.resolve(map);
+    }
+
+    //获取所有下载列表
+    @ReactMethod
+    public void getAllDownloadVideoList(Promise promise) {
+        List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
+        lists = downloadSQLiteHelper.getAll();
+        for (PolyvDownloadInfo downloadInfo:downloadInfos) {
+            long percent = downloadInfo.getPercent();
+            long total = downloadInfo.getTotal();
+            // 已下载的百分比
+            int progress = 0;
+            if (total != 0) {
+                progress = (int) (percent * 100 / total);
+            }
+            if(progress == 100){
+                addDownloadListener(downloadInfo.getVid(),downloadInfo.getBitrate(),downloadInfo,null);
+            }
+        }
         WritableMap map = Arguments.createMap();
         map.putString("downloadList",GsonUtil.toJson(downloadInfos));
 
