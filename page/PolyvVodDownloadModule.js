@@ -28,7 +28,7 @@ const PolyvVideoDownload = {
  * @param {fun} callback 下载回掉 success fail
  * @returns 0:下载任务添加成功，1：下载任务已经在队列
  */
-  async startDownload(vid,pos,title,callback) {
+  async startDownload(vid,pos,title) {
     if(!vid){
         Alert.alert('vid is invalid')
         return
@@ -39,7 +39,7 @@ const PolyvVideoDownload = {
     }
     var result ;
     try {
-        await videoDownload.startDownload(vid,pos,title,callback)
+        await videoDownload.startDownload(vid,pos,title)
         result = 0
     } catch (error) {
         result = error.code

@@ -126,7 +126,6 @@ export class PolyvVideoDownloadList extends Component {
         });
       }
 
-
       lastDwonloadVideo = this.refsCollection[key];
     });
 

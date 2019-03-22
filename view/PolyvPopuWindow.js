@@ -76,8 +76,7 @@ export default class PolyvPopuWindow extends Component {
     PolyvVideoDownload.startDownload(
       this.state.vid,
       index,
-      this.state.title,
-      () => {}
+      this.state.title
     );
   }
 
