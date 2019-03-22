@@ -116,11 +116,49 @@ RCT_EXPORT_METHOD(getDownloadVideoList:(BOOL)hasDownloaded
         [self addDownloadInfoListener:info];
       }
     }];
-    
-    NSString *downloadInfoArrayDesc = [downloadInfoArray componentsJoinedByString:@","];
-    NSDictionary *dic = @{ @"downloadList": downloadInfoArrayDesc };
-    resolve(dic);
   }
+  
+  NSString *downloadInfoArrayDesc;
+  if (downloadInfoArray.count == 0) {
+    downloadInfoArrayDesc = @"[]";
+  } else {
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:downloadInfoArray options:kNilOptions error:&error];
+    downloadInfoArrayDesc = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  }
+  NSLog(@"downloadInfoArrayDesc = %@", downloadInfoArrayDesc);
+  NSDictionary *dic = @{ @"downloadList": downloadInfoArrayDesc };
+  resolve(dic);
+}
+
+RCT_EXPORT_METHOD(getDownloadStatus:(NSString *)vid
+                  bitrate:(int)bitrate
+                  findEventsWithResolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  PLVVodDownloadInfo *info = [[PLVVodDownloadManager sharedManager] requestDownloadInfoWithVid:vid];
+  int status = -1;
+  switch (info.state) {
+    case PLVVodDownloadStatePreparing:
+    case PLVVodDownloadStateReady:
+    {
+      status = 2;
+    }break;
+    case PLVVodDownloadStateStopped:
+    case PLVVodDownloadStateStopping:{
+      status = 1;
+    }break;
+    case PLVVodDownloadStatePreparingStart:
+    case PLVVodDownloadStateRunning:{
+      status = 0;
+    }break;
+    default:{
+      status = 1;
+    }break;
+  }
+      
+  NSDictionary *dic = @{ @"downloadStatus": @(status) };
+  resolve(dic);
 }
 
 RCT_EXPORT_METHOD(pauseDownload:(NSString *)vid
@@ -171,41 +209,41 @@ RCT_EXPORT_METHOD(clearDownloadVideo
 - (void)addDownloadInfoListener:(PLVVodDownloadInfo *)info
 {
   // 下载状态改变回调
-  info.stateDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-      switch (info.state) {
-        case PLVVodDownloadStatePreparing:
-        case PLVVodDownloadStateReady:
-        case PLVVodDownloadStateStopped:
-        case PLVVodDownloadStateStopping:{
-          [self sentEvnetWithKey:@"pauseDownloadEvent" info:info];
-        }break;
-        case PLVVodDownloadStatePreparingStart:
-        case PLVVodDownloadStateRunning:{
-          [self sentEvnetWithKey:@"startDownloadEvent" info:info];
-        }break;
-        case PLVVodDownloadStateSuccess:{
-          [self sentEvnetWithKey:@"downloadSuccessEvent" info:info];
-        }break;
-        case PLVVodDownloadStateFailed:{
-          [self sentEvnetWithKey:@"downloadFailedEvent" info:info];
-        }break;
-      }
-    });
-  };
+//  info.stateDidChangeBlock = ^(PLVVodDownloadInfo *info) {
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//
+//      switch (info.state) {
+//        case PLVVodDownloadStatePreparing:
+//        case PLVVodDownloadStateReady:
+//        case PLVVodDownloadStateStopped:
+//        case PLVVodDownloadStateStopping:{
+//          [self sentEvnetWithKey:@"pauseDownloadEvent" info:info];
+//        }break;
+//        case PLVVodDownloadStatePreparingStart:
+//        case PLVVodDownloadStateRunning:{
+//          [self sentEvnetWithKey:@"startDownloadEvent" info:info];
+//        }break;
+//        case PLVVodDownloadStateSuccess:{
+//          [self sentEvnetWithKey:@"downloadSuccessEvent" info:info];
+//        }break;
+//        case PLVVodDownloadStateFailed:{
+//          [self sentEvnetWithKey:@"downloadFailedEvent" info:info];
+//        }break;
+//      }
+//    });
+//  };
 
   // 下载进度回调
-  info.progressDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-    //NSLog(@"vid: %@, progress: %f", info.vid, info.progress);
-    float receivedSize = info.progress * info.filesize;
-    if (receivedSize >= info.filesize){
-      receivedSize = info.filesize;
-    }
-    NSDictionary *dic = @{ @"current": @(receivedSize), @"total": @(info.filesize) };
-    NSString *value = [PolyvRNVodDownloadModule formatDictionaryToString:dic];
-    [self sentEvnetWithKey:@"updateProgressEvent" value:value];
-  };
+//  info.progressDidChangeBlock = ^(PLVVodDownloadInfo *info) {
+//    //NSLog(@"vid: %@, progress: %f", info.vid, info.progress);
+//    float receivedSize = info.progress * info.filesize;
+//    if (receivedSize >= info.filesize){
+//      receivedSize = info.filesize;
+//    }
+//    NSDictionary *dic = @{ @"current": @(receivedSize), @"total": @(info.filesize) };
+//    NSString *value = [PolyvRNVodDownloadModule formatDictionaryToString:dic];
+//    [self sentEvnetWithKey:@"updateProgressEvent" value:value];
+//  };
 
 //  // 下载速率回调
 //  info.bytesPerSecondsDidChangeBlock = ^(PLVVodDownloadInfo *info) {
