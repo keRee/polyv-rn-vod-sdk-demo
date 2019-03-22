@@ -258,7 +258,8 @@ RCT_EXPORT_METHOD(delAllDownloadTask
     if (receivedSize >= info.filesize){
       receivedSize = info.filesize;
     }
-    NSDictionary *dic = @{ @"current": @(receivedSize), @"total": @(info.filesize) };
+    NSMutableDictionary *dic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:info];
+    dic[@"progress"] = @(info.progress);
     [self sentEvnetWithKey:updateProgressEvent body:dic];
   };
 
@@ -298,13 +299,12 @@ RCT_EXPORT_METHOD(delAllDownloadTask
   }
 }
 
-+ (NSDictionary *)formatDownloadInfoToDictionary:(PLVVodDownloadInfo *)info {
-  NSDictionary *dic = @{
-                        @"vid" : info.vid,
-                        @"duration" : @(info.duration),
-                        @"bitrate" : @(info.quality),
-                        @"title" : info.title,
-                        };
++ (NSMutableDictionary *)formatDownloadInfoToDictionary:(PLVVodDownloadInfo *)info {
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+  dic[@"vid"] = info.vid;
+  dic[@"duration"] = @(info.duration);
+  dic[@"bitrate"] = @(info.quality);
+  dic[@"title"] = info.title;
   return dic;
 }
 
