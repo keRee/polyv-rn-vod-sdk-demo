@@ -97,7 +97,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startDownload(final String vid, final int pos, final String title, Callback callback) {
+    public void startDownload(final String vid, final int pos, final String title) {
         PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :");
         PolyvVideoVO videoJSONVO = video;
 
