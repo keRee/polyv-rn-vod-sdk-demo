@@ -98,10 +98,22 @@ export class PolyvVideoDownloadItem extends Component {
 
   
   creatProgressView(videoInfo) {
-    return Platform.OS === "ios" ? null :
-      <ProgressBarAndroid styleAttr="Horizontal" 
-      progress={videoInfo.progress} //videoInfo.percent/videoInfo.total
-        indeterminate={false} style={{ flex: 2.5, width: "90%" }} color="#2196F3" />;
+    return Platform.OS === "ios" ?     
+      <ProgressViewIOS 
+        styleAttr="Horizontal"
+        progress={videoInfo.progress}
+        indeterminate={false}
+        style={{ flex: 2.5, width: "90%" }}
+        color="#2196F3"
+        /> 
+      :
+      <ProgressBarAndroid 
+        styleAttr="Horizontal" 
+        progress={videoInfo.progress} 
+        indeterminate={false} 
+        style={{ flex: 2.5, width: "90%" }} 
+        color="#2196F3" 
+        />;
   }
 
   render() {
