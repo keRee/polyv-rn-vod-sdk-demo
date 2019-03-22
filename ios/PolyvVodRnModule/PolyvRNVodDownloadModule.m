@@ -10,6 +10,13 @@
 #import <PLVVodSDK/PLVVodSDK.h>
 #import "PLVDownloadCompleteInfoModel.h"
 
+NSString *pauseDownloadEvent = @"pauseDownloadEvent";
+NSString *startDownloadEvent = @"startDownloadEvent";
+NSString *downloadSuccessEvent = @"downloadSuccessEvent";
+NSString *downloadFailedEvent = @"downloadFailedEvent";
+NSString *updateProgressEvent = @"updateProgressEvent";
+NSString *downloadSpeedEvent = @"downloadSpeedEvent";
+
 
 @implementation PolyvRNVodDownloadModule
 
@@ -19,7 +26,13 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"EventReminder"];
+  return @[pauseDownloadEvent,
+           startDownloadEvent,
+           downloadSuccessEvent,
+           downloadFailedEvent,
+           updateProgressEvent,
+           downloadSpeedEvent,
+           ];
 }
 
 #pragma mark -- RCT_EXPORT_METHOD
@@ -162,15 +175,19 @@ RCT_EXPORT_METHOD(getDownloadStatus:(NSString *)vid
 }
 
 RCT_EXPORT_METHOD(pauseDownload:(NSString *)vid
+                  bitrate:(int)bitrate
                   )
 {
+  NSLog(@"RCT_EXPORT_METHOD pauseDownload");
   [[PLVVodDownloadManager sharedManager] stopDownloadWithVid:vid];
   
 }
 
 RCT_EXPORT_METHOD(resumeDownload:(NSString *)vid
+                  bitrate:(int)bitrate
                   )
 {
+  NSLog(@"RCT_EXPORT_METHOD resumeDownload");
   [[PLVVodDownloadManager sharedManager] startDownloadWithVid:vid];
   
 }
@@ -190,6 +207,7 @@ RCT_EXPORT_METHOD(downloadAllTask
 }
 
 RCT_EXPORT_METHOD(delVideo:(NSString *)vid
+                  bitrate:(int)bitrate
                   )
 {
   NSError *error;
@@ -197,7 +215,7 @@ RCT_EXPORT_METHOD(delVideo:(NSString *)vid
   
 }
 
-RCT_EXPORT_METHOD(clearDownloadVideo
+RCT_EXPORT_METHOD(delAllDownloadTask
                   )
 {
   [[PLVVodDownloadManager sharedManager] removeAllDownloadWithComplete:^(void *result) {
@@ -209,48 +227,46 @@ RCT_EXPORT_METHOD(clearDownloadVideo
 - (void)addDownloadInfoListener:(PLVVodDownloadInfo *)info
 {
   // 下载状态改变回调
-//  info.stateDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//      switch (info.state) {
-//        case PLVVodDownloadStatePreparing:
-//        case PLVVodDownloadStateReady:
-//        case PLVVodDownloadStateStopped:
-//        case PLVVodDownloadStateStopping:{
-//          [self sentEvnetWithKey:@"pauseDownloadEvent" info:info];
-//        }break;
-//        case PLVVodDownloadStatePreparingStart:
-//        case PLVVodDownloadStateRunning:{
-//          [self sentEvnetWithKey:@"startDownloadEvent" info:info];
-//        }break;
-//        case PLVVodDownloadStateSuccess:{
-//          [self sentEvnetWithKey:@"downloadSuccessEvent" info:info];
-//        }break;
-//        case PLVVodDownloadStateFailed:{
-//          [self sentEvnetWithKey:@"downloadFailedEvent" info:info];
-//        }break;
-//      }
-//    });
-//  };
+  info.stateDidChangeBlock = ^(PLVVodDownloadInfo *info) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+      switch (info.state) {
+        case PLVVodDownloadStatePreparing:
+        case PLVVodDownloadStateReady:
+        case PLVVodDownloadStateStopped:
+        case PLVVodDownloadStateStopping:{
+          [self sentEvnetWithKey:pauseDownloadEvent info:info];
+        }break;
+        case PLVVodDownloadStatePreparingStart:
+        case PLVVodDownloadStateRunning:{
+          [self sentEvnetWithKey:startDownloadEvent info:info];
+        }break;
+        case PLVVodDownloadStateSuccess:{
+          [self sentEvnetWithKey:downloadSuccessEvent info:info];
+        }break;
+        case PLVVodDownloadStateFailed:{
+          [self sentEvnetWithKey:downloadFailedEvent info:info];
+        }break;
+      }
+    });
+  };
 
   // 下载进度回调
-//  info.progressDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-//    //NSLog(@"vid: %@, progress: %f", info.vid, info.progress);
-//    float receivedSize = info.progress * info.filesize;
-//    if (receivedSize >= info.filesize){
-//      receivedSize = info.filesize;
-//    }
-//    NSDictionary *dic = @{ @"current": @(receivedSize), @"total": @(info.filesize) };
-//    NSString *value = [PolyvRNVodDownloadModule formatDictionaryToString:dic];
-//    [self sentEvnetWithKey:@"updateProgressEvent" value:value];
-//  };
+  info.progressDidChangeBlock = ^(PLVVodDownloadInfo *info) {
+    //NSLog(@"vid: %@, progress: %f", info.vid, info.progress);
+    float receivedSize = info.progress * info.filesize;
+    if (receivedSize >= info.filesize){
+      receivedSize = info.filesize;
+    }
+    NSDictionary *dic = @{ @"current": @(receivedSize), @"total": @(info.filesize) };
+    [self sentEvnetWithKey:updateProgressEvent body:dic];
+  };
 
-//  // 下载速率回调
-//  info.bytesPerSecondsDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-//    NSDictionary *dic = @{ @"bytesPerSeconds": @(info.bytesPerSeconds) };
-//    NSString *value = [PolyvRNVodDownloadModule formatObjectToString:dic];
-//    [self sentEvnetWithKey:@"bytesPerSecondsEvent" value:value];
-//  };
+  // 下载速率回调
+  info.bytesPerSecondsDidChangeBlock = ^(PLVVodDownloadInfo *info) {
+    NSDictionary *dic = @{ @"bytesPerSeconds": @(info.bytesPerSeconds) };
+    [self sentEvnetWithKey:downloadSpeedEvent body:dic];
+  };
 
 }
 
@@ -292,20 +308,13 @@ RCT_EXPORT_METHOD(clearDownloadVideo
   return dic;
 }
 
-+ (NSString *)formatDictionaryToString:(NSDictionary *)dic {
-  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:0 error:0];
-  NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-  return dataStr;
-}
-
-- (void)sentEvnetWithKey:(NSString *)key value:(NSString *)value {
-  [self sendEventWithName:@"EventReminder" body:@{ key: value }];
+- (void)sentEvnetWithKey:(NSString *)name body:(NSDictionary *)body {
+  [self sendEventWithName:name body:body];
 }
 
 - (void)sentEvnetWithKey:(NSString *)key info:(PLVVodDownloadInfo *)info {
   NSDictionary *dic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:info];
-  NSString *value = [PolyvRNVodDownloadModule formatDictionaryToString:dic];
-  [self sentEvnetWithKey:key value:value];
+  [self sentEvnetWithKey:key body:dic];
 }
 
 @end
