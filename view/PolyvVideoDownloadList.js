@@ -119,6 +119,7 @@ export class PolyvVideoDownloadList extends Component {
       if (updateVideo) {
         updateVideo.percent = msg.current;
         updateVideo.total = msg.total;
+        updateVideo.progress = msg.progress;
         this.refsCollection[key].setState({
           data: updateVideo,
           videoStatus: 0
