@@ -7,8 +7,9 @@
 //
 
 #import "PolyvRNVodDownloadModule.h"
-#import <PLVVodSDK/PLVVodSDK.h>
 #import "PLVDownloadCompleteInfoModel.h"
+#import <PLVVodSDK/PLVVodSDK.h>
+
 
 NSString *pauseDownloadEvent = @"pauseDownloadEvent";
 NSString *startDownloadEvent = @"startDownloadEvent";
@@ -23,17 +24,6 @@ NSString *downloadSpeedEvent = @"downloadSpeedEvent";
 @synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE();
-
-- (NSArray<NSString *> *)supportedEvents
-{
-  return @[pauseDownloadEvent,
-           startDownloadEvent,
-           downloadSuccessEvent,
-           downloadFailedEvent,
-           updateProgressEvent,
-           downloadSpeedEvent,
-           ];
-}
 
 #pragma mark -- RCT_EXPORT_METHOD
 RCT_EXPORT_METHOD(getBitrateNumbers:(NSString *)vid
@@ -309,7 +299,7 @@ RCT_EXPORT_METHOD(delAllDownloadTask
 }
 
 - (void)sentEvnetWithKey:(NSString *)name body:(NSDictionary *)body {
-  [self sendEventWithName:name body:body];
+    [self.bridge.eventDispatcher sendAppEventWithName:name body:body];
 }
 
 - (void)sentEvnetWithKey:(NSString *)key info:(PLVVodDownloadInfo *)info {
