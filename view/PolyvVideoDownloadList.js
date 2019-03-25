@@ -79,7 +79,7 @@ export class PolyvVideoDownloadList extends Component {
 
     //开始回掉
     DeviceEventEmitter.addListener("downloadSpeedEvent", msg => {
-      console.log("downloadSpeedEvent" + msg);
+      console.log("downloadSpeedEvent" + JSON.stringify(msg));
       var speed = msg.downloadSpeed;
       var key = msg.vid + msg.bitrate;
       var downloadView = this.refsCollection[key];
@@ -93,7 +93,7 @@ export class PolyvVideoDownloadList extends Component {
     //进度更新回掉
     DeviceEventEmitter.addListener("updateProgressEvent", msg => {
       var dataMaps = this.state.videoMap;
-      if (dataMaps.length == 0) {
+      if (!dataMaps || dataMaps.size == 0) {
         return;
       }
 

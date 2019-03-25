@@ -109,7 +109,7 @@ const PolyvVideoDownload = {
                     dataMaps.set(key,element)
                 });
             }
-            return {code:0,data:dataJs,dataMaps}
+            return {code:0,data:dataJs,dataMaps:dataMaps}
         } catch (e) {
             var code = e.code;
             var message = e.message;

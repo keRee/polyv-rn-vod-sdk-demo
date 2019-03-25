@@ -120,10 +120,10 @@ export class PolyvVideoDownloadItem extends Component {
     // this.setState({data:this.props.downloadInfo})
     var videoInfo = this.state.data;
     var showSpeed = this.state.videoStatus == 0
-    var progressContent = showSpeed?PolyvUtils.change(this.state.speed)+'/S':(videoInfo.total == 0
+    var progressContent = showSpeed?PolyvUtils.change(this.state.speed)+'/S':(videoInfo.progress == 0
       ? "0KB"
       : PolyvUtils.change(
-          (videoInfo.percent / videoInfo.total) * videoInfo.filesize
+          (videoInfo.progress) * videoInfo.filesize
         ));
     // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     var progressView = this.creatProgressView(videoInfo)
