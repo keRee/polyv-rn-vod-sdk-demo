@@ -51,6 +51,16 @@ export default class PolyvVodPlayerPage extends Component<Props> {
     this.refs["playerA"].startOrPause();
   }
 
+  play() {
+    console.log("play");
+    this.refs["playerA"].play();
+  }
+
+  pause() {
+    console.log("pause");
+    this.refs["playerA"].pause();
+  }
+
   showDownloadOptions() {
     console.log("showDownloadOptions");
     this.popUp.show()
@@ -84,8 +94,11 @@ export default class PolyvVodPlayerPage extends Component<Props> {
             <Text style={styles.text} onPress={this.updateVid.bind(this)}>
               updateVid
             </Text>
-            <Text style={styles.text} onPress={this.startOrPause.bind(this)}>
-              start or pause
+            <Text style={styles.text} onPress={this.play.bind(this)}>
+              play
+            </Text>
+            <Text style={styles.text} onPress={this.pause.bind(this)}>
+               pause
             </Text>
             {/* <Text
               style={styles.text} onPress={this.showDownloadOptions.bind(this)}>
@@ -135,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 20,
+    fontSize: 16,
     height: 50,
     backgroundColor: "#63B8FF",
     margin: 10,

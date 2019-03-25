@@ -305,6 +305,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         for (PolyvDownloadInfo downloadInfo : downloadInfos) {
             long percent = downloadInfo.getPercent();
             long total = downloadInfo.getTotal();
+            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
             // 已下载的百分比
             int progress = 0;
             if (total != 0) {
@@ -316,8 +317,8 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
                 }
             } else if (!isFinished) {
                 infos.add(downloadInfo);
+                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, callback);
             }
-            addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, callback);
 
         }
         return infos;

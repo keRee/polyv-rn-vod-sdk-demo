@@ -39,7 +39,7 @@ export class PolyvVideoDownloadList extends Component {
       datas: [],
       // downloadingInfosString: [], //正在下载的视频信息串 用于对比 是否重复解析
       downloadingInfos: new Map(), //正在下载的视频,map结构，key为download字符串 value 为download对象
-      videoMap: [],
+      videoMap: new Map(),
       allTaskDownloadPause: false //下载列表中得  所有列表下载状态
     };
   }
@@ -55,7 +55,7 @@ export class PolyvVideoDownloadList extends Component {
   }
 
   update(datas) {
-    console.log("update datas:" + datas.dataMaps.length);
+    console.log("update datas:" + datas.dataMaps.size);
     this.state.videoMap = datas.dataMaps
     this.setState({ datas: datas.data });
   }
@@ -102,18 +102,14 @@ export class PolyvVideoDownloadList extends Component {
 
       if (!downloadInfo) {
         //如果沒经保存
-        downloadingInfo = JSON.parse(msg.downloadInfo);
-        this.state.downloadingInfos.set(msg.downloadInfo, downloadingInfo);
-        console.log(
-          "updateProgress downloadInfo" + JSON.stringify(downloadInfo)
-        );
-        
+        downloadInfo = JSON.parse(msg.downloadInfo);
+        if (!downloadInfo) {
+          console.log("downloadInfo is null");
+          return;
+        }
+        this.state.downloadingInfos.set(msg.downloadInfo, downloadInfo);
       }
-
-      if (!downloadInfo) {
-        console.log("downloadInfo is null");
-        return;
-      }
+      
       var key = downloadInfo.vid + downloadInfo.bitrate;
       var updateVideo = dataMaps.get(key);
       if (updateVideo) {
