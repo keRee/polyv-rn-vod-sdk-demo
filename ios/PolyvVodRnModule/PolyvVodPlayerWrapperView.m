@@ -107,4 +107,14 @@
   }
 }
 
+// 开始
+- (void)start {
+    [self.player play];
+}
+
+// 停止
+- (void)pause {
+    [self.player pause];
+}
+
 @end

@@ -26,6 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 // 开始/停止
 - (void)startOrPause;
 
+// 开始
+- (void)start;
+
+// 停止
+- (void)pause;
+
 @end
 
 NS_ASSUME_NONNULL_END
