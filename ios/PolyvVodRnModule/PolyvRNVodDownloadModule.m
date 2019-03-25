@@ -248,14 +248,21 @@ RCT_EXPORT_METHOD(delAllDownloadTask
     if (receivedSize >= info.filesize){
       receivedSize = info.filesize;
     }
-    NSMutableDictionary *dic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:info];
+    NSMutableDictionary *downloadInfoDic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:info];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:downloadInfoDic options:0 error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *downloadInfoDicString = [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     dic[@"progress"] = @(info.progress);
+    dic[@"downloadInfo"] = downloadInfoDicString;
     [self sentEvnetWithKey:updateProgressEvent body:dic];
   };
 
   // 下载速率回调
   info.bytesPerSecondsDidChangeBlock = ^(PLVVodDownloadInfo *info) {
-    NSDictionary *dic = @{ @"bytesPerSeconds": @(info.bytesPerSeconds) };
+    NSMutableDictionary *dic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:info];
+    dic[@"downloadSpeed"] = @(info.bytesPerSeconds);
     [self sentEvnetWithKey:downloadSpeedEvent body:dic];
   };
 
@@ -295,6 +302,7 @@ RCT_EXPORT_METHOD(delAllDownloadTask
   dic[@"duration"] = @(info.duration);
   dic[@"bitrate"] = @(info.quality);
   dic[@"title"] = info.title;
+  dic[@"progress"] = @(info.progress);
   return dic;
 }
 
