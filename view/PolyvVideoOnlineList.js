@@ -50,7 +50,6 @@ export default class PolyvVideoOnlineList extends Component {
   
   getOnlineList() {
     console.log("showDownloadOptions");
-    debugger
     PolyvHttpManager.getVideoList(1,20,(success,error) =>{
       if(success){
         this.update(success.data)

@@ -91,7 +91,7 @@ RCT_EXPORT_METHOD(getDownloadVideoList:(BOOL)hasDownloaded
     NSArray<PLVVodLocalVideo *> *localArray = [[PLVVodDownloadManager sharedManager] localVideos];
 
     // 从数据库中读取已缓存视频详细信息
-    // TODO:也可以从开发者自定义数据库中读取数据,方便扩展
+    // 也可以从开发者自定义数据库中读取数据,方便扩展
     NSArray<PLVVodDownloadInfo *> *dbInfos = [[PLVVodDownloadManager sharedManager] requestDownloadCompleteList];
     NSMutableDictionary *dbCachedDics = [[NSMutableDictionary alloc] init];
     [dbInfos enumerateObjectsUsingBlock:^(PLVVodDownloadInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -101,11 +101,8 @@ RCT_EXPORT_METHOD(getDownloadVideoList:(BOOL)hasDownloaded
     // 组装数据
     // 以本地目录数据为准，因为数据库存在损坏的情形，会丢失数据，造成用户已缓存视频无法读取
     [localArray enumerateObjectsUsingBlock:^(PLVVodLocalVideo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-      NSMutableDictionary *downloadInfoDic = [[NSMutableDictionary alloc] init];
-      downloadInfoDic[@"vid"] = obj.vid;
-      downloadInfoDic[@"duration"] = @(obj.duration);
-      downloadInfoDic[@"bitrate"] =  @(obj.quality);
-      downloadInfoDic[@"title"] = obj.title;
+      PLVVodDownloadInfo *downloadInfo = dbCachedDics[obj.vid];
+      NSDictionary *downloadInfoDic = [PolyvRNVodDownloadModule formatDownloadInfoToDictionary:downloadInfo];
       [downloadInfoArray addObject:downloadInfoDic];
     }];
     
@@ -303,11 +300,15 @@ RCT_EXPORT_METHOD(delAllDownloadTask
   dic[@"bitrate"] = @(info.quality);
   dic[@"title"] = info.title;
   dic[@"progress"] = @(info.progress);
+  dic[@"filesize"] = @(info.filesize);
   return dic;
 }
 
 - (void)sentEvnetWithKey:(NSString *)name body:(NSDictionary *)body {
-    [self.bridge.eventDispatcher sendAppEventWithName:name body:body];
+  [_bridge enqueueJSCall:@"RCTNativeAppEventEmitter"
+                  method:@"emit"
+                    args:body ? @[name, body] : @[name]
+              completion:NULL];
 }
 
 - (void)sentEvnetWithKey:(NSString *)key info:(PLVVodDownloadInfo *)info {
