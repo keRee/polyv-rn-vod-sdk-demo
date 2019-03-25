@@ -27,6 +27,22 @@ class PolyvVodPlayerComponent extends Component {
         );
     }
 
+    play(){
+        UIManager.dispatchViewManagerCommand(  
+            findNodeHandle(this.refs.player),  
+            UIManager.PolyvVodPlayer.Commands.play, // Commands后面的值与原生层定义的`handleTask`一致  
+            [] // 向原生层传递的参数数据,数据形如：["第一个参数","第二个参数",...]  
+        ); 
+    }
+
+    pause(){
+        UIManager.dispatchViewManagerCommand(  
+            findNodeHandle(this.refs.player),  
+            UIManager.PolyvVodPlayer.Commands.pause, // Commands后面的值与原生层定义的`handleTask`一致  
+            [] // 向原生层传递的参数数据,数据形如：["第一个参数","第二个参数",...]  
+        ); 
+    }
+
     startOrPause() {
         UIManager.dispatchViewManagerCommand(  
             findNodeHandle(this.refs.player),  

@@ -6,7 +6,6 @@ import android.widget.Toast;
 import com.easefun.polyvsdk.log.PolyvCommonLog;
 import com.easefun.polyvsdk.rn.protocol.IPolyvRNVideoPlayer;
 import com.easefun.polyvsdk.rn.view.PolyvRNVodPlayer;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
@@ -25,6 +24,8 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
     private static final String POLYV_VOD_PLAYER = "PolyvVodPlayer";
     private static final int POLYVVODPLAYER_EVENT_UPDATEVID = 808;
     private static final int POLYVVODPLAYER_EVENT_START_OR_PAUSE = 809;
+    private static final int POLYVVODPLAYER_EVENT_PLAY = 810;
+    private static final int POLYVVODPLAYER_EVENT_PAUSE = 811;
 
 
     @Override
@@ -47,17 +48,19 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of("updateVid", POLYVVODPLAYER_EVENT_UPDATEVID,
-                "startOrPause", POLYVVODPLAYER_EVENT_START_OR_PAUSE);
+                "startOrPause", POLYVVODPLAYER_EVENT_START_OR_PAUSE,
+                "play", POLYVVODPLAYER_EVENT_PLAY,
+                "pause", POLYVVODPLAYER_EVENT_PAUSE);
     }
 
     @Override
     public void receiveCommand(PolyvRNVodPlayer root, int commandId, @javax.annotation.Nullable ReadableArray args) {
-        switch (commandId){
+        Toast.makeText(root.getContext(), "收到RN层的任务通知...:" + commandId, Toast.LENGTH_LONG).show();
+        switch (commandId) {
             case POLYVVODPLAYER_EVENT_UPDATEVID:
-                if(args != null){
+                if (args != null) {
                     String vid = args.getString(0);
                     root.setVid(vid.trim());
-                    Toast.makeText(root.getContext(),"收到RN层的任务通知...:"+vid,Toast.LENGTH_LONG).show();
                 }
                 break;
             case POLYVVODPLAYER_EVENT_START_OR_PAUSE:
@@ -67,14 +70,24 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
                     root.start();
                 }
                 break;
+            case POLYVVODPLAYER_EVENT_PLAY:
+                if (!root.isPlaying()) {
+                    root.start();
+                }
+                break;
+            case POLYVVODPLAYER_EVENT_PAUSE:
+                if (root.isPlaying()) {
+                    root.pause();
+                }
+                break;
         }
     }
 
     @ReactProp(name = PolyvRNConstants.RN_VID)
     @Override
     public void setVid(PolyvRNVodPlayer player, @Nullable String vid) {
-        PolyvCommonLog.d(POLYV_VOD_PLAYER,"set vid :"+vid);
-        player.play(vid,1,false,false);
+        PolyvCommonLog.d(POLYV_VOD_PLAYER, "set vid :" + vid);
+        player.play(vid, 1, false, false);
     }
 
     @ReactProp(name = PolyvRNConstants.RN_PLAY_PARAMETERS)
@@ -83,7 +96,7 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
 
         String vid = readableMap.getString(PolyvRNConstants.RN_VID);
         boolean isAutoStart = readableMap.getBoolean(PolyvRNConstants.RN_IS_AUTO_START);
-        player.play(vid,1,isAutoStart,false);
+        player.play(vid, 1, isAutoStart, false);
     }
 
 }
