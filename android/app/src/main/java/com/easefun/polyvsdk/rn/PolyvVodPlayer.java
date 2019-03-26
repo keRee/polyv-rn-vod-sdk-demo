@@ -42,9 +42,9 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
     @Override
     public void onDropViewInstance(PolyvRNVodPlayer view) {
         super.onDropViewInstance(view);
-        if(view != null){
-            view.onDestroy();
-        }
+//        if(view != null){
+//            view.onDestroy();
+//        }
     }
 
     @javax.annotation.Nullable
@@ -59,7 +59,7 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
 
     @Override
     public void receiveCommand(PolyvRNVodPlayer root, int commandId, @javax.annotation.Nullable ReadableArray args) {
-        Toast.makeText(root.getContext(), "收到RN层的任务通知...:" + commandId, Toast.LENGTH_LONG).show();
+//        Toast.makeText(root.getContext(), "收到RN层的任务通知...:" + commandId, Toast.LENGTH_LONG).show();
         switch (commandId) {
             case POLYVVODPLAYER_EVENT_UPDATEVID:
                 if (args != null) {

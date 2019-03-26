@@ -8,7 +8,7 @@
  */
 
 import React, {Component} from 'react';
-import PolyvNavigation from './polyvcommon/PolyvNavigation'
+import PolyvNavigation from './polyv/demo/PolyvNavigation'
 
 
 

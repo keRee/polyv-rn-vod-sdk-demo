@@ -1,30 +1,15 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Dimensions, Image,TouchableOpacity } from "react-native";
-import PolyvdownloadModule from "../page/PolyvVodDownloadModule";
 import {
   createMaterialTopTabNavigator,
   createAppContainer
 } from "react-navigation";
-import { PolyvVideoDownloadList } from "../view/PolyvVideoDownloadList";
-import PolyvVodPlayerPage from '../page/PolyvVodPlayerPage'
+import PolyvdownloadModule from "../../sdk/PolyvVodDownloadModule";
+import { PolyvVideoDownloadList } from "./view/PolyvVideoDownloadList";
 
 const { width, height } = Dimensions.get("window");
 let nav ={}
-let img = require("../view/img/polyv_btn_back.png");
-const dataSource = [
-  {
-    tabName: "已下载",
-    tabPage: "hasDownloaded"
-    // selectedIcon: require("../view/img/polyv_time.png"),
-    // icon: require("../view/img/polyv_time.png")
-  },
-  {
-    tabName: "下载中",
-    tabPage: "downloading"
-    // selectedIcon: require("../view/img/polyv_time.png"),
-    // icon: require("../view/img/polyv_time.png")
-  }
-];
+let img = require("../img/polyv_btn_back.png");
 
 const PolyvViewManager={
   refCollection:{}

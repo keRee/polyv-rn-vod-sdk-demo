@@ -2,22 +2,16 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
-  Animated,
-  Easing,
   Dimensions,
-  FlatList,
   Text,
   Image,
-  StackNavigator,
 } from "react-native";
 import PropTypes from "prop-types";
-import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
-import PolyvVodDownloadModule from '../page/PolyvVodDownloadModule'
+import PolyvVodDownloadModule from '../../../sdk/PolyvVodDownloadModule'
 
 const { width, height } = Dimensions.get("window");
-let timeImg = require("./img/polyv_time.png");
-let defaultImg = require("./img/polyv_pic_demo.png");
+let timeImg = require("../../img/polyv_time.png");
+let defaultImg = require("../../img/polyv_pic_demo.png");
 
 export class PolyvVideoOnlineItem extends Component {
   static propTypes = {

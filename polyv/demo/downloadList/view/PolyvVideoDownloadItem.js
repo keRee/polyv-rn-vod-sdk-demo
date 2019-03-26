@@ -4,10 +4,8 @@ import {
   View,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  Animated,
   Easing,
   Dimensions,
-  FlatList,
   Text,
   Image,
   ProgressBarAndroid,
@@ -15,19 +13,19 @@ import {
   Platform
 } from "react-native";
 import PropTypes from "prop-types";
-import PolyvUtils from "../polyvcommon/PolyvUtils";
-import PolyvResultCode from "../polyvcommon/PolyvErrorTip";
-import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
+import PolyvUtils from "../../common/PolyvUtils";
+import PolyvResultCode from "../../common/PolyvErrorTip";
+import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
 
 const { width, height } = Dimensions.get("window");
 //播放器下载的四种状态:下载(0)，暂停(1),播放(2)，
 const videoPlaySrc = [
-  { src: require("../view/img/polyv_btn_download.png"), status: "正在下载" },
-  { src: require("../view/img/polyv_btn_dlpause.png"), status: "下载暂停" },
-  { src: require("../view/img/polyv_btn_dlpause.png"), status: "下载等待" },
-  { src: require("../view/img/polyv_btn_play.png"), status: "下载完成" }
+  { src: require("../../img/polyv_btn_download.png"), status: "正在下载" },
+  { src: require("../../img/polyv_btn_dlpause.png"), status: "下载暂停" },
+  { src: require("../../img/polyv_btn_dlpause.png"), status: "下载等待" },
+  { src: require("../../img/polyv_btn_play.png"), status: "下载完成" }
 ];
-let defaultImg = require("./img/polyv_pic_demo.png");
+let defaultImg = require("../../img/polyv_pic_demo.png");
 
 export class PolyvVideoDownloadItem extends Component {
   static propTypes = {

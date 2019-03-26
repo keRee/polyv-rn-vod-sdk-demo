@@ -1,5 +1,5 @@
 import Axios from "axios";
-import PolyvVodConfigRnModule from '../page/PolyvVodConfigRnModule'
+import PolyvVodConfigRnModule from '../../sdk/PolyvVodConfigRnModule'
 
 const HttpManager ={
 

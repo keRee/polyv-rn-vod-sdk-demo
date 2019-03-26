@@ -356,8 +356,20 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
      * 删除当前列表的所有任务
      */
     public void deleteAllTask() {
+
         for (int i = 0; i < lists.size(); i++) {
             PolyvDownloadInfo downloadInfo = lists.get(i);
+            long percent = downloadInfo.getPercent();
+            long total = downloadInfo.getTotal();
+            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
+            // 已下载的百分比
+            int progress = 0;
+            if (total != 0) {
+                progress = (int) (percent * 100 / total);
+            }
+            if (progress == 100) {//如果下载完成返回
+                continue;
+            }
             //移除任务
             PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(downloadInfo.getVid(), downloadInfo.getBitrate());
             //删除文件

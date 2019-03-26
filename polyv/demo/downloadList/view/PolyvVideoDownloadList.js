@@ -9,23 +9,18 @@ import {
   TouchableHighlight
 } from "react-native";
 import {
-  Container,
-  Header,
-  Content,
   Footer,
   FooterTab,
   Button,
   Text,
 } from "native-base";
-import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
-import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
 import PropTypes from "prop-types";
-import PolyvResultCode from "../polyvcommon/PolyvErrorTip";
+import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
+import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
+import PolyvResultCode from "../../common/PolyvErrorTip";
 
-import SwipeableFlat from "../node_modules/react-native/Libraries/Experimental/SwipeableRow/SwipeableFlatList";
 
 const { width, height } = Dimensions.get("window");
-let lastDwonloadVideo = {}; //上一个下载的视频，保存用于在其他视频下载时切换该视频状态
 
 export class PolyvVideoDownloadList extends Component {
   static propTypes = {
@@ -123,7 +118,6 @@ export class PolyvVideoDownloadList extends Component {
         });
       }
 
-      lastDwonloadVideo = this.refsCollection[key];
     });
 
     //下载完成回掉
@@ -263,7 +257,7 @@ export class PolyvVideoDownloadList extends Component {
           this.setState({
             datas: [],
             downloadingInfos: new Map(), 
-            videoMap: [],
+            videoMap: new Map(),
             allTaskDownloadPause: false 
           });
         }

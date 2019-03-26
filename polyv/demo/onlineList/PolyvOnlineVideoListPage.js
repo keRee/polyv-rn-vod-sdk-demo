@@ -3,15 +3,13 @@ import React, { Component } from "react";
 import {
   View,
   Dimensions,
-  Text,
   Button,
-  TextInput,
   StyleSheet,
 } from "react-native";
-import PolyvVodConfigRnModule from "./PolyvVodConfigRnModule";
+import { setAxios } from "../common/PolyvNet";
 
-import PolyvVideoListView from "../view/PolyvVideoOnlineList";
-import { setAxios } from "../polyvcommon/PolyvNet";
+import PolyvVodConfigRnModule from "../../sdk/PolyvVodConfigRnModule";
+import PolyvVideoListView from "./view/PolyvVideoOnlineList";
 
 
 const { width, height } = Dimensions.get("window");

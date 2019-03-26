@@ -10,14 +10,14 @@ import {
   Text,
   Alert
 } from "react-native";
-import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
-import PolyvErrorDes from '../polyvcommon/PolyvErrorTip'
+import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
+import PolyvErrorDes from '../../common/PolyvErrorTip'
 /**
  * 弹出层
  */
 const { width, height } = Dimensions.get("window");
 
-export default class PolyvPopuWindow extends Component {
+export default class PolyvBitratePopuWindow extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   list: {}
 });
 
-PolyvPopuWindow.defaultProps = {
+PolyvBitratePopuWindow.defaultProps = {
   modalBoxHeight: 300, // 盒子高度
   modalBoxBg: "#fff", // 背景色
   hide: function() {}, // 关闭时的回调函数

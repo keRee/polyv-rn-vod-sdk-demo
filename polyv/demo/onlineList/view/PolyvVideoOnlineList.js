@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
-  Animated,
-  Easing,
   Dimensions,
   FlatList,
   Text,
@@ -12,9 +9,9 @@ import {
   RefreshControl
 } from "react-native";
 import PropTypes from "prop-types";
-import OptionsView from "./PolyvPopuWindow";
+import OptionsView from "./PolyvBitratePopuWindow";
 import { PolyvVideoOnlineItem } from "./PolyvVideoOnlineItem";
-import PolyvHttpManager from '../polyvcommon/PolyvHttpManager'
+import PolyvHttpManager from '../../common/PolyvHttpManager'
 
 const { width, height } = Dimensions.get("window");
 let navigation, that; //导航栏引用

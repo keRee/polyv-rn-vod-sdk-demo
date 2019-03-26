@@ -16,7 +16,7 @@ import {
     StyleSheet,
 } from "react-native";
 
-import PolyvVodPlayer from './PolyvVodPlayerModule'
+import PolyvVodPlayer from '../../sdk/PolyvVodPlayerModule'
 
 const { width,height } = Dimensions.get("window");
 
@@ -42,6 +42,10 @@ export default class PolyvVodPlayerPage extends Component<Props> {
   
 
   updateVid() {
+    if(!this.state.inputVid){
+      Alert.alert('vid is error')
+      return
+  }
     console.log("updateVid");
     this.refs["playerA"].updateVid(this.state.inputVid);
   }

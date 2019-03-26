@@ -16,10 +16,6 @@ class PolyvVodPlayerComponent extends Component {
     }
 
     updateVid(vid) {
-        if(!vid){
-            Alert.alert('vid is undefined')
-            return
-        }
         UIManager.dispatchViewManagerCommand(  
             findNodeHandle(this.refs.player),  
             UIManager.PolyvVodPlayer.Commands.updateVid, // Commands后面的值与原生层定义的`handleTask`一致  

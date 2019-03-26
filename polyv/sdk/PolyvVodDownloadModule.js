@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { NativeModules, Alert } from "react-native";
-import PolyvResultCode from "../polyvcommon/PolyvErrorTip";
+import { NativeModules } from "react-native";
+import PolyvResultCode from "../demo/common/PolyvErrorTip";
 
 const videoDownload = NativeModules.PolyvRNVodDownloadModule;
 
