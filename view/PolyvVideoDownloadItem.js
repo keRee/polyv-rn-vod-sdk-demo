@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvUtils from "../polyvcommon/PolyvUtils";
+import PolyvResultCode from "../polyvcommon/PolyvErrorTip";
 import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
 
 const { width, height } = Dimensions.get("window");
@@ -60,11 +61,18 @@ export class PolyvVideoDownloadItem extends Component {
   pauseOrStartDownload() {
     var vid = this.props.downloadInfo.vid;
     var bitrate = this.props.downloadInfo.bitrate;
+    var result
     if (this.state.videoStatus) {
       //暂停
-      PolyvVideoDownload.resumeDownload(vid, bitrate);
+      result = PolyvVideoDownload.resumeDownload(vid, bitrate);
     } else {
-      PolyvVideoDownload.pauseDownload(vid, bitrate);
+      result = PolyvVideoDownload.pauseDownload(vid, bitrate);
+    }
+
+    //如果失败弹出提示语
+    if (result != PolyvResultCode.SUCCESS) {
+      var errorDes = PolyvResultCode.getErrorDes(result)
+      alert(errorDes)
     }
   }
 

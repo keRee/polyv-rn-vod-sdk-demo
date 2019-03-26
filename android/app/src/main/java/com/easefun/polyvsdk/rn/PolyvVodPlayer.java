@@ -26,6 +26,7 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
     private static final int POLYVVODPLAYER_EVENT_START_OR_PAUSE = 809;
     private static final int POLYVVODPLAYER_EVENT_PLAY = 810;
     private static final int POLYVVODPLAYER_EVENT_PAUSE = 811;
+    private static final int POLYVVODPLAYER_EVENT_RELEASE = 812;
 
 
     @Override
@@ -41,7 +42,9 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
     @Override
     public void onDropViewInstance(PolyvRNVodPlayer view) {
         super.onDropViewInstance(view);
-        view.onDestroy();
+        if(view != null){
+            view.onDestroy();
+        }
     }
 
     @javax.annotation.Nullable
@@ -50,7 +53,8 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
         return MapBuilder.of("updateVid", POLYVVODPLAYER_EVENT_UPDATEVID,
                 "startOrPause", POLYVVODPLAYER_EVENT_START_OR_PAUSE,
                 "play", POLYVVODPLAYER_EVENT_PLAY,
-                "pause", POLYVVODPLAYER_EVENT_PAUSE);
+                "pause", POLYVVODPLAYER_EVENT_PAUSE,
+                "release", POLYVVODPLAYER_EVENT_RELEASE);
     }
 
     @Override
@@ -79,6 +83,9 @@ public class PolyvVodPlayer extends ViewGroupManager<PolyvRNVodPlayer> implement
                 if (root.isPlaying()) {
                     root.pause();
                 }
+                break;
+            case POLYVVODPLAYER_EVENT_RELEASE:
+                root.onDestroy();
                 break;
         }
     }

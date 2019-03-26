@@ -69,6 +69,10 @@ export default class PolyvVodPlayerPage extends Component<Props> {
   componentDidMount(){
   }
 
+  componentWillUnmount(){
+    this.refs["playerA"].release()
+  }
+
   render() {
     console.log('app render')
     const { navigation } = this.props;

@@ -48,7 +48,15 @@ export class PolyvVideoOnlineItem extends Component {
     //       this.props.downloadCallback(this.state.data)
     //     })
     // })
+    if(!vid){
+      alert("vid is error")
+      return
+    }
     PolyvVodDownloadModule.getBitrateNumbers(vid).then(ret=>{
+      if(ret.code != 0){
+        alert('获取分辨率失败')
+        return
+      }
       this.props.downloadCallback(ret.bitrates)
     })
   }

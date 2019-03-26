@@ -7,9 +7,11 @@ import {
   Easing,
   Dimensions,
   FlatList,
-  Text
+  Text,
+  Alert
 } from "react-native";
 import PolyvVideoDownload from "../page/PolyvVodDownloadModule";
+import PolyvErrorDes from '../polyvcommon/PolyvErrorTip'
 /**
  * 弹出层
  */
@@ -73,11 +75,23 @@ export default class PolyvPopuWindow extends Component {
     console.log(`will to download ${index}`);
     this.defaultHide();
     // var videoString = JSON.stringify(this.state.videoJson);
+    if(!this.state.vid){
+      Alert.alert(PolyvErrorDes.getErrorDes(PolyvErrorDes.VID_ERROR))
+      return
+    }
+    if(index <0){
+      Alert.alert(PolyvErrorDes.getErrorDes(PolyvErrorDes.BITRATE_INDEX_ERROR))
+      return
+    }
     PolyvVideoDownload.startDownload(
       this.state.vid,
       index,
       this.state.title
-    );
+    ).then(ret =>{
+      if(ret.code != 0){
+        alert(PolyvErrorDes.getErrorDes(ret.code))
+      }
+    });
   }
 
   renderItemData({ item, index }) {
