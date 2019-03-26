@@ -57,8 +57,8 @@ const PolyvVideoDownload = {
         videoDownload.pauseDownload(vid,bitrate)
     },
 
-    pauseAllDownloadTask(){
-        videoDownload.pauseAllDownloadTask()
+    pauseAllDownload(){
+        videoDownload.pauseAllDownload()
     },
 
     /**
@@ -73,8 +73,8 @@ const PolyvVideoDownload = {
     /**
      * 下载所有队列里的视频
      */
-    downloadAllTask(){
-        videoDownload.downloadAllTask()
+    startAllDownload(){
+        videoDownload.startAllDownload()
     },
 
     /**
@@ -90,8 +90,8 @@ const PolyvVideoDownload = {
     /**
      * 清楚所有下载得视频
      */
-    delAllDownloadTask(){
-        videoDownload.delAllDownloadTask()
+    delAllDownload(){
+        videoDownload.delAllDownload()
     },
 
     /**
@@ -164,7 +164,7 @@ const PolyvVideoDownload = {
             return
         }
         try {
-            var {videoHasAdded} = await videoDownload.hasAddDownload(vid)
+            var {videoHasAdded} = await videoDownload.isAddDownload(vid)
             return {hasAdded:videoHasAdded}
         } catch (error) {
             return {code:-1}

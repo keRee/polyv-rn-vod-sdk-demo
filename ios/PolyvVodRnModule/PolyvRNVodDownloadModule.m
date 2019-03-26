@@ -179,14 +179,14 @@ RCT_EXPORT_METHOD(resumeDownload:(NSString *)vid
   
 }
 
-RCT_EXPORT_METHOD(pauseAllDownloadTask
+RCT_EXPORT_METHOD(pauseAllDownload
                   )
 {
   [[PLVVodDownloadManager sharedManager] stopDownload];
   
 }
 
-RCT_EXPORT_METHOD(downloadAllTask
+RCT_EXPORT_METHOD(startAllDownload
                   )
 {
   [[PLVVodDownloadManager sharedManager] startDownload];
@@ -202,7 +202,7 @@ RCT_EXPORT_METHOD(delVideo:(NSString *)vid
   
 }
 
-RCT_EXPORT_METHOD(delAllDownloadTask
+RCT_EXPORT_METHOD(delAllDownload
                   )
 {
   [[PLVVodDownloadManager sharedManager] removeAllDownloadWithComplete:^(void *result) {

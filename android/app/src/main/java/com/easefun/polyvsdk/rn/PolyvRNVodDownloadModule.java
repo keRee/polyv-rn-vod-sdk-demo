@@ -88,8 +88,9 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         });
     }
 
+    //是否已经在下载队列
     @ReactMethod
-    public void hasAddDownload(String vid, Promise promise) {
+    public void isAddDownload(String vid, Promise promise) {
         WritableMap map = Arguments.createMap();
         boolean isAdded = downloadSQLiteHelper.isAdd(vid);
         map.putBoolean("videoHasAdded", isAdded);
@@ -174,12 +175,12 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void pauseAllDownloadTask() {
+    public void pauseAllDownload() {
         pauseAll();
     }
 
     @ReactMethod
-    public void downloadAllTask() {
+    public void startAllDownload() {
         downloadAll();
     }
 
@@ -189,7 +190,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void delAllDownloadTask() {
+    public void delAllDownload() {
         deleteAllTask();
     }
 

@@ -221,10 +221,10 @@ export class PolyvVideoDownloadList extends Component {
       return
     }
     if (this.state.allTaskDownloadPause) {
-      PolyvVideoDownload.downloadAllTask();
+      PolyvVideoDownload.startAllDownload();
       this.updateAllDownloadStatus(0);
     } else {
-      PolyvVideoDownload.pauseAllDownloadTask();
+      PolyvVideoDownload.pauseAllDownload();
       this.updateAllDownloadStatus(1);
     }
 
@@ -253,7 +253,7 @@ export class PolyvVideoDownloadList extends Component {
       {
         text: "确定",
         onPress: () => {
-          PolyvVideoDownload.delAllDownloadTask();
+          PolyvVideoDownload.delAllDownload();
           this.setState({
             datas: [],
             downloadingInfos: new Map(), 
