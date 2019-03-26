@@ -180,7 +180,7 @@ export class PolyvVideoDownloadList extends Component {
             this.setState({ datas: result });
 
             var delItem = item;
-            var resultCode = PolyvVideoDownload.delVideo(delItem.vid, delItem.bitrate);
+            var resultCode = PolyvVideoDownload.deleteDownload(delItem.vid, delItem.bitrate);
             //如果失败弹出提示语
             if (resultCode != PolyvResultCode.SUCCESS) {
               var errorDes = PolyvResultCode.getErrorDes(resultCode)
@@ -253,7 +253,7 @@ export class PolyvVideoDownloadList extends Component {
       {
         text: "确定",
         onPress: () => {
-          PolyvVideoDownload.delAllDownload();
+          PolyvVideoDownload.deleteAllDownload();
           this.setState({
             datas: [],
             downloadingInfos: new Map(), 

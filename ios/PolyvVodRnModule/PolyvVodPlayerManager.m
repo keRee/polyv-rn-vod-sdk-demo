@@ -137,8 +137,32 @@ RCT_EXPORT_METHOD(
       }];
     });
   }
-  
-  
+}
+
+RCT_EXPORT_METHOD(
+                  release:(nonnull NSNumber *)reactTag
+                  )
+{
+  NSLog(@"pause");
+  if (self.viewRegistry) {
+    UIView *view = self.viewRegistry[reactTag];
+    if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
+      PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
+      [wrapper destroyPlayer];
+    }
+  } else {
+    RCTUIManager *uiManager = _bridge.uiManager;
+    dispatch_async(uiManager.methodQueue, ^{
+      [uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+        self.viewRegistry = viewRegistry;
+        UIView *view = viewRegistry[reactTag];
+        if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
+          PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
+          [wrapper destroyPlayer];
+        }
+      }];
+    });
+  }
 }
 
 @end

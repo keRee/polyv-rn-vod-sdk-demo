@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 // 停止
 - (void)pause;
 
+// 销毁
+- (void)destroyPlayer;
+
 @end
 
 NS_ASSUME_NONNULL_END

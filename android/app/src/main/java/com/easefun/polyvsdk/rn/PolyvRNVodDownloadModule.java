@@ -50,11 +50,15 @@ import java.util.jar.Attributes;
  * @Describe
  */
 public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
+
+    // <editor-fold defaultstate="collapsed" desc="属性">
     private static final String TAG = "PolyvRNVodDownloadModule";
     private PolyvDownloadSQLiteHelper downloadSQLiteHelper;
     private LinkedList<PolyvDownloadInfo> lists;
     private PolyvVideoVO video;
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="RN方法">
     public PolyvRNVodDownloadModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.downloadSQLiteHelper = PolyvDownloadSQLiteHelper.getInstance(reactContext);
@@ -64,6 +68,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "PolyvRNVodDownloadModule";
     }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="react native 通信方法">
     @ReactMethod
@@ -88,14 +93,14 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         });
     }
 
-    //是否已经在下载队列
-    @ReactMethod
-    public void isAddDownload(String vid, Promise promise) {
-        WritableMap map = Arguments.createMap();
-        boolean isAdded = downloadSQLiteHelper.isAdd(vid);
-        map.putBoolean("videoHasAdded", isAdded);
-        promise.resolve(map);
-    }
+//    //是否已经在下载队列
+//    @ReactMethod
+//    public void isAddDownload(String vid, Promise promise) {
+//        WritableMap map = Arguments.createMap();
+//        boolean isAdded = downloadSQLiteHelper.isAdd(vid);
+//        map.putBoolean("videoHasAdded", isAdded);
+//        promise.resolve(map);
+//    }
 
     @ReactMethod
     public void startDownload(final String vid, final int pos, final String title) {
@@ -114,7 +119,8 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         Log.i("videoAdapter", downloadInfo.toString());
         if (downloadSQLiteHelper != null && !downloadSQLiteHelper.isAdd(downloadInfo.getVid())) {
             downloadSQLiteHelper.insert(downloadInfo);
-            start(vid, bitrate, downloadInfo);
+            PolyvDownloader polyvDownloader = addDownloadListener(vid, bitrate, downloadInfo, null);
+            polyvDownloader.start(getCurrentActivity());
         } else {
             (getCurrentActivity()).runOnUiThread(new Runnable() {
 
@@ -130,36 +136,58 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getDownloadVideoList(boolean hasDownloaded, Promise promise) {
         List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
-        lists = downloadSQLiteHelper.getAll();
-        downloadInfos.addAll(getTask(lists, hasDownloaded, null));
-        WritableMap map = Arguments.createMap();
-        map.putString("downloadList", GsonUtil.toJson(downloadInfos));
 
-        promise.resolve(map);
-    }
-
-    //获取所有下载列表
-    @ReactMethod
-    public void getAllDownloadVideoList(Promise promise) {
-        List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
         lists = downloadSQLiteHelper.getAll();
-        for (PolyvDownloadInfo downloadInfo : downloadInfos) {
-            long percent = downloadInfo.getPercent();
-            long total = downloadInfo.getTotal();
-            // 已下载的百分比
-            int progress = 0;
-            if (total != 0) {
-                progress = (int) (percent * 100 / total);
+        if (lists != null) {
+            List<PolyvDownloadInfo> infos = new ArrayList<>();
+            for (PolyvDownloadInfo downloadInfo : downloadInfos) {
+                long percent = downloadInfo.getPercent();
+                long total = downloadInfo.getTotal();
+                downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
+                // 已下载的百分比
+                int progress = 0;
+                if (total != 0) {
+                    progress = (int) (percent * 100 / total);
+                }
+                if (progress == 100) {
+                    if (hasDownloaded) {
+                        infos.add(downloadInfo);
+                    }
+                } else if (!hasDownloaded) {
+                    infos.add(downloadInfo);
+                    addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, null);
+                }
             }
-            if (progress == 100) {
-                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, null);
-            }
+            downloadInfos.addAll(infos);
         }
+
         WritableMap map = Arguments.createMap();
         map.putString("downloadList", GsonUtil.toJson(downloadInfos));
-
         promise.resolve(map);
     }
+
+//    //获取所有下载列表
+//    @ReactMethod
+//    public void getAllDownloadVideoList(Promise promise) {
+//        List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
+//        lists = downloadSQLiteHelper.getAll();
+//        for (PolyvDownloadInfo downloadInfo : downloadInfos) {
+//            long percent = downloadInfo.getPercent();
+//            long total = downloadInfo.getTotal();
+//            // 已下载的百分比
+//            int progress = 0;
+//            if (total != 0) {
+//                progress = (int) (percent * 100 / total);
+//            }
+//            if (progress == 100) {
+//                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, null);
+//            }
+//        }
+//        WritableMap map = Arguments.createMap();
+//        map.putString("downloadList", GsonUtil.toJson(downloadInfos));
+//
+//        promise.resolve(map);
+//    }
 
 
     @ReactMethod
@@ -176,22 +204,60 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void pauseAllDownload() {
-        pauseAll();
+        PolyvDownloaderManager.stopAll();
     }
 
     @ReactMethod
     public void startAllDownload() {
-        downloadAll();
+        // 已完成的任务key集合
+        List<String> finishKey = new ArrayList<>();
+        List<PolyvDownloadInfo> downloadInfos = downloadSQLiteHelper.getAll();
+        for (int i = 0; i < downloadInfos.size(); i++) {
+            PolyvDownloadInfo downloadInfo = downloadInfos.get(i);
+            long percent = downloadInfo.getPercent();
+            long total = downloadInfo.getTotal();
+            int progress = 0;
+            if (total != 0)
+                progress = (int) (percent * 100 / total);
+            if (progress == 100)
+                finishKey.add(PolyvDownloaderManager.getKey(downloadInfo.getVid(), downloadInfo.getBitrate()));
+        }
+        PolyvDownloaderManager.startUnfinished(finishKey, getCurrentActivity());
     }
 
     @ReactMethod
-    public void delVideo(String vid, int bitrate) {
-        deleteTask(vid, bitrate);
+    public void deleteDownload(String vid, int bitrate) {
+        //移除任务
+        PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(vid, bitrate);
+        //删除文件
+        downloader.deleteVideo();
+        //移除数据库的下载信息
+        PolyvDownloadInfo polyvDownloadInfo = new PolyvDownloadInfo(vid, "", 0, bitrate, "");
+        downloadSQLiteHelper.delete(polyvDownloadInfo);
     }
 
     @ReactMethod
-    public void delAllDownload() {
-        deleteAllTask();
+    public void deleteAllDownload() {
+        for (int i = 0; i < lists.size(); i++) {
+            PolyvDownloadInfo downloadInfo = lists.get(i);
+            long percent = downloadInfo.getPercent();
+            long total = downloadInfo.getTotal();
+            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
+            // 已下载的百分比
+            int progress = 0;
+            if (total != 0) {
+                progress = (int) (percent * 100 / total);
+            }
+            if (progress == 100) {//如果下载完成返回
+                continue;
+            }
+            //移除任务
+            PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(downloadInfo.getVid(), downloadInfo.getBitrate());
+            //删除文件
+            downloader.deleteVideo();
+            //移除数据库的下载信息
+            downloadSQLiteHelper.delete(downloadInfo);
+        }
     }
 
     /**
@@ -219,12 +285,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     }
     // </editor-fold>
 
-
-    private void start(String vid, int bitrate, final PolyvDownloadInfo downloadInfo) {
-        PolyvDownloader polyvDownloader = addDownloadListener(vid, bitrate, downloadInfo, null);
-        polyvDownloader.start(getCurrentActivity());
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="原生监听器 和 JS事件发送">
     private PolyvDownloader addDownloadListener(String vid, int bitrate, final PolyvDownloadInfo downloadInfo, final Callback callback) {
         PolyvDownloader polyvDownloader = PolyvDownloaderManager.getPolyvDownloader(vid, bitrate);
         polyvDownloader.setPolyvDownloadProressListener(new IPolyvDownloaderProgressListener() {
@@ -297,102 +358,9 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
         return polyvDownloader;
     }
 
-
-    private List<PolyvDownloadInfo> getTask(List<PolyvDownloadInfo> downloadInfos, boolean isFinished, Callback callback) {
-        if (downloadInfos == null) {
-            return null;
-        }
-        List<PolyvDownloadInfo> infos = new ArrayList<>();
-        for (PolyvDownloadInfo downloadInfo : downloadInfos) {
-            long percent = downloadInfo.getPercent();
-            long total = downloadInfo.getTotal();
-            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
-            // 已下载的百分比
-            int progress = 0;
-            if (total != 0) {
-                progress = (int) (percent * 100 / total);
-            }
-            if (progress == 100) {
-                if (isFinished) {
-                    infos.add(downloadInfo);
-                }
-            } else if (!isFinished) {
-                infos.add(downloadInfo);
-                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, callback);
-            }
-
-        }
-        return infos;
-    }
-
-    /**
-     * 下载全部任务
-     */
-    public void downloadAll() {
-        // 已完成的任务key集合
-        List<String> finishKey = new ArrayList<>();
-        List<PolyvDownloadInfo> downloadInfos = downloadSQLiteHelper.getAll();
-        for (int i = 0; i < downloadInfos.size(); i++) {
-            PolyvDownloadInfo downloadInfo = downloadInfos.get(i);
-            long percent = downloadInfo.getPercent();
-            long total = downloadInfo.getTotal();
-            int progress = 0;
-            if (total != 0)
-                progress = (int) (percent * 100 / total);
-            if (progress == 100)
-                finishKey.add(PolyvDownloaderManager.getKey(downloadInfo.getVid(), downloadInfo.getBitrate()));
-        }
-        PolyvDownloaderManager.startUnfinished(finishKey, getCurrentActivity());
-    }
-
-    /**
-     * 暂停全部任务
-     */
-    public void pauseAll() {
-        PolyvDownloaderManager.stopAll();
-    }
-
-    /**
-     * 删除当前列表的所有任务
-     */
-    public void deleteAllTask() {
-
-        for (int i = 0; i < lists.size(); i++) {
-            PolyvDownloadInfo downloadInfo = lists.get(i);
-            long percent = downloadInfo.getPercent();
-            long total = downloadInfo.getTotal();
-            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
-            // 已下载的百分比
-            int progress = 0;
-            if (total != 0) {
-                progress = (int) (percent * 100 / total);
-            }
-            if (progress == 100) {//如果下载完成返回
-                continue;
-            }
-            //移除任务
-            PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(downloadInfo.getVid(), downloadInfo.getBitrate());
-            //删除文件
-            downloader.deleteVideo();
-            //移除数据库的下载信息
-            downloadSQLiteHelper.delete(downloadInfo);
-        }
-    }
-
-    /**
-     * 删除任务
-     */
-    public void deleteTask(String vid, int bitrate) {
-        //移除任务
-        PolyvDownloader downloader = PolyvDownloaderManager.clearPolyvDownload(vid, bitrate);
-        //删除文件
-        downloader.deleteVideo();
-        //移除数据库的下载信息
-        PolyvDownloadInfo polyvDownloadInfo = new PolyvDownloadInfo(vid, "", 0, bitrate, "");
-        downloadSQLiteHelper.delete(polyvDownloadInfo);
-    }
-
     public static void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
+    // </editor-fold>
+
 }

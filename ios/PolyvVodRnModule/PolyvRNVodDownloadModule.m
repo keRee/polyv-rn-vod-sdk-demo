@@ -193,7 +193,7 @@ RCT_EXPORT_METHOD(startAllDownload
   
 }
 
-RCT_EXPORT_METHOD(delVideo:(NSString *)vid
+RCT_EXPORT_METHOD(deleteDownload:(NSString *)vid
                   bitrate:(int)bitrate
                   )
 {
@@ -202,7 +202,7 @@ RCT_EXPORT_METHOD(delVideo:(NSString *)vid
   
 }
 
-RCT_EXPORT_METHOD(delAllDownload
+RCT_EXPORT_METHOD(deleteAllDownload
                   )
 {
   [[PLVVodDownloadManager sharedManager] removeAllDownloadWithComplete:^(void *result) {

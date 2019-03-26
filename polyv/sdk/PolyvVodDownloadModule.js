@@ -11,7 +11,7 @@ const videoDownload = NativeModules.PolyvRNVodDownloadModule;
  *      -2 码率索引不对
  */
 const PolyvVideoDownload = {
-  _getErrorCode(vid, bitrate) {
+  _validate(vid, bitrate) {
     if (!vid) {
       return PolyvResultCode.VID_ERROR;
     }
@@ -27,7 +27,7 @@ const PolyvVideoDownload = {
    * @param {string} vid 视频id
    */
   async getBitrateNumbers(vid) {
-    var result = this._getErrorCode(vid);
+    var result = this._validate(vid);
     if (result != PolyvResultCode.SUCCESS) {
       return { code: result };
     }
@@ -39,17 +39,18 @@ const PolyvVideoDownload = {
     }
     return { code: result };
   },
+
   /**
-   *
+   * 
    * @param {string} vid 视频vid
-   * @param {int} pos 码率索引
+   * @param {int} pos 码率   0:流畅  1:高清   2:超清
    * @param {string} title 下载标题
    * @param {string} videoJson videojson串 rn已经下载好了
    * @param {fun} callback 下载回掉 success fail
    * @returns 0:下载任务添加成功，1：下载任务已经在队列
    */
   async startDownload(vid, pos, title) {
-    var result = this._getErrorCode(vid, pos);
+    var result = this._validate(vid, pos);
     if (result != PolyvResultCode.SUCCESS) {
       return { code: result };
     }
@@ -68,12 +69,12 @@ const PolyvVideoDownload = {
    * @param {string} bitrate 码率
    */
   pauseDownload(vid, bitrate) {
-    var result = this._getErrorCode(vid, bitrate);
+    var result = this._validate(vid, bitrate);
     if (result != PolyvResultCode.SUCCESS) {
       return result;
     }
     videoDownload.pauseDownload(vid, bitrate);
-    return result
+    return result;
   },
 
   /**
@@ -89,7 +90,7 @@ const PolyvVideoDownload = {
    * * @param {string} bitrate 码率
    */
   resumeDownload(vid, bitrate) {
-    var result = this._getErrorCode(vid, bitrate);
+    var result = this._validate(vid, bitrate);
     if (result != PolyvResultCode.SUCCESS) {
       return result;
     }
@@ -110,31 +111,29 @@ const PolyvVideoDownload = {
    * @param {string} vid 视频id
    * @param {number} bitrate 视频码率
    */
-  delVideo(vid, bitrate) {
-    var result = this._getErrorCode(vid, bitrate);
+  deleteDownload(vid, bitrate) {
+    var result = this._validate(vid, bitrate);
     if (result != PolyvResultCode.SUCCESS) {
       return result;
     }
-    videoDownload.delVideo(vid, bitrate);
+    videoDownload.deleteDownload(vid, bitrate);
     return result;
   },
 
   /**
    * 清楚所有下载得视频
    */
-  delAllDownload() {
-    videoDownload.delAllDownload();
+  deleteAllDownload() {
+    videoDownload.deleteAllDownload();
   },
 
   /**
    * 获取下载列表
-   * @param {bool} hasDownloaded 是否已经下载完成
+   * @param {bool} hasDownloaded true：已下载列表   false：下载中列表
    */
   async getDownloadVideoList(hasDownloaded) {
     try {
-      var { downloadList } = await videoDownload.getDownloadVideoList(
-        hasDownloaded
-      );
+      var { downloadList } = await videoDownload.getDownloadVideoList(hasDownloaded);
       var dataMaps = new Map();
       var dataJs = JSON.parse(downloadList);
       if (!hasDownloaded) {
@@ -152,21 +151,17 @@ const PolyvVideoDownload = {
     }
   },
 
-
   /**
    *
    * @param {stirng} vid 视频id
    * @param {string} bitrate 码率选项
-   * return 返回下载状态 下载中 下载暂停 下载等待
+   * return 返回下载状态   0：下载中   1：下载暂停   2：下载等待
    *
    * -1：状态获取失败
    */
   async getDownloadStatus(vid, bitrate) {
     try {
-      var { downloadStatus } = await videoDownload.getDownloadStatus(
-        vid,
-        bitrate
-      );
+      var { downloadStatus } = await videoDownload.getDownloadStatus(vid, bitrate);
       return { code: downloadStatus };
     } catch (error) {
       return { code: -1 };
@@ -175,4 +170,5 @@ const PolyvVideoDownload = {
 
  
 };
+
 module.exports = PolyvVideoDownload;

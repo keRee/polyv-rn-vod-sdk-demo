@@ -117,4 +117,9 @@
     [self.player pause];
 }
 
+// 销毁
+- (void)destroyPlayer {
+  [self.player destroyPlayer];
+}
+
 @end
