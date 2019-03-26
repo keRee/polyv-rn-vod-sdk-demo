@@ -34,14 +34,6 @@ export class PolyvVideoOnlineItem extends Component {
   startDownload() {
     console.log('startDownload:'+this.props.videoInfo.vid)
     var vid = this.props.videoInfo.vid;
-    // PolyvHttpManager.getVideoInfo(vid,(ret) => {
-    //   console.log('getVideoInfo')
-    //   PolyvVodConfig.parseEncryptData(vid,ret.body,
-    //     (ret) =>{//返回解析数据结果
-    //       this.setState({data:ret})
-    //       this.props.downloadCallback(this.state.data)
-    //     })
-    // })
     if(!vid){
       alert("vid is error")
       return

@@ -67,6 +67,12 @@ class PolyvDownloadingListPage extends Component {
     tabBarLabel: "下载中"
   };
 
+  componentDidMount(){
+    setTimeout(() => {
+      this.getDownloadingList()
+    }, 50);
+  }
+
   getDownloadingList() {
     PolyvdownloadModule.getDownloadVideoList(false)
       .then(ret => {
@@ -79,12 +85,6 @@ class PolyvDownloadingListPage extends Component {
       .catch(e => {
         console.log("download error:" + e);
       });
-  }
-
-  componentDidMount(){
-    setTimeout(() => {
-      this.getDownloadingList()
-    }, 50);
   }
 
   updateDownload(successDwonloadInfo){

@@ -1,8 +1,8 @@
 //错误代码
 const PolyvResultCode = {
   SUCCESS: 0,
-  VID_ERROR: -1,//vid错误
-  BITRATE_INDEX_ERROR: -2,//码率错误
+  VID_ERROR: -1, //vid错误
+  BITRATE_INDEX_ERROR: -2, //码率错误
   getErrorDes(errorCode) {
     var errorDes = "";
     switch (errorCode) {
@@ -14,8 +14,8 @@ const PolyvResultCode = {
         break;
     }
 
-    return errorDes
+    return errorDes;
   }
 };
 
-module.exports = PolyvResultCode
+module.exports = PolyvResultCode;

@@ -42,14 +42,17 @@ export class PolyvVideoDownloadItem extends Component {
     };
   }
 
+  
+  componentDidMount(){
+    if(!this.props.isDownloadedPage){
+      this.getDownloadStatus(this.state.data)
+    }
+  }
+
   _onLongPress = () => {
     console.log("_onLongPress");
     this.props.onPressItem(this.props.downloadInfo);
   };
-
-  _onPress() {
-    console.log("onpress");
-  }
 
   startPlay() {
     var vid = this.props.downloadInfo.vid;
@@ -74,13 +77,6 @@ export class PolyvVideoDownloadItem extends Component {
     }
   }
 
-  stopDownload() {
-    var vid = this.props.downloadInfo.vid;
-    var bitrate = this.props.downloadInfo.bitrate;
-    this.setState({ videoStatus: 1 });
-    PolyvVideoDownload.pauseDownload(vid, bitrate);
-  }
-
   getDownloadStatus(downloadingInfo){
     if (!downloadingInfo) {
       console.log('downloadingInfo video is null')
@@ -94,12 +90,6 @@ export class PolyvVideoDownloadItem extends Component {
       var downloadStatus = ret.code;
       this.setState({ videoStatus: downloadStatus });
     });
-  }
-
-  componentDidMount(){
-    if(!this.props.isDownloadedPage){
-      this.getDownloadStatus(this.state.data)
-    }
   }
 
   
@@ -123,7 +113,6 @@ export class PolyvVideoDownloadItem extends Component {
   }
 
   render() {
-    // this.setState({data:this.props.downloadInfo})
     var videoInfo = this.state.data;
     var showSpeed = this.state.videoStatus == 0
     var progressContent = showSpeed?PolyvUtils.change(this.state.speed)+'/S':(videoInfo.progress == 0

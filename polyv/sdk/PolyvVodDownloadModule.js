@@ -23,7 +23,7 @@ const PolyvVideoDownload = {
   },
 
   /**
-   *
+   *获取视频码率
    * @param {string} vid 视频id
    */
   async getBitrateNumbers(vid) {
@@ -76,6 +76,9 @@ const PolyvVideoDownload = {
     return result
   },
 
+  /**
+   * 暂停所有下载
+   */
   pauseAllDownload() {
     videoDownload.pauseAllDownload();
   },

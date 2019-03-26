@@ -39,7 +39,9 @@ export default class PolyvVodPlayerPage extends Component<Props> {
     };
   }
 
-  
+  componentWillUnmount(){
+    this.refs["playerA"].release()
+  }
 
   updateVid() {
     if(!this.state.inputVid){
@@ -70,12 +72,6 @@ export default class PolyvVodPlayerPage extends Component<Props> {
     this.popUp.show()
   }
 
-  componentDidMount(){
-  }
-
-  componentWillUnmount(){
-    this.refs["playerA"].release()
-  }
 
   render() {
     console.log('app render')

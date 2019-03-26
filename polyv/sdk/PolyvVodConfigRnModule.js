@@ -43,21 +43,7 @@ const PolyvRNVodConfigModule = {
         return isSign
     },
 
-    parseEncryptData(vid,data,callback){
-        try {
-            PolyvRNVodConfigNativeModule.parseEncryptData(vid,data)
-            .then(ret =>{
-                var source = ret.data
-                callback(source)
-            })
-            console.log('parseEncryptData end')
-            return { "code":0 }
-        } catch (e) {
-            var code = e.code;
-            var message = e.message;
-            return { code, message }
-        }
-    }
+    
 } 
 
 module.exports = PolyvRNVodConfigModule;
