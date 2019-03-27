@@ -14,7 +14,7 @@ let token ,isSign
 
 const PolyvRNVodConfigNativeModule = NativeModules.PolyvRNVodConfigModule
 
-const PolyvRNVodConfigModule = {
+const PolyvVodConfig = {
    
     //初始化
     async init (vodKey, decodeKey, decodeIv, viewerId, nickName){
@@ -46,4 +46,4 @@ const PolyvRNVodConfigModule = {
     
 } 
 
-module.exports = PolyvRNVodConfigModule;
+module.exports = PolyvVodConfig;

@@ -17,7 +17,7 @@ import {
 import PropTypes from "prop-types";
 import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
-import PolyvResultCode from "../../common/PolyvErrorTip";
+import PolyvResultCode from "../../../sdk/PolyvErrorTip";
 
 
 const { width, height } = Dimensions.get("window");

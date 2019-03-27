@@ -39,8 +39,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.jar.Attributes;
 
@@ -82,12 +85,11 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
 
                 video = v;
                 // 码率数
-                String[] items = PolyvBitRate.getBitRateNameArray(v.getDfNum());
-                String bitrates = GsonUtil.toJson(Arrays.asList(items));
-
+                List<PolyvBitRate> items = PolyvBitRate.getBitRateList(v.getDfNum());
                 WritableMap map = Arguments.createMap();
-                map.putString("bitrates", bitrates);
-
+                for (PolyvBitRate bitRate:items) {
+                    map.putInt(bitRate.getName(),bitRate.getNum());
+                }
                 promise.resolve(map);
             }
         });
@@ -103,16 +105,17 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
 //    }
 
     @ReactMethod
-    public void startDownload(final String vid, final int pos, final String title) {
+    public void startDownload(final String vid, final int pos, final String title, final Promise promise) {
         PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :");
         PolyvVideoVO videoJSONVO = video;
 
         if (videoJSONVO == null) {
             Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
+            promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
             return;
         }
 
-        int bitrate = pos + 1;
+        int bitrate = pos;
 
         final PolyvDownloadInfo downloadInfo = new PolyvDownloadInfo(vid, videoJSONVO.getDuration(),
                 videoJSONVO.getFileSizeMatchVideoType(bitrate), bitrate, title);
@@ -123,10 +126,10 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
             polyvDownloader.start(getCurrentActivity());
         } else {
             (getCurrentActivity()).runOnUiThread(new Runnable() {
-
                 @Override
                 public void run() {
                     Toast.makeText(getCurrentActivity(), "下载任务已经增加到队列", Toast.LENGTH_SHORT).show();
+                    promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_EXIST+"");
                 }
             });
         }
@@ -136,58 +139,14 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getDownloadVideoList(boolean hasDownloaded, Promise promise) {
         List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
-
         lists = downloadSQLiteHelper.getAll();
-        if (lists != null) {
-            List<PolyvDownloadInfo> infos = new ArrayList<>();
-            for (PolyvDownloadInfo downloadInfo : downloadInfos) {
-                long percent = downloadInfo.getPercent();
-                long total = downloadInfo.getTotal();
-                downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
-                // 已下载的百分比
-                int progress = 0;
-                if (total != 0) {
-                    progress = (int) (percent * 100 / total);
-                }
-                if (progress == 100) {
-                    if (hasDownloaded) {
-                        infos.add(downloadInfo);
-                    }
-                } else if (!hasDownloaded) {
-                    infos.add(downloadInfo);
-                    addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, null);
-                }
-            }
-            downloadInfos.addAll(infos);
-        }
-
+        downloadInfos.addAll(getTask(lists, hasDownloaded, null));
         WritableMap map = Arguments.createMap();
         map.putString("downloadList", GsonUtil.toJson(downloadInfos));
+
         promise.resolve(map);
     }
 
-//    //获取所有下载列表
-//    @ReactMethod
-//    public void getAllDownloadVideoList(Promise promise) {
-//        List<PolyvDownloadInfo> downloadInfos = new ArrayList<>();
-//        lists = downloadSQLiteHelper.getAll();
-//        for (PolyvDownloadInfo downloadInfo : downloadInfos) {
-//            long percent = downloadInfo.getPercent();
-//            long total = downloadInfo.getTotal();
-//            // 已下载的百分比
-//            int progress = 0;
-//            if (total != 0) {
-//                progress = (int) (percent * 100 / total);
-//            }
-//            if (progress == 100) {
-//                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, null);
-//            }
-//        }
-//        WritableMap map = Arguments.createMap();
-//        map.putString("downloadList", GsonUtil.toJson(downloadInfos));
-//
-//        promise.resolve(map);
-//    }
 
 
     @ReactMethod
@@ -361,6 +320,34 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     public static void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
-    // </editor-fold>
 
+    // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="私有方法">
+    private List<PolyvDownloadInfo> getTask(List<PolyvDownloadInfo> downloadInfos, boolean isFinished, Callback callback) {
+        if (downloadInfos == null) {
+            return null;
+        }
+        List<PolyvDownloadInfo> infos = new ArrayList<>();
+        for (PolyvDownloadInfo downloadInfo : downloadInfos) {
+            long percent = downloadInfo.getPercent();
+            long total = downloadInfo.getTotal();
+            downloadInfo.setProgress(total == 0 ? 0 : (float) percent / total);
+            // 已下载的百分比
+            int progress = 0;
+            if (total != 0) {
+                progress = (int) (percent * 100 / total);
+            }
+            if (progress == 100) {
+                if (isFinished) {
+                    infos.add(downloadInfo);
+                }
+            } else if (!isFinished) {
+                infos.add(downloadInfo);
+                addDownloadListener(downloadInfo.getVid(), downloadInfo.getBitrate(), downloadInfo, callback);
+            }
+
+        }
+        return infos;
+    }
+// </editor-fold>
 }

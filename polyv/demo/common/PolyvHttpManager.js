@@ -1,12 +1,12 @@
 import Axios from "axios";
-import PolyvVodConfigRnModule from '../../sdk/PolyvVodConfigRnModule'
+import PolyvVodConfig from '../../sdk/PolyvVodConfigRnModule'
 
 const HttpManager ={
 
     getVideoList(num,size,callback){
 
-        var token = PolyvVodConfigRnModule.getToken
-        var isSign = PolyvVodConfigRnModule.isSign
+        var token = PolyvVodConfig.getToken
+        var isSign = PolyvVodConfig.isSign
 
         var sign=''
         console.log('sign :'+sign+' token :'+token())

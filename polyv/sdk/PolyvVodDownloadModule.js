@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NativeModules } from "react-native";
-import PolyvResultCode from "../demo/common/PolyvErrorTip";
+import PolyvResultCode from "./PolyvErrorTip";
 
 const videoDownload = NativeModules.PolyvRNVodDownloadModule;
 
@@ -32,8 +32,8 @@ const PolyvVideoDownload = {
       return { code: result };
     }
     try {
-      var { bitrates } = await videoDownload.getBitrateNumbers(vid);
-      return { code: PolyvResultCode.SUCCESS, bitrates };
+      var bitrates = await videoDownload.getBitrateNumbers(vid);
+      return { code: PolyvResultCode.SUCCESS, bitrates:bitrates };
     } catch (error) {
       result = error.code;
     }
@@ -164,7 +164,7 @@ const PolyvVideoDownload = {
       var { downloadStatus } = await videoDownload.getDownloadStatus(vid, bitrate);
       return { code: downloadStatus };
     } catch (error) {
-      return { code: -1 };
+      return { code: PolyvResultCode.DOWNLOAD_STATUS_ERROR };
     }
   },
 

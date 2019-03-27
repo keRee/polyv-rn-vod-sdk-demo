@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvUtils from "../../common/PolyvUtils";
-import PolyvResultCode from "../../common/PolyvErrorTip";
+import PolyvResultCode from "../../../sdk/PolyvErrorTip";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
 
 const { width, height } = Dimensions.get("window");

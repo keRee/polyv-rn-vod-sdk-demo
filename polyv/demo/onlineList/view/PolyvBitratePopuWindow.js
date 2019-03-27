@@ -11,7 +11,7 @@ import {
   Alert
 } from "react-native";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
-import PolyvErrorDes from '../../common/PolyvErrorTip'
+import PolyvErrorDes from '../../../sdk/PolyvErrorTip'
 /**
  * 弹出层
  */
@@ -24,6 +24,7 @@ export default class PolyvBitratePopuWindow extends Component {
       offset: new Animated.Value(0),
       show: false,
       videoJson: {},
+      sourceData:{},
       datas: [],
       vid: "",
       title: ""
@@ -49,12 +50,13 @@ export default class PolyvBitratePopuWindow extends Component {
   }
 
   show(bitrates, videoInfo) {
-    var bitRates = JSON.parse(bitrates)
-    console.log('bitrrates :'+bitRates.length)
+    console.log('bitrate:'+JSON.stringify(bitrates))
+    var keys = Object.keys(bitrates)
     this.setState(
       {
         show: true,
-        datas: bitRates,
+        sourceData:bitrates,
+        datas: keys,
         vid: videoInfo.vid,
         title: videoInfo.title
       },
@@ -89,17 +91,19 @@ export default class PolyvBitratePopuWindow extends Component {
       this.state.title
     ).then(ret =>{
       if(ret.code != 0){
-        alert(PolyvErrorDes.getErrorDes(ret.code))
+        console.log('start download response is error')
+        // alert(PolyvErrorDes.getErrorDes(ret.code))
       }
     });
   }
 
   renderItemData({ item, index }) {
+    var key = item
     return (
       <Text
         style={styles.content}
         onPress={() => {
-          this.chooseDefPlay(index);
+          this.chooseDefPlay(this.state.sourceData[key]);
         }}
       >
         {item}

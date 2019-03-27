@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { setAxios } from "../common/PolyvNet";
 
-import PolyvVodConfigRnModule from "../../sdk/PolyvVodConfigRnModule";
+import PolyvVodConfig from "../../sdk/PolyvVodConfigRnModule";
 import PolyvVideoListView from "./view/PolyvVideoOnlineList";
 import PolyvUserConfig from '../PolyvUserConfig'
 
@@ -58,7 +58,7 @@ export default class PolyvOnlineVideoListPage extends Component {
     console.log("Polyv vod init");
     setAxios();
 
-    PolyvVodConfigRnModule.init(
+    PolyvVodConfig.init(
       this.state.vodKey,
       this.state.decodeKey,
       this.state.decodeIv,
