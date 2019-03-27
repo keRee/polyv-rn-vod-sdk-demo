@@ -43,19 +43,17 @@ const PolyvVideoDownload = {
   /**
    * 
    * @param {string} vid 视频vid
-   * @param {int} pos 码率   0:流畅  1:高清   2:超清
+   * @param {int} bitrate 码率   1:流畅  2:高清   3:超清
    * @param {string} title 下载标题
-   * @param {string} videoJson videojson串 rn已经下载好了
-   * @param {fun} callback 下载回掉 success fail
    * @returns 0:下载任务添加成功，1：下载任务已经在队列
    */
-  async startDownload(vid, pos, title) {
-    var result = this._validate(vid, pos);
+  async startDownload(vid, bitrate, title) {
+    var result = this._validate(vid, bitrate);
     if (result != PolyvResultCode.SUCCESS) {
       return { code: result };
     }
     try {
-      await videoDownload.startDownload(vid, pos, title);
+      await videoDownload.startDownload(vid, bitrate, title);
       result = PolyvResultCode.SUCCESS;
     } catch (error) {
       result = error.code;
