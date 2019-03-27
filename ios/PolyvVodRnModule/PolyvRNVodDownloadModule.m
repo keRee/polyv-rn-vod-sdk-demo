@@ -39,8 +39,7 @@ RCT_EXPORT_METHOD(getBitrateNumbers:(NSString *)vid
   // 无网络情况下，优先检测本地视频文件
   PLVVodLocalVideo *local = [PLVVodLocalVideo localVideoWithVid:vid dir:[PLVVodDownloadManager sharedManager].downloadDir];
   if (local && local.path){
-    NSString *definitionDesc = [PolyvRNVodDownloadModule formatDefinition:local.qualityCount];
-    NSDictionary *dic = @{ @"bitrates": definitionDesc };
+    NSMutableDictionary *dic = [PolyvRNVodDownloadModule formatDefinition:local.qualityCount];
     resolve(dic);
   } else {
     // 有网情况下，也可以调用此接口，只要存在本地视频，都会优先播放本地视频
@@ -48,32 +47,46 @@ RCT_EXPORT_METHOD(getBitrateNumbers:(NSString *)vid
       if (!video.available) {
         return;
       }
-      NSString *definitionDesc = [PolyvRNVodDownloadModule formatDefinition:video.qualityCount];
-      NSDictionary *dic = @{ @"bitrates": definitionDesc };
+      NSMutableDictionary *dic = [PolyvRNVodDownloadModule formatDefinition:video.qualityCount];
       resolve(dic);
     }];
   }
 }
 
 RCT_EXPORT_METHOD(startDownload:(NSString *)vid
-                  pos:(int)pos
+                  bitrate:(int)bitrate
                   title:(NSString *)title
-//                  findEventsWithResolver:(RCTPromiseResolveBlock)resolve
-//                  rejecter:(RCTPromiseRejectBlock)reject
+                  findEventsWithResolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject
                   )
 {
-  NSLog(@"startDownload() - %@ 、 %d 、 %@", vid, pos, title);
+  NSLog(@"startDownload() - %@ 、 %d 、 %@", vid, bitrate, title);
   
   [PLVVodVideo requestVideoPriorityCacheWithVid:vid completion:^(PLVVodVideo *video, NSError *error) {
-    PLVVodQuality quality = [PolyvRNVodDownloadModule getQualityByPos:pos];
+    if (error) {
+      NSString *errorDesc = error.description;
+      if (!errorDesc) {
+        errorDesc = @"获取下载信息失败";
+      }
+      NSInteger errorCode = -1004;
+      NSError *errorObject = [NSError errorWithDomain:NSURLErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:errorDesc}];
+      NSLog(@"%@", errorDesc);
+      reject([@(errorCode) stringValue], errorDesc, errorObject);
+      return;
+    }
+    
+    PLVVodQuality quality = [PolyvRNVodDownloadModule getQuality:bitrate];
     PLVVodDownloadManager *downloadManager = [PLVVodDownloadManager sharedManager];
     PLVVodDownloadInfo *info = [downloadManager downloadVideo:video quality:quality];
     if (info) {
       NSLog(@"%@ - %zd 已加入下载队列", info.video.vid, info.quality);
       [self addDownloadInfoListener:info];
     } else { // 视频已存在，无法重新下载
-      // todo
-      
+      NSString *errorDesc = @"下载任务已经增加到队列";
+      NSInteger errorCode = -1005;
+      NSError *errorObject = [NSError errorWithDomain:NSURLErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:errorDesc}];
+      NSLog(@"%@", errorDesc);
+      reject([@(errorCode) stringValue], errorDesc, errorObject);
     }
   }];
 }
@@ -266,22 +279,22 @@ RCT_EXPORT_METHOD(deleteAllDownload
 }
 
 #pragma mark -- private method
-+ (NSString *)formatDefinition:(int)count {
-  switch (count) {
-    case 1:
-      return @"[\"流畅\"]";
-    case 2:
-      return @"[\"流畅\",\"高清\"]";
-    case 3:
-      return @"[\"流畅\",\"高清\",\"超清\"]";
-    default:
-      return @"[\"流畅\"]";
++ (NSMutableDictionary *)formatDefinition:(int)count {
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+  if (count >= 1) {
+    dic[@"流畅"] = @(1);
+    if (count >= 2) {
+      dic[@"高清"] = @(2);
+      if (count >= 3) {
+        dic[@"超清"] = @(3);
+      }
+    }
   }
+  return dic;
 }
 
-+ (PLVVodQuality)getQualityByPos:(int)pos {
-  int p = pos + 1;
-  switch (p) {
++ (PLVVodQuality)getQuality:(int)bitrate {
+  switch (bitrate) {
     case 1:
       return PLVVodQualityStandard;
     case 2:
