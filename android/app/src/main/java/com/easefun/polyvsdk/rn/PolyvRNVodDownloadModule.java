@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     private static final String TAG = "PolyvRNVodDownloadModule";
     private PolyvDownloadSQLiteHelper downloadSQLiteHelper;
     private LinkedList<PolyvDownloadInfo> lists;
+    private Map<String ,PolyvVideoVO> videoMaps = new HashMap<>();
     private PolyvVideoVO video;
     // </editor-fold>
 
@@ -75,15 +77,17 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
 
     // <editor-fold defaultstate="collapsed" desc="react native 通信方法">
     @ReactMethod
-    public void getBitrateNumbers(String vid, final Promise promise) {
+    public void getBitrateNumbers(final String vid, final Promise promise) {
         Video.loadVideo(vid, new Video.OnVideoLoaded() {
             public void onloaded(final Video v) {
                 if (v == null) {
                     Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
+                    promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
                     return;
                 }
 
-                video = v;
+                videoMaps.put(vid,v);
+
                 // 码率数
                 List<PolyvBitRate> items = PolyvBitRate.getBitRateList(v.getDfNum());
                 WritableMap map = Arguments.createMap();
@@ -107,14 +111,29 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startDownload(final String vid, final int pos, final String title, final Promise promise) {
         PolyvCommonLog.d(TAG, "id:" + vid + " pos :" + pos + "title :" + title + "  js :");
-        PolyvVideoVO videoJSONVO = video;
+        PolyvVideoVO videoJSONVO = videoMaps.remove(vid);
 
         if (videoJSONVO == null) {
-            Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
-            promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
+            PolyvCommonLog.d(TAG,"get video cache error !!");
+            Video.loadVideo(vid, new Video.OnVideoLoaded() {
+                public void onloaded(final Video v) {
+                    if (v == null) {
+                        Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
+                        promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
+                        return;
+                    }
+
+                    videoMaps.put(vid,v);
+                    startDownloadTask(vid, pos, title, promise, v);
+                }
+            });
             return;
         }
 
+        startDownloadTask(vid, pos, title, promise, videoJSONVO);
+    }
+
+    private void startDownloadTask(String vid, int pos, String title, final Promise promise, PolyvVideoVO videoJSONVO) {
         int bitrate = pos;
 
         final PolyvDownloadInfo downloadInfo = new PolyvDownloadInfo(vid, videoJSONVO.getDuration(),

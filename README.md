@@ -118,7 +118,7 @@ PolyvRNVodPlayer：Android端封装的播放器以及皮肤的自定义控件。
 
 ######  代码集成
 
-1. 拷贝polyvsdk模块到主工程下
+1. 拷贝polyvsdk模块到主工程下（与app工程平级，以模块module的方式存在）
 
 2. 拷贝rn文件夹下的文件到集成项目里
 

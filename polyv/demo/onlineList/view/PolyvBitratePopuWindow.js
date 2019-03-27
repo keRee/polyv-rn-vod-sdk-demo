@@ -24,7 +24,7 @@ export default class PolyvBitratePopuWindow extends Component {
       offset: new Animated.Value(0),
       show: false,
       videoJson: {},
-      sourceData:{},
+      sourceData:new Map,
       datas: [],
       vid: "",
       title: ""
@@ -49,13 +49,25 @@ export default class PolyvBitratePopuWindow extends Component {
     setTimeout(() => this.setState({ show: false }), 300);
   }
 
-  show(bitrates, videoInfo) {
-    console.log('bitrate:'+JSON.stringify(bitrates))
+  _sortBitrates(bitrates){
+    var sortBitrates = new Map
     var keys = Object.keys(bitrates)
+    keys.forEach(item =>{
+      sortBitrates.set(bitrates[item]+'',item)
+    })
+
+    this.state.sourceData = sortBitrates
+    var keys = [...sortBitrates.keys()]
+    keys.sort()
+    return keys
+  }
+  show(bitrates, videoInfo) {
+    var keys = this._sortBitrates(bitrates)
+    console.log('bitrate:'+JSON.stringify(keys))
     this.setState(
       {
         show: true,
-        sourceData:bitrates,
+        
         datas: keys,
         vid: videoInfo.vid,
         title: videoInfo.title
@@ -99,14 +111,15 @@ export default class PolyvBitratePopuWindow extends Component {
 
   renderItemData({ item, index }) {
     var key = item
+    console.log('render item :'+key)
     return (
       <Text
         style={styles.content}
         onPress={() => {
-          this.chooseDefPlay(this.state.sourceData[key]);
+          this.chooseDefPlay(parseInt(key));
         }}
       >
-        {item}
+        {this.state.sourceData.get(key)}
       </Text>
     );
   }
