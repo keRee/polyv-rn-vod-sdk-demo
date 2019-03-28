@@ -281,13 +281,11 @@ RCT_EXPORT_METHOD(deleteAllDownload
 #pragma mark -- private method
 + (NSMutableDictionary *)formatDefinition:(int)count {
   NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-  if (count >= 1) {
-    dic[@"流畅"] = @(1);
-    if (count >= 2) {
-      dic[@"高清"] = @(2);
-      if (count >= 3) {
-        dic[@"超清"] = @(3);
-      }
+  dic[@"流畅"] = @(1);
+  if (count >= 2) {
+    dic[@"高清"] = @(2);
+    if (count >= 3) {
+      dic[@"超清"] = @(3);
     }
   }
   return dic;
