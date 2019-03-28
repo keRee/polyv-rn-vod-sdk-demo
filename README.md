@@ -45,17 +45,19 @@ npm install
 
 依赖配置文件package.json
 
-```
+```javascript
 "dependencies": {
+	"react": "16.6.3",
+	"react-native": "^0.58.6",
+	
+	//polyv/demo里需要的依赖（如不需要可删除）
     "axios": "^0.18.0",
     "bower": "^1.8.8",
     "jest-haste-map": "^24.5.0",
     "loadash": "^1.0.0",
     "native-base": "^2.12.1",
-    "react": "16.6.3",
     "react-art": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-native": "^0.58.6",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-web": "^0.10.1",
     "react-navigation": "^3.3.2"
