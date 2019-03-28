@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { setAxios } from "../common/PolyvNet";
 
-import PolyvVodConfig from "../../sdk/PolyvVodConfigRnModule";
+import PolyvVodConfig from "../../sdk/PolyvVodConfigModule";
 import PolyvVideoListView from "./view/PolyvVideoOnlineList";
 import PolyvUserConfig from '../PolyvUserConfig'
 

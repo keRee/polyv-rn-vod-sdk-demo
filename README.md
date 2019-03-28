@@ -71,14 +71,14 @@ npm install
 
 
 
-封装的文件放在sdk目录下：PolyvVodConfigRnModule.js,PolyvVodDownloadModule.js, PolyvVodPlayerModule.js
+用户需要集成的文件放在sdk目录下：PolyvVodConfigRnModule.js,PolyvVodDownloadModule.js, PolyvVodPlayerModule.js
 
 ###### 初始化
 
  初始化的方法要放在界面渲染前初始化， 一般在componentWillMount 调用该方法进行初始化
 
 ```javascript
-PolyvVodConfigRnModule.js：初始化模块的中间件。
+PolyvVodConfigRnModule.js：初始化模块的组件。
 
 
 //该模块提供了初始化的方法init，该方法是一个异步有返回结果的函数
@@ -260,7 +260,7 @@ include ':app',
 ':polyvsdk'
 ```
 
-2、gradle依赖配置
+2、主模块（app）gradle依赖配置
 
 ```java
 compile project(path: ':polyvsdk')
@@ -272,7 +272,7 @@ compile project(path: ':polyvsdk')
 
 1. 拷贝相关的Native代码
 
-   拷贝 demo项目的 ios/PolyvVodRnDemo文件夹 到 自身项目的 ios 目录下；
+    拷贝 demo项目的 ios/PolyvVodRnModule文件夹 到 自身项目的 ios 目录下；
 
 2. 集成CocoaPods管理第三方库
 
