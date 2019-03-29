@@ -1,25 +1,25 @@
-import React, { Component } from "react";
 import { NativeModules } from "react-native";
-import PolyvResultCode from "./PolyvErrorTip";
+import PolyvVodDownloadResultCode from "./PolyvVodDownloadResultCode";
 
 const videoDownload = NativeModules.PolyvRNVodDownloadModule;
 
-/**
- * code，返回码定义：
- *      0  成功
- *      -1 vid为空
- *      -2 码率索引不对
- */
 const PolyvVideoDownload = {
+
+  /**
+   * code，返回码定义：
+   *      0  成功
+   *      -1 vid为空
+   *      -2 码率索引不对
+   */
   _validate(vid, bitrate) {
     if (!vid) {
-      return PolyvResultCode.VID_ERROR;
+      return PolyvVodDownloadResultCode.VID_ERROR;
     }
     if (bitrate < 0) {
-      return PolyvResultCode.BITRATE_INDEX_ERROR;
+      return PolyvVodDownloadResultCode.BITRATE_INDEX_ERROR;
     }
 
-    return PolyvResultCode.SUCCESS;
+    return PolyvVodDownloadResultCode.SUCCESS;
   },
 
   /**
@@ -28,12 +28,12 @@ const PolyvVideoDownload = {
    */
   async getBitrateNumbers(vid) {
     var result = this._validate(vid);
-    if (result != PolyvResultCode.SUCCESS) {
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
       return { code: result };
     }
     try {
       var bitrates = await videoDownload.getBitrateNumbers(vid);
-      return { code: PolyvResultCode.SUCCESS, bitrates:bitrates };
+      return { code: PolyvVodDownloadResultCode.SUCCESS, bitrates:bitrates };
     } catch (error) {
       result = error.code;
     }
@@ -49,12 +49,12 @@ const PolyvVideoDownload = {
    */
   async startDownload(vid, bitrate, title) {
     var result = this._validate(vid, bitrate);
-    if (result != PolyvResultCode.SUCCESS) {
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
       return { code: result };
     }
     try {
       await videoDownload.startDownload(vid, bitrate, title);
-      result = PolyvResultCode.SUCCESS;
+      result = PolyvVodDownloadResultCode.SUCCESS;
     } catch (error) {
       result = error.code;
     }
@@ -68,7 +68,7 @@ const PolyvVideoDownload = {
    */
   pauseDownload(vid, bitrate) {
     var result = this._validate(vid, bitrate);
-    if (result != PolyvResultCode.SUCCESS) {
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
       return result;
     }
     videoDownload.pauseDownload(vid, bitrate);
@@ -89,7 +89,7 @@ const PolyvVideoDownload = {
    */
   resumeDownload(vid, bitrate) {
     var result = this._validate(vid, bitrate);
-    if (result != PolyvResultCode.SUCCESS) {
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
       return result;
     }
     videoDownload.resumeDownload(vid, bitrate);
@@ -111,7 +111,7 @@ const PolyvVideoDownload = {
    */
   deleteDownload(vid, bitrate) {
     var result = this._validate(vid, bitrate);
-    if (result != PolyvResultCode.SUCCESS) {
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
       return result;
     }
     videoDownload.deleteDownload(vid, bitrate);
@@ -162,7 +162,7 @@ const PolyvVideoDownload = {
       var { downloadStatus } = await videoDownload.getDownloadStatus(vid, bitrate);
       return { code: downloadStatus };
     } catch (error) {
-      return { code: PolyvResultCode.DOWNLOAD_STATUS_ERROR };
+      return { code: PolyvVodDownloadResultCode.DOWNLOAD_STATUS_ERROR };
     }
   },
 

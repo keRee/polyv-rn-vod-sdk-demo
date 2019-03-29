@@ -1,5 +1,5 @@
 //错误代码
-const PolyvResultCode = {
+const PolyvVodDownloadResultCode = {
   SUCCESS: 0,
   VID_ERROR: -1, //vid错误
   BITRATE_INDEX_ERROR: -2, //码率错误
@@ -25,4 +25,4 @@ const PolyvResultCode = {
   }
 };
 
-module.exports = PolyvResultCode;
+module.exports = PolyvVodDownloadResultCode;

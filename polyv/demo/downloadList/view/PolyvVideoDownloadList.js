@@ -17,7 +17,7 @@ import {
 import PropTypes from "prop-types";
 import { PolyvVideoDownloadItem } from "./PolyvVideoDownloadItem";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
-import PolyvResultCode from "../../../sdk/PolyvErrorTip";
+import PolyvVodDownloadResultCode from "../../../sdk/PolyvVodDownloadResultCode";
 
 
 const { width, height } = Dimensions.get("window");
@@ -182,8 +182,8 @@ export class PolyvVideoDownloadList extends Component {
             var delItem = item;
             var resultCode = PolyvVideoDownload.deleteDownload(delItem.vid, delItem.bitrate);
             //如果失败弹出提示语
-            if (resultCode != PolyvResultCode.SUCCESS) {
-              var errorDes = PolyvResultCode.getErrorDes(resultCode)
+            if (resultCode != PolyvVodDownloadResultCode.SUCCESS) {
+              var errorDes = PolyvVodDownloadResultCode.getErrorDes(resultCode)
               alert(errorDes)
             }
           }

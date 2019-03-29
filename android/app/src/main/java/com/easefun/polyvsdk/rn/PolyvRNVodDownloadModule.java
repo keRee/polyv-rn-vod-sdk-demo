@@ -1,18 +1,14 @@
 package com.easefun.polyvsdk.rn;
 
-import android.app.DownloadManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easefun.polyvsdk.PolyvBitRate;
 import com.easefun.polyvsdk.PolyvDownloader;
 import com.easefun.polyvsdk.PolyvDownloaderErrorReason;
 import com.easefun.polyvsdk.PolyvDownloaderManager;
-import com.easefun.polyvsdk.PolyvSDKUtil;
 import com.easefun.polyvsdk.Video;
 import com.easefun.polyvsdk.bean.PolyvDownloadInfo;
 import com.easefun.polyvsdk.database.PolyvDownloadSQLiteHelper;
@@ -21,7 +17,6 @@ import com.easefun.polyvsdk.download.listener.IPolyvDownloaderSpeedListener;
 import com.easefun.polyvsdk.download.listener.IPolyvDownloaderStartListener;
 import com.easefun.polyvsdk.log.PolyvCommonLog;
 import com.easefun.polyvsdk.util.PolyvErrorMessageUtils;
-import com.easefun.polyvsdk.vo.PolyvVideoJSONVO;
 import com.easefun.polyvsdk.vo.PolyvVideoVO;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -34,19 +29,11 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.hpplay.common.utils.GsonUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.jar.Attributes;
 
 /**
  * @author df
@@ -82,7 +69,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
             public void onloaded(final Video v) {
                 if (v == null) {
                     Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
-                    promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
+                    promise.reject(PolyvRNVodCode.PolyvVodDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
                     return;
                 }
 
@@ -119,7 +106,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
                 public void onloaded(final Video v) {
                     if (v == null) {
                         Toast.makeText(getCurrentActivity(), "获取下载信息失败，请重试", Toast.LENGTH_SHORT).show();
-                        promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
+                        promise.reject(PolyvRNVodCode.PolyvVodDownloadResultCode.DOWNLOAD_INFO_ERROR+"");
                         return;
                     }
 
@@ -148,7 +135,7 @@ public class PolyvRNVodDownloadModule extends ReactContextBaseJavaModule {
                 @Override
                 public void run() {
                     Toast.makeText(getCurrentActivity(), "下载任务已经增加到队列", Toast.LENGTH_SHORT).show();
-                    promise.reject(PolyvRNVodCode.PolyvDownloadResultCode.DOWNLOAD_EXIST+"");
+                    promise.reject(PolyvRNVodCode.PolyvVodDownloadResultCode.DOWNLOAD_EXIST+"");
                 }
             });
         }
