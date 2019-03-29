@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 20,
-    height: 50,
+    height: 80,
     backgroundColor: "#63B8FF",
     margin: 10,
     padding: 10
