@@ -18,9 +18,9 @@ import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
 const { width, height } = Dimensions.get("window");
 //播放器下载的四种状态:下载(0)，暂停(1),播放(2)，
 const videoPlaySrc = [
-  { src: require("../../img/polyv_btn_download.png"), status: "正在下载" },
-  { src: require("../../img/polyv_btn_dlpause.png"), status: "下载暂停" },
-  { src: require("../../img/polyv_btn_dlpause.png"), status: "下载等待" },
+  { src: require("../../img/polyv_btn_dlpause.png"), status: "正在下载" },
+  { src: require("../../img/polyv_btn_download.png"), status: "下载暂停" },
+  { src: require("../../img/polyv_btn_download.png"), status: "下载等待" },
   { src: require("../../img/polyv_btn_play.png"), status: "下载完成" }
 ];
 let defaultImg = require("../../img/polyv_pic_demo.png");
