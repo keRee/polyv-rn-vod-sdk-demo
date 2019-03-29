@@ -1,3 +1,4 @@
 {
-    "typescript.tsdk": "C:/Users/df8969386/AppData/Roaming/npm/node_modules/typescript/lib"
+    "typescript.tsdk": "C:/Users/df8969386/AppData/Roaming/npm/node_modules/typescript/lib",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
