@@ -12,15 +12,40 @@ Android 4.1.0 (API 16) 以上 或 iOS 9.0 以上
 
 - 了解 ReactNative 技术
 - 搭建好运行 React Native 的相关环境
-- 已拥有使用 React Native 技术开发的项目并准备在该项目中接入点播功能
+- 准备在使用 React Native 技术开发的项目中接入点播功能
 - 拥有 polyv 官网的直播账号且已开通直播权限。
 
 
 ### 快速开始
 
-#### 模块列表
+#### 安装依赖
 
-用户需要集成的各个功能模块文件在路径 polyv - sdk 下，主要功能模块如下表所示：
+在 RN 项目中执行如下命令下载 react 相关依赖
+
+```js
+npm install
+```
+
+#### 引入插件
+
+点播的插件和 demo 使用到的插件的目录结构如下所示：
+
+├── polyv
+│   ├── demo
+│   │   ├── PolyvNavigation.js
+│   │   ├── PolyvUserConfig.js
+│   │   ├── common
+│   │   ├── downloadList
+│   │   ├── img
+│   │   ├── onlineList
+│   │   └── player
+│   └── sdk
+│       ├── PolyvVodConfigModule.js
+│       ├── PolyvVodDownloadModule.js
+│       ├── PolyvVodDownloadResultCode.js
+│       └── PolyvVodPlayerModule.js
+
+在目录 sdk 下我们的 RN 点播 SDK 提供了一下三大功能模块：
 
 | 文件名    | 描述   |
 | -------- | ------ |
@@ -28,28 +53,24 @@ Android 4.1.0 (API 16) 以上 或 iOS 9.0 以上
 | PolyvVodPlayerModule |  播放器模块    |
 | PolyvVodDownloadModule  |  视频下载模块   |
 
-#### 安装依赖
-
-执行如下命令下载 react 相关依赖
-
-```js
-npm install
-```
+如果只是需要使用到 sdk 的功能，把 sdk 目录下的文件拉到 RN 项目中即可。demo 中的功能则需要使用到 demo 目录下的文件。
 
 #### 项目配置
 
-1. 对应的 native 端的注册入口标签名为 ‘PolyvVodRnDemo’，对应到 app.json 文件里的配置
+1. 由于对应的 native 端的注册入口标签名为 ”PolyvVodRnDemo“，需将 app.json 文件的 name 字段和 displayName 字段都改为 PolyvVodRnDemo。 
 
-```java
+``` json
 {
-"name": "PolyvVodRnDemo",
-"displayName": "PolyvVodRnDemo"
+  "name": "PolyvVodRnDemo",
+  "displayName": "PolyvVodRnDemo"
 }
 ```
 
-2. 依赖配置文件 package.json
+2. 文件 package.json 中的 name 字段也需要改为 PolyvVodRnDemo。
 
-```javascript
+3. 在 package.json 文件中配置依赖。
+
+```json
 "dependencies": {
    "react": "16.6.3",
 	"react-native": "^0.58.6",
