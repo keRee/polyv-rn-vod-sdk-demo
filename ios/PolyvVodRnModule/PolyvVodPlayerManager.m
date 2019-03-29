@@ -38,26 +38,10 @@ RCT_EXPORT_METHOD(
                   )
 {
   NSLog(@"updateVid vid=%@", vid);
-  RCTUIManager *uiManager = _bridge.uiManager;
-  if (self.viewRegistry) {
-    UIView *view = self.viewRegistry[reactTag];
-    if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-      PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-      [wrapper updateVid:vid];
-    }
-  } else {
-    dispatch_async(uiManager.methodQueue, ^{
-      [uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        self.viewRegistry = viewRegistry;
-        UIView *view = viewRegistry[reactTag];
-        if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-          PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-          [wrapper updateVid:vid];
-        }
-      }];
-    });
-  }
-  
+  [self getPolyvVodPlayerWrapperViewByTag:reactTag callback:^(PolyvVodPlayerWrapperView *wrapper) {
+    NSLog(@"updateVid callback");
+    [wrapper updateVid:vid];
+  }];
 }
 
 RCT_EXPORT_METHOD(
@@ -65,26 +49,10 @@ RCT_EXPORT_METHOD(
                   )
 {
   NSLog(@"startOrPause");
-  if (self.viewRegistry) {
-    UIView *view = self.viewRegistry[reactTag];
-    if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-      PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-      [wrapper startOrPause];
-    }
-  } else {
-    RCTUIManager *uiManager = _bridge.uiManager;
-    dispatch_async(uiManager.methodQueue, ^{
-      [uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        self.viewRegistry = viewRegistry;
-        UIView *view = viewRegistry[reactTag];
-        if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-          PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-          [wrapper startOrPause];
-        }
-      }];
-    });
-  }
-  
+  [self getPolyvVodPlayerWrapperViewByTag:reactTag callback:^(PolyvVodPlayerWrapperView *wrapper) {
+    NSLog(@"startOrPause callback");
+    [wrapper startOrPause];
+  }];
 }
 
 RCT_EXPORT_METHOD(
@@ -92,25 +60,10 @@ RCT_EXPORT_METHOD(
                   )
 {
   NSLog(@"play");
-  if (self.viewRegistry) {
-    UIView *view = self.viewRegistry[reactTag];
-    if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-      PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-      [wrapper start];
-    }
-  } else {
-    RCTUIManager *uiManager = _bridge.uiManager;
-    dispatch_async(uiManager.methodQueue, ^{
-      [uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        self.viewRegistry = viewRegistry;
-        UIView *view = viewRegistry[reactTag];
-        if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-          PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-          [wrapper start];
-        }
-      }];
-    });
-  }
+  [self getPolyvVodPlayerWrapperViewByTag:reactTag callback:^(PolyvVodPlayerWrapperView *wrapper) {
+    NSLog(@"play callback");
+    [wrapper start];
+  }];
 }
 
 RCT_EXPORT_METHOD(
@@ -118,37 +71,29 @@ RCT_EXPORT_METHOD(
                   )
 {
   NSLog(@"pause");
-  if (self.viewRegistry) {
-    UIView *view = self.viewRegistry[reactTag];
-    if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-      PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-      [wrapper pause];
-    }
-  } else {
-    RCTUIManager *uiManager = _bridge.uiManager;
-    dispatch_async(uiManager.methodQueue, ^{
-      [uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
-        self.viewRegistry = viewRegistry;
-        UIView *view = viewRegistry[reactTag];
-        if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
-          PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-          [wrapper pause];
-        }
-      }];
-    });
-  }
+  [self getPolyvVodPlayerWrapperViewByTag:reactTag callback:^(PolyvVodPlayerWrapperView *wrapper) {
+    NSLog(@"pause callback");
+    [wrapper pause];
+  }];
 }
 
 RCT_EXPORT_METHOD(
                   release:(nonnull NSNumber *)reactTag
                   )
 {
-  NSLog(@"pause");
+  NSLog(@"release");
+  [self getPolyvVodPlayerWrapperViewByTag:reactTag callback:^(PolyvVodPlayerWrapperView *wrapper) {
+    NSLog(@"release callback");
+    [wrapper destroyPlayer];
+  }];
+}
+
+- (void)getPolyvVodPlayerWrapperViewByTag:(nonnull NSNumber *)reactTag callback:(void(^)(PolyvVodPlayerWrapperView *))callback {
   if (self.viewRegistry) {
     UIView *view = self.viewRegistry[reactTag];
     if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
       PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-      [wrapper destroyPlayer];
+      callback(wrapper);
     }
   } else {
     RCTUIManager *uiManager = _bridge.uiManager;
@@ -158,7 +103,7 @@ RCT_EXPORT_METHOD(
         UIView *view = viewRegistry[reactTag];
         if ([view isKindOfClass:[PolyvVodPlayerWrapperView class]]) {
           PolyvVodPlayerWrapperView *wrapper = (PolyvVodPlayerWrapperView *)view;
-          [wrapper destroyPlayer];
+          callback(wrapper);
         }
       }];
     });
