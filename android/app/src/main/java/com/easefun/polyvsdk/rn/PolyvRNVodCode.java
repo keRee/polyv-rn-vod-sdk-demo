@@ -24,7 +24,7 @@ public class PolyvRNVodCode {
     public final static int parseDataError = -5;
     public final static int noDownloadedVideo = -6;
 
-    interface  PolyvDownloadResultCode{
+    interface PolyvVodDownloadResultCode {
         public static final int DOWNLOAD_INFO_ERROR = -1004;
         public static final int DOWNLOAD_EXIST = -1005;
     }

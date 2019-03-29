@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  TouchableWithoutFeedback,
   TouchableOpacity,
-  Easing,
   Dimensions,
   Text,
   Image,
@@ -14,7 +12,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PolyvUtils from "../../common/PolyvUtils";
-import PolyvResultCode from "../../../sdk/PolyvErrorTip";
+import PolyvVodDownloadResultCode from "../../../sdk/PolyvVodDownloadResultCode";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
 
 const { width, height } = Dimensions.get("window");
@@ -71,8 +69,8 @@ export class PolyvVideoDownloadItem extends Component {
     }
 
     //如果失败弹出提示语
-    if (result != PolyvResultCode.SUCCESS) {
-      var errorDes = PolyvResultCode.getErrorDes(result)
+    if (result != PolyvVodDownloadResultCode.SUCCESS) {
+      var errorDes = PolyvVodDownloadResultCode.getErrorDes(result)
       alert(errorDes)
     }
   }
@@ -92,7 +90,6 @@ export class PolyvVideoDownloadItem extends Component {
     });
   }
 
-  
   creatProgressView(videoInfo) {
     return Platform.OS === "ios" ?     
       <ProgressViewIOS 
@@ -120,7 +117,6 @@ export class PolyvVideoDownloadItem extends Component {
       : PolyvUtils.change(
           (videoInfo.progress) * videoInfo.filesize
         ));
-    // this.setState(!this.props.isDownloadedPage?{videoStatus:0}:{videoStatus:2})
     var progressView = this.creatProgressView(videoInfo)
     let progressLayout = !this.props.isDownloadedPage ? (
       <View style={styles.bottomHorizonContianer}>

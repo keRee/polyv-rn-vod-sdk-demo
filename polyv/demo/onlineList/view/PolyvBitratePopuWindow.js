@@ -11,7 +11,7 @@ import {
   Alert
 } from "react-native";
 import PolyvVideoDownload from "../../../sdk/PolyvVodDownloadModule";
-import PolyvErrorDes from '../../../sdk/PolyvErrorTip'
+import PolyvErrorDes from '../../../sdk/PolyvVodDownloadResultCode'
 /**
  * 弹出层
  */

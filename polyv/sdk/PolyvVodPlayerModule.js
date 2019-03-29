@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from "react"
-import { requireNativeComponent, View, UIManager, findNodeHandle, Alert} from 'react-native';
+import { requireNativeComponent, View, UIManager, findNodeHandle} from 'react-native';
 import PropTypes from 'prop-types';
 
 
