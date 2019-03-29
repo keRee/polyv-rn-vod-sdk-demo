@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
-#import "RCTEventDispatcher.h"
+#import <React/RCTEventDispatcher.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
